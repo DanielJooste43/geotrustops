@@ -1,0 +1,233 @@
+{
+  "pipeline_version": "0.4.0",
+  "contract_version": "0.4",
+  "releases": {
+    "prev": "2026-10-21.0",
+    "curr": "2026-11-18.0"
+  },
+  "aoi": {
+    "west": 28.168,
+    "south": -25.758,
+    "east": 28.205,
+    "north": -25.732
+  },
+  "extraction_bbox": {
+    "west": 28.157999999999998,
+    "south": -25.768,
+    "east": 28.215,
+    "north": -25.721999999999998
+  },
+  "thresholds_m": {
+    "minor_move": 5.0,
+    "move": 25.0,
+    "major_move": 100.0
+  },
+  "inputs_sha256": {
+    "prev": "f69ec5ca48f04a6564952f76eb0ea78c1c6a85086da7f440e863862c076fe1c8",
+    "curr": "ea1a5c837dde146147db6540c60c617c68b6b2d0817a02953646f43e7055358e"
+  },
+  "input_rows": {
+    "prev": 8209,
+    "curr": 8189
+  },
+  "valid_rows": {
+    "prev": 8209,
+    "curr": 8189
+  },
+  "excluded_rows_by_reason": {
+    "prev": {
+      "missing_id": 0,
+      "duplicate_id": 0,
+      "missing_geometry": 0,
+      "non_point_geometry": 0,
+      "invalid_coordinates": 0
+    },
+    "curr": {
+      "missing_id": 0,
+      "duplicate_id": 0,
+      "missing_geometry": 0,
+      "non_point_geometry": 0,
+      "invalid_coordinates": 0
+    }
+  },
+  "union_ids": 8517,
+  "considered_ids": 5967,
+  "buffer_only_ids": 2550,
+  "change_counts": {
+    "excluded": 0,
+    "added": 232,
+    "removed": 228,
+    "moved": 178,
+    "attribute_changed": 49,
+    "shifted": 109,
+    "unchanged": 5171
+  },
+  "move_band_counts": {
+    "stable": 5211,
+    "minor": 118,
+    "material": 108,
+    "major": 70
+  },
+  "name_change_kind_counts": {
+    "added": 0,
+    "removed": 0,
+    "case_or_spacing": 3,
+    "punctuation": 0,
+    "expanded_or_trimmed": 24,
+    "different": 14
+  },
+  "flag_counts": {
+    "name_changed": 41,
+    "name_matches_brand": 4,
+    "category_changed": 50,
+    "basic_category_changed": 38,
+    "status_changed": 1,
+    "confidence_to_zero": 0,
+    "crossed_aoi_boundary": 7
+  },
+  "enrichment_field_counts": {
+    "addresses": 259,
+    "brand": 80,
+    "emails": 41,
+    "phones": 49,
+    "socials": 47,
+    "websites": 437
+  },
+  "format_only_field_counts": {
+    "addresses": 4450,
+    "phones": 314
+  },
+  "reconciliation": {
+    "rows_prev": {
+      "identity": "R_prev = V_prev + X_prev",
+      "lhs": 8209,
+      "rhs": 8209,
+      "holds": true
+    },
+    "rows_curr": {
+      "identity": "R_curr = V_curr + X_curr",
+      "lhs": 8189,
+      "rhs": 8189,
+      "holds": true
+    },
+    "ids_union": {
+      "identity": "distinct source ids (Stage B) = distinct classified ids (Stage C)",
+      "lhs": 8517,
+      "rhs": 8517,
+      "holds": true
+    },
+    "ids_unique": {
+      "identity": "classified rows (Stage C) = distinct classified ids (one row per id)",
+      "lhs": 8517,
+      "rhs": 8517,
+      "holds": true
+    },
+    "ids_considered": {
+      "identity": "study population (Stage B) = considered ids (Stage C)",
+      "lhs": 5967,
+      "rhs": 5967,
+      "holds": true
+    },
+    "ids_partition": {
+      "identity": "study population (Stage B) = sum of change types",
+      "lhs": 5967,
+      "rhs": 5967,
+      "holds": true
+    },
+    "excluded": {
+      "identity": "excluded ids in study (Stage B) = excluded",
+      "lhs": 0,
+      "rhs": 0,
+      "holds": true
+    },
+    "matched": {
+      "identity": "valid in both, in study, not excluded (Stage B) = moved + attribute_changed + shifted + unchanged",
+      "lhs": 5507,
+      "rhs": 5507,
+      "holds": true
+    },
+    "curr_side": {
+      "identity": "C_curr (Stage B) = added + matched",
+      "lhs": 5739,
+      "rhs": 5739,
+      "holds": true
+    },
+    "prev_side": {
+      "identity": "C_prev (Stage B) = removed + matched",
+      "lhs": 5735,
+      "rhs": 5735,
+      "holds": true
+    }
+  },
+  "interpretation": "Map-record changes between two Overture releases. added != opened, removed != closed, moved/shifted != the earlier position was wrong, a rename kind != better or worse.",
+  "changelog_check": {
+    "changelog_sha256": "a6f6f00fd5767b4e412b53525fe85d7274b68251e9ddd518bbdf4d70e7c51fb5",
+    "duplicate_ids_in_changelog": 0,
+    "rules": {
+      "added_is_changelog_added": {
+        "checked": 232,
+        "mismatches": 0
+      },
+      "removed_is_changelog_removed": {
+        "checked": 228,
+        "mismatches": 0
+      },
+      "moved_or_shifted_has_geometry_change": {
+        "checked": 287,
+        "mismatches": 0
+      },
+      "attribute_changed_has_attribute_change": {
+        "checked": 49,
+        "mismatches": 0
+      },
+      "changelog_unchanged_is_unchanged": {
+        "checked": 786,
+        "mismatches": 0
+      }
+    },
+    "total_mismatches": 0,
+    "changelog_types_for_considered_ids": {
+      "added": 232,
+      "data_changed": 4721,
+      "removed": 228,
+      "unchanged": 786
+    },
+    "crosstab": [
+      {
+        "geotrustops": "added",
+        "changelog": "added",
+        "n": 232
+      },
+      {
+        "geotrustops": "attribute_changed",
+        "changelog": "data_changed",
+        "n": 49
+      },
+      {
+        "geotrustops": "moved",
+        "changelog": "data_changed",
+        "n": 178
+      },
+      {
+        "geotrustops": "removed",
+        "changelog": "removed",
+        "n": 228
+      },
+      {
+        "geotrustops": "shifted",
+        "changelog": "data_changed",
+        "n": 109
+      },
+      {
+        "geotrustops": "unchanged",
+        "changelog": "data_changed",
+        "n": 4385
+      },
+      {
+        "geotrustops": "unchanged",
+        "changelog": "unchanged",
+        "n": 786
+      }
+    ]
+  }
+}
