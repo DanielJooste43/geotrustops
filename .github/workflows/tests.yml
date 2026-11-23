@@ -1,0 +1,24 @@
+name: tests
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install
+        run: pip install -e ".[dev]"
+      # Real-data tests need the pinned Overture extracts (data/raw, not committed) and are skipped here;
+      # synthetic, contract and fault-injection tests run on every pull request.
+      - name: Test
+        run: python -m pytest -q
