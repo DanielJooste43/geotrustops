@@ -71,6 +71,10 @@ wrong.
 | Golden records (`tests/golden/`) | real places classified by hand from raw data before the pipeline's answers were seen (11/11 agree) |
 | Overture changelog oracle | produced by Overture, not by this project (0 mismatches on both release pairs) |
 
+Every pull request also runs the `lint`, `types` and `pytest` checks and receives an AI-assisted code review (Codex)
+before merge, guided by the project's review rules in [`AGENTS.md`](AGENTS.md). Findings are verified before they are
+acted on; review complements the checks above and does not replace them.
+
 What each of these caught is in [`docs/engineering_review_log.md`](docs/engineering_review_log.md).
 
 ## Documentation
