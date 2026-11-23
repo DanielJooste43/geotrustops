@@ -50,4 +50,4 @@ Observed: 2 records per release have point coordinates marginally outside the AO
 - Overture Places guide: theme published under **CDLA-Permissive-2.0 and Apache-2.0, depending on source**; contains no OpenStreetMap data. https://docs.overturemaps.org/guides/places/
 - Observed per-record `sources[].license` in extract: CDLA-Permissive-2.0, CC0-1.0 (AllThePlaces), Apache-2.0 (Foursquare).
 - Source datasets observed: meta, AllThePlaces, Microsoft, Foursquare, Uberall, PinMeTo.
-- **TODO before public release of the map:** copy exact attribution wording from https://docs.overturemaps.org/attribution/ into `docs/licensing.md` and the map footer.
+- Attribution, licence texts and the Foursquare NOTICE are in `DATA_LICENSE.md`, `NOTICE` and `LICENSES/`.
