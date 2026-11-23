@@ -18,8 +18,16 @@ from geotrustops.pipeline import run
 from tests.conftest import RAW, REAL_CONFIG
 
 GOLDEN = Path(__file__).parent / "golden" / "golden_records.csv"
-VALID = {"excluded", "added", "removed", "moved", "attribute_changed", "shifted", "unchanged",
-         "not_in_study"}
+VALID = {
+    "excluded",
+    "added",
+    "removed",
+    "moved",
+    "attribute_changed",
+    "shifted",
+    "unchanged",
+    "not_in_study",
+}
 
 
 @pytest.mark.realdata
@@ -33,12 +41,18 @@ def test_pipeline_agrees_with_every_golden_record():
     assert not bad, f"invalid manual_class for {bad}; allowed: {sorted(VALID)}"
 
     cfg = load_config(REAL_CONFIG)
-    result = run(release_path(RAW, cfg.prev_release), release_path(RAW, cfg.curr_release),
-                 changelog_path(RAW, cfg.curr_release), cfg)
+    result = run(
+        release_path(RAW, cfg.prev_release),
+        release_path(RAW, cfg.curr_release),
+        changelog_path(RAW, cfg.curr_release),
+        cfg,
+    )
     disagreements = [
         f"{r['id']}: manual={r['manual_class'].strip()} "
         f"pipeline={result.classification.get(r['id'], 'not_in_extract')} ({r.get('manual_notes', '')})"
         for r in golden
         if result.classification.get(r["id"], "not_in_extract") != r["manual_class"].strip()
     ]
-    assert not disagreements, "investigate; do not edit the golden file:\n" + "\n".join(disagreements)
+    assert not disagreements, "investigate; do not edit the golden file:\n" + "\n".join(
+        disagreements
+    )

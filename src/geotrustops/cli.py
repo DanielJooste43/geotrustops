@@ -45,7 +45,7 @@ def _hoist_globals(argv: list[str]) -> list[str]:
     out, rest, i = [], [], 0
     while i < len(argv):
         if argv[i] in ("--config", "--raw-dir") and i + 1 < len(argv):
-            out += argv[i:i + 2]
+            out += argv[i : i + 2]
             i += 2
         else:
             rest.append(argv[i])
@@ -62,11 +62,23 @@ def _record_history(result: Result, cfg: Config, path: Path) -> None:
     # The changelog is part of the run's identity: re-checking the same snapshots against a different
     # changelog (or none) is different evidence and must not overwrite the earlier line.
     changelog_sha = (s["changelog_check"] or {}).get("changelog_sha256")
-    key_src = json.dumps({"inputs": s["inputs_sha256"], "changelog": changelog_sha, "config": cfg.raw,
-                          "version": __version__}, sort_keys=True)
+    key_src = json.dumps(
+        {
+            "inputs": s["inputs_sha256"],
+            "changelog": changelog_sha,
+            "config": cfg.raw,
+            "version": __version__,
+        },
+        sort_keys=True,
+    )
     key = hashlib.sha256(key_src.encode()).hexdigest()[:16]
-    share = {side: {r: round(n / s["input_rows"][side], 6) if s["input_rows"][side] else None
-                    for r, n in s["excluded_rows_by_reason"][side].items()} for side in ("prev", "curr")}
+    share = {
+        side: {
+            r: round(n / s["input_rows"][side], 6) if s["input_rows"][side] else None
+            for r, n in s["excluded_rows_by_reason"][side].items()
+        }
+        for side in ("prev", "curr")
+    }
     entry = {
         "key": key,
         "releases": s["releases"],

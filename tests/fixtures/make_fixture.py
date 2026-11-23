@@ -56,21 +56,33 @@ def write_places(path: Path, places: list[dict[str, Any]], minimal: bool = False
                 f"""INSERT INTO f VALUES ($id, $wkt, $lon, $lat, $name, $cat, $basic, $conf, $ds, $lic,
                     $status, CAST($addr AS JSON)::{_ADDR}, $phones, $websites, $emails, $socials, $brand)""",
                 {
-                    "id": p.get("id"), "wkt": wkt, "lon": lon, "lat": lat, "name": p.get("name"),
-                    "cat": p.get("category"), "basic": p.get("basic_category"),
+                    "id": p.get("id"),
+                    "wkt": wkt,
+                    "lon": lon,
+                    "lat": lat,
+                    "name": p.get("name"),
+                    "cat": p.get("category"),
+                    "basic": p.get("basic_category"),
                     "conf": p.get("confidence", 0.9),
-                    "ds": [s[0] for s in sources], "lic": [s[1] for s in sources],
+                    "ds": [s[0] for s in sources],
+                    "lic": [s[1] for s in sources],
                     "status": p.get("operating_status"),
                     "addr": json.dumps(p["addresses"]) if p.get("addresses") is not None else None,
-                    "phones": p.get("phones"), "websites": p.get("websites"),
-                    "emails": p.get("emails"), "socials": p.get("socials"),
+                    "phones": p.get("phones"),
+                    "websites": p.get("websites"),
+                    "emails": p.get("emails"),
+                    "socials": p.get("socials"),
                     "brand": p.get("brand_name"),
                 },
             )
-        optional = "" if minimal else """,
+        optional = (
+            ""
+            if minimal
+            else """,
             operating_status, addresses, phones, websites, emails, socials,
             CASE WHEN brand_name IS NULL THEN NULL
                  ELSE struct_pack(names := struct_pack("primary" := brand_name)) END AS brand"""
+        )
         con.execute(f"""
             COPY (
                 SELECT
@@ -99,8 +111,10 @@ def write_changelog(path: Path, rows: list[dict[str, Any]]) -> Path:
     try:
         con.execute("CREATE TABLE c (id VARCHAR, change_type VARCHAR, columns_changed VARCHAR[])")
         for r in rows:
-            con.execute("INSERT INTO c VALUES ($id, $t, $cols)",
-                        {"id": r["id"], "t": r["change_type"], "cols": r.get("columns_changed")})
+            con.execute(
+                "INSERT INTO c VALUES ($id, $t, $cols)",
+                {"id": r["id"], "t": r["change_type"], "cols": r.get("columns_changed")},
+            )
         con.execute(f"COPY c TO '{_q(path)}' (FORMAT parquet)")  # noqa: S608
     finally:
         con.close()

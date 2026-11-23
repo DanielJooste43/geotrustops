@@ -103,15 +103,21 @@ def fetch(cfg: Config, raw_dir: Path, force: bool = False) -> list[dict]:
     con.execute("SET s3_region = $r", {"r": cfg.s3_region})
     bbox = cfg.extraction_bbox
     jobs = [
-        (release_path(raw_dir, rel), cfg.release_uri.format(release=rel), "*",
-         {"kind": "release", "release": rel})
+        (
+            release_path(raw_dir, rel),
+            cfg.release_uri.format(release=rel),
+            "*",
+            {"kind": "release", "release": rel},
+        )
         for rel in (cfg.prev_release, cfg.curr_release)
     ]
     jobs.append(
-        (changelog_path(raw_dir, cfg.curr_release),
-         cfg.changelog_uri.format(release=cfg.curr_release),
-         "id, change_type, columns_changed, bbox",
-         {"kind": "changelog", "release": cfg.curr_release})
+        (
+            changelog_path(raw_dir, cfg.curr_release),
+            cfg.changelog_uri.format(release=cfg.curr_release),
+            "id, change_type, columns_changed, bbox",
+            {"kind": "changelog", "release": cfg.curr_release},
+        )
     )
     results = []
     try:
