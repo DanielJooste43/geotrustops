@@ -1,0 +1,238 @@
+{
+  "2026-10-21.0": {
+    "rows": 5733,
+    "distinct_ids": 5733,
+    "null_or_empty_ids": 0,
+    "geometry_types": {
+      "POINT": 5733
+    },
+    "null_coords": 0,
+    "outside_bbox": 2,
+    "null_name": 0,
+    "null_category": 283,
+    "null_basic_category": 282,
+    "operating_status": {
+      "open": 8,
+      "null": 5725
+    },
+    "source_licences": {
+      "CDLA-Permissive-2.0": 11026,
+      "CC0-1.0": 361,
+      "Apache-2.0": 87
+    },
+    "source_datasets": {
+      "Overture": 5733,
+      "meta": 5030,
+      "AllThePlaces": 361,
+      "Microsoft": 249,
+      "Foursquare": 87,
+      "Uberall": 12,
+      "PinMeTo": 2
+    },
+    "top_categories": [
+      [
+        null,
+        283
+      ],
+      [
+        "clothing_store",
+        209
+      ],
+      [
+        "professional_service",
+        207
+      ],
+      [
+        "beauty_salon",
+        182
+      ],
+      [
+        "historic_site",
+        146
+      ],
+      [
+        "christian_place_of_worship",
+        137
+      ],
+      [
+        "spa",
+        124
+      ],
+      [
+        "attorney_or_law_firm",
+        112
+      ]
+    ]
+  },
+  "2026-11-18.0": {
+    "rows": 5738,
+    "distinct_ids": 5738,
+    "null_or_empty_ids": 0,
+    "geometry_types": {
+      "POINT": 5738
+    },
+    "null_coords": 0,
+    "outside_bbox": 2,
+    "null_name": 0,
+    "null_category": 270,
+    "null_basic_category": 270,
+    "operating_status": {
+      "open": 7,
+      "null": 5731
+    },
+    "source_licences": {
+      "CDLA-Permissive-2.0": 11042,
+      "CC0-1.0": 358,
+      "Apache-2.0": 83
+    },
+    "source_datasets": {
+      "Overture": 5738,
+      "meta": 5046,
+      "AllThePlaces": 358,
+      "Microsoft": 246,
+      "Foursquare": 83,
+      "Uberall": 10,
+      "PinMeTo": 2
+    },
+    "top_categories": [
+      [
+        null,
+        270
+      ],
+      [
+        "clothing_store",
+        207
+      ],
+      [
+        "professional_service",
+        205
+      ],
+      [
+        "beauty_salon",
+        190
+      ],
+      [
+        "historic_site",
+        148
+      ],
+      [
+        "christian_place_of_worship",
+        141
+      ],
+      [
+        "spa",
+        122
+      ],
+      [
+        "restaurant",
+        113
+      ]
+    ]
+  },
+  "comparison": {
+    "union_ids": 5969,
+    "ids_in_both": 5502,
+    "classes": {
+      "added": 236,
+      "attribute_changed": 49,
+      "moved": 171,
+      "removed": 231,
+      "unchanged": 5282
+    },
+    "reconciles": true,
+    "matched_secondary_flags": {
+      "name_diff": 41,
+      "cat_diff": 50,
+      "basic_diff": 38,
+      "status_diff": 1,
+      "version_diff": 4716,
+      "moved_gt_0_1m": 336,
+      "moved_gt_5m": 289,
+      "moved_gt_25m": 171,
+      "moved_gt_100m": 64
+    },
+    "removed_added_same_name_within_50m": 0,
+    "sample_attribute_changes": [
+      [
+        "025a06e8-b713-4b9d-89d0-3b94f7302fbc",
+        "Kfc Pretoria (Pretorius Street)",
+        "KFC",
+        "fast_food_restaurant",
+        "fast_food_restaurant"
+      ],
+      [
+        "080d5470-42ec-4897-a026-4d09715ddecc",
+        "Topaz Disco CC",
+        "Topaz Disco PRETORIA, Gauteng",
+        "social_or_community_service",
+        "community_and_government"
+      ],
+      [
+        "09127cce-cef3-4e64-b8a2-849a52ae7a8c",
+        "Pretoria School for Cerebral Palsied Learners",
+        "Pretoria School For Cerebral Palsied Learners",
+        "specialty_school",
+        "specialty_school"
+      ],
+      [
+        "0aa1a98f-3abe-428a-b7f0-82e01739c3cb",
+        "Nutural beauty salon",
+        "Nutural beauty salon",
+        "spa",
+        "beauty_salon"
+      ],
+      [
+        "2022708f-1e93-4c61-8e09-9b1c09eaabdf",
+        "PG Glass",
+        "PG Glass Pretoria CBD",
+        "windows_installation",
+        "auto_glass_service"
+      ],
+      [
+        "28d1c2d4-6120-4b2b-a298-adad47117130",
+        "Police Clearance Certificate",
+        "Police Clearance South Africa",
+        "professional_service",
+        "professional_service"
+      ]
+    ],
+    "sample_moves": [
+      [
+        "58f10dd9-dc2d-4f8e-bf0a-ef4b8f7d93f3",
+        "Video Galore Nedbank Plaza",
+        "Video Galore Nedbank Plaza",
+        418.4
+      ],
+      [
+        "ded56f61-90cf-4b29-a4c0-428964258058",
+        "Dansa International College",
+        "Dansa International College",
+        388.4
+      ],
+      [
+        "0317c89d-83eb-4b38-95cc-b044cfc89840",
+        "Downtown-Amaros",
+        "Downtown-Amaros",
+        388.3
+      ],
+      [
+        "3f2214d1-3928-456a-a8cc-aee52722e26a",
+        "SA Automotors",
+        "SA Automotors",
+        375.4
+      ],
+      [
+        "76ab0c05-cc76-45be-ab8a-c31099712988",
+        "Central Business District",
+        "Central Business District",
+        372.3
+      ],
+      [
+        "65a88302-476b-46fc-b08c-a9986823e084",
+        "Chwayi Beauty Salon & Accessories",
+        "Chwayi Beauty Salon & Accessories",
+        370.8
+      ]
+    ]
+  }
+}
