@@ -9,6 +9,7 @@ from __future__ import annotations
 import json
 from dataclasses import dataclass
 from pathlib import Path
+from typing import Any
 
 
 class ConfigError(ValueError):
@@ -43,7 +44,7 @@ class Config:
     changelog_uri: str
     s3_region: str
     out_dir: str | None
-    raw: dict  # the parsed file, hashed into the calibration-log key
+    raw: dict[str, Any]  # the parsed file, hashed into the calibration-log key
 
     @property
     def extraction_bbox(self) -> BBox:

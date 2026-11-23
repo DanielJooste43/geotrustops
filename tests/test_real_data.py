@@ -25,8 +25,21 @@ pytestmark = [
 
 
 def _build(config: Path, out: Path) -> dict:
-    assert main(["build", "--config", str(config), "--raw-dir", str(RAW), "--out", str(out),
-                 "--no-history"]) == 0
+    assert (
+        main(
+            [
+                "build",
+                "--config",
+                str(config),
+                "--raw-dir",
+                str(RAW),
+                "--out",
+                str(out),
+                "--no-history",
+            ]
+        )
+        == 0
+    )
     return json.loads((out / "summary.json").read_text(encoding="utf-8"))
 
 
@@ -44,14 +57,26 @@ def sep_oct(tmp_path_factory: pytest.TempPathFactory) -> dict:
 
 def test_oct_nov_counts_match_baseline(oct_nov: dict):
     assert oct_nov["change_counts"] == {
-        "excluded": 0, "added": 232, "removed": 228, "moved": 178,
-        "attribute_changed": 49, "shifted": 109, "unchanged": 5171}
+        "excluded": 0,
+        "added": 232,
+        "removed": 228,
+        "moved": 178,
+        "attribute_changed": 49,
+        "shifted": 109,
+        "unchanged": 5171,
+    }
 
 
 def test_sep_oct_counts_match_baseline(sep_oct: dict):
     assert sep_oct["change_counts"] == {
-        "excluded": 0, "added": 289, "removed": 0, "moved": 111,
-        "attribute_changed": 72, "shifted": 74, "unchanged": 5187}
+        "excluded": 0,
+        "added": 289,
+        "removed": 0,
+        "moved": 111,
+        "attribute_changed": 72,
+        "shifted": 74,
+        "unchanged": 5187,
+    }
 
 
 @pytest.mark.parametrize("pair", ["oct_nov", "sep_oct"])

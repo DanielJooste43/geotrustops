@@ -18,6 +18,7 @@ import datetime as dt
 import hashlib
 import json
 from pathlib import Path
+from typing import Any
 
 import duckdb
 
@@ -57,8 +58,13 @@ def _bbox_where(b: BBox) -> str:
 
 
 def _download(
-    con: duckdb.DuckDBPyConnection, uri: str, select: str, bbox: BBox, out: Path, meta: dict
-) -> dict:
+    con: duckdb.DuckDBPyConnection,
+    uri: str,
+    select: str,
+    bbox: BBox,
+    out: Path,
+    meta: dict[str, Any],
+) -> dict[str, Any]:
     out.parent.mkdir(parents=True, exist_ok=True)
     tmp = out.with_suffix(".parquet.tmp")
     started = dt.datetime.now(dt.UTC)
@@ -96,22 +102,28 @@ def _download(
     return manifest
 
 
-def fetch(cfg: Config, raw_dir: Path, force: bool = False) -> list[dict]:
+def fetch(cfg: Config, raw_dir: Path, force: bool = False) -> list[dict[str, Any]]:
     """Download both releases and the curr changelog unless already present."""
     con = duckdb.connect()
     con.execute("INSTALL httpfs; LOAD httpfs;")
     con.execute("SET s3_region = $r", {"r": cfg.s3_region})
     bbox = cfg.extraction_bbox
     jobs = [
-        (release_path(raw_dir, rel), cfg.release_uri.format(release=rel), "*",
-         {"kind": "release", "release": rel})
+        (
+            release_path(raw_dir, rel),
+            cfg.release_uri.format(release=rel),
+            "*",
+            {"kind": "release", "release": rel},
+        )
         for rel in (cfg.prev_release, cfg.curr_release)
     ]
     jobs.append(
-        (changelog_path(raw_dir, cfg.curr_release),
-         cfg.changelog_uri.format(release=cfg.curr_release),
-         "id, change_type, columns_changed, bbox",
-         {"kind": "changelog", "release": cfg.curr_release})
+        (
+            changelog_path(raw_dir, cfg.curr_release),
+            cfg.changelog_uri.format(release=cfg.curr_release),
+            "id, change_type, columns_changed, bbox",
+            {"kind": "changelog", "release": cfg.curr_release},
+        )
     )
     results = []
     try:
@@ -128,12 +140,12 @@ def fetch(cfg: Config, raw_dir: Path, force: bool = False) -> list[dict]:
     return results
 
 
-def verify_manifest(data_file: Path, cfg: Config, kind: str, release: str) -> dict:
+def verify_manifest(data_file: Path, cfg: Config, kind: str, release: str) -> dict[str, Any]:
     """Fail if the file is missing, altered, or was extracted for another release/bbox."""
     mpath = _manifest_path(data_file)
     if not data_file.exists() or not mpath.exists():
         raise ExtractError(f"missing input or manifest: {data_file} (run `geotrustops fetch`)")
-    m = json.loads(mpath.read_text(encoding="utf-8"))
+    m: dict[str, Any] = json.loads(mpath.read_text(encoding="utf-8"))
     problems = []
     if m.get("kind") != kind or m.get("release") != release:
         problems.append(f"manifest is for {m.get('kind')} {m.get('release')}")

@@ -16,14 +16,36 @@ from typing import Any
 from geotrustops.pipeline import Result
 
 _PROPERTY_ORDER = [
-    "id", "change_type", "distance_m", "move_band",
-    "prev_name", "curr_name", "prev_category", "curr_category",
-    "prev_basic_category", "curr_basic_category",
-    "prev_lon", "prev_lat", "curr_lon", "curr_lat",
-    "prev_operating_status", "curr_operating_status", "prev_confidence", "curr_confidence",
-    "name_changed", "name_change_kind", "name_matches_brand", "category_changed",
-    "basic_category_changed", "status_changed", "confidence_to_zero", "enrichment_changed",
-    "format_only_changed", "crossed_aoi_boundary", "source_datasets", "source_licences",
+    "id",
+    "change_type",
+    "distance_m",
+    "move_band",
+    "prev_name",
+    "curr_name",
+    "prev_category",
+    "curr_category",
+    "prev_basic_category",
+    "curr_basic_category",
+    "prev_lon",
+    "prev_lat",
+    "curr_lon",
+    "curr_lat",
+    "prev_operating_status",
+    "curr_operating_status",
+    "prev_confidence",
+    "curr_confidence",
+    "name_changed",
+    "name_change_kind",
+    "name_matches_brand",
+    "category_changed",
+    "basic_category_changed",
+    "status_changed",
+    "confidence_to_zero",
+    "enrichment_changed",
+    "format_only_changed",
+    "crossed_aoi_boundary",
+    "source_datasets",
+    "source_licences",
 ]
 
 
@@ -63,8 +85,11 @@ def _qa_report(result: Result) -> str:
         f"- AOI: {s['aoi']}",
         f"- Extraction bbox (AOI + buffer): {s['extraction_bbox']}",
         f"- Input sha256: prev `{s['inputs_sha256']['prev']}` · curr `{s['inputs_sha256']['curr']}`",
-        *([f"- Changelog sha256: `{s['changelog_check']['changelog_sha256']}`"]
-          if s.get("changelog_check") else []),
+        *(
+            [f"- Changelog sha256: `{s['changelog_check']['changelog_sha256']}`"]
+            if s.get("changelog_check")
+            else []
+        ),
         "",
         "## Inputs",
         "",
@@ -74,7 +99,9 @@ def _qa_report(result: Result) -> str:
         f"| valid rows | {s['valid_rows']['prev']} | {s['valid_rows']['curr']} |",
     ]
     for reason, n in s["excluded_rows_by_reason"]["prev"].items():
-        lines.append(f"| excluded: `{reason}` | {n} | {s['excluded_rows_by_reason']['curr'][reason]} |")
+        lines.append(
+            f"| excluded: `{reason}` | {n} | {s['excluded_rows_by_reason']['curr'][reason]} |"
+        )
     lines += [
         "",
         f"Ids: {s['union_ids']} in extraction, {s['considered_ids']} in study, "
@@ -110,19 +137,29 @@ def _qa_report(result: Result) -> str:
         "",
         "| kind | id | previous | current | = brand |",
         "|---|---|---|---|---|",
-        *[f"| {r['name_change_kind']} | `{r['id']}` | {r['prev_name']} | {r['curr_name']} | "
-          f"{r['name_matches_brand']} |" for r in result.renames],
+        *[
+            f"| {r['name_change_kind']} | `{r['id']}` | {r['prev_name']} | {r['curr_name']} | "
+            f"{r['name_matches_brand']} |"
+            for r in result.renames
+        ],
         "",
         f"## Lifecycle changes ({len(result.lifecycle)})",
         "",
-        *([f"- `{r['id']}` {r['curr_name']}: status {r['prev_operating_status']} → "
-           f"{r['curr_operating_status']}, confidence {r['prev_confidence']} → {r['curr_confidence']}"
-           for r in result.lifecycle] or ["None."]),
+        *(
+            [
+                f"- `{r['id']}` {r['curr_name']}: status {r['prev_operating_status']} → "
+                f"{r['curr_operating_status']}, confidence {r['prev_confidence']} → {r['curr_confidence']}"
+                for r in result.lifecycle
+            ]
+            or ["None."]
+        ),
         "",
         "## Reconciliation",
         "",
-        *[f"- {'✔' if r['holds'] else '✘'} `{r['identity']}`: {r['lhs']} = {r['rhs']}"
-          for r in s["reconciliation"].values()],
+        *[
+            f"- {'✔' if r['holds'] else '✘'} `{r['identity']}`: {r['lhs']} = {r['rhs']}"
+            for r in s["reconciliation"].values()
+        ],
         "",
         "## Changelog cross-check (contract §9)",
         "",
@@ -133,21 +170,42 @@ def _qa_report(result: Result) -> str:
     else:
         lines += ["| rule | checked | mismatches |", "|---|---|---|"]
         lines += [f"| {k} | {v['checked']} | {v['mismatches']} |" for k, v in cc["rules"].items()]
-        lines += ["", "Changelog type of ids in study: "
-                  + ", ".join(f"{k} {v}" for k, v in cc["changelog_types_for_considered_ids"].items())]
+        lines += [
+            "",
+            "Changelog type of ids in study: "
+            + ", ".join(f"{k} {v}" for k, v in cc["changelog_types_for_considered_ids"].items()),
+        ]
         if result.changelog_mismatches:
-            lines += ["", "| rule | id | GeoTrustOps | changelog | columns_changed |", "|---|---|---|---|---|"]
-            lines += [f"| {m['rule']} | `{m['id']}` | {m['geotrustops']} | {m['changelog']} | "
-                      f"{m['columns_changed']} |" for m in result.changelog_mismatches]
-    lines += ["", "## 10 largest moves", "", "| id | previous name | current name | m | crossed AOI edge |",
-              "|---|---|---|---|---|"]
-    lines += [f"| `{m['id']}` | {m['prev_name']} | {m['curr_name']} | {m['distance_m']} | "
-              f"{m['crossed_aoi_boundary']} |" for m in result.top_moves]
+            lines += [
+                "",
+                "| rule | id | GeoTrustOps | changelog | columns_changed |",
+                "|---|---|---|---|---|",
+            ]
+            lines += [
+                f"| {m['rule']} | `{m['id']}` | {m['geotrustops']} | {m['changelog']} | "
+                f"{m['columns_changed']} |"
+                for m in result.changelog_mismatches
+            ]
+    lines += [
+        "",
+        "## 10 largest moves",
+        "",
+        "| id | previous name | current name | m | crossed AOI edge |",
+        "|---|---|---|---|---|",
+    ]
+    lines += [
+        f"| `{m['id']}` | {m['prev_name']} | {m['curr_name']} | {m['distance_m']} | "
+        f"{m['crossed_aoi_boundary']} |"
+        for m in result.top_moves
+    ]
     lines += ["", f"## Excluded rows ({len(result.excluded_rows)})", ""]
     if result.excluded_rows:
         lines += ["| release | row | id | reason | geometry | name |", "|---|---|---|---|---|---|"]
-        lines += [f"| {e['side']} | {e['src_row']} | `{e['id']}` | {e['exclusion_reason']} | "
-                  f"{e['geom_type']} | {e['name']} |" for e in result.excluded_rows]
+        lines += [
+            f"| {e['side']} | {e['src_row']} | `{e['id']}` | {e['exclusion_reason']} | "
+            f"{e['geom_type']} | {e['name']} |"
+            for e in result.excluded_rows
+        ]
     else:
         lines.append("None.")
     return "\n".join(lines) + "\n"

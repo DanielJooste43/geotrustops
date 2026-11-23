@@ -17,7 +17,7 @@ REAL_CONFIG = ROOT / "config" / "study_area.json"
 RAW = ROOT / "data" / "raw"
 
 # AOI used by synthetic tests: the real study AOI, so coordinates look familiar.
-INSIDE = (28.18, -25.74)   # a point well inside the AOI
+INSIDE = (28.18, -25.74)  # a point well inside the AOI
 OUTSIDE = (28.30, -25.74)  # east of the AOI (east edge 28.205): outside the study area
 METRES_PER_DEG_LAT = 6371000 * 3.141592653589793 / 180  # ~111,195 m on the haversine sphere
 
@@ -39,10 +39,14 @@ def build(tmp_path: Path) -> Callable[..., tuple[int, Path]]:
         cfg.setdefault("max_excluded_share", 1.0)  # most tests exclude rows on purpose
         args = [
             "build",
-            "--config", str(write_config(tmp_path / "cfg.json", **cfg)),
-            "--prev", str(write_places(tmp_path / "prev.parquet", prev)),
-            "--curr", str(write_places(tmp_path / "curr.parquet", curr)),
-            "--out", str(tmp_path / "out"),
+            "--config",
+            str(write_config(tmp_path / "cfg.json", **cfg)),
+            "--prev",
+            str(write_places(tmp_path / "prev.parquet", prev)),
+            "--curr",
+            str(write_places(tmp_path / "curr.parquet", curr)),
+            "--out",
+            str(tmp_path / "out"),
             "--no-history",
         ]
         if changelog is not None:

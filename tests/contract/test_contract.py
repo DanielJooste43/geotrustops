@@ -25,11 +25,19 @@ write_changelog = _fixture.write_changelog
 
 def place(id="subject", **kwargs):
     if kwargs.get("addresses"):
-        kwargs["addresses"] = [dict.fromkeys(
-            ["freeform", "locality", "postcode", "region", "country"]
-        ) | address for address in kwargs["addresses"]]
-    return {"id": id, "lon": 28.18, "lat": -25.745,
-            "name": "Cafe", "category": "cafe", "basic_category": "eat", **kwargs}
+        kwargs["addresses"] = [
+            dict.fromkeys(["freeform", "locality", "postcode", "region", "country"]) | address
+            for address in kwargs["addresses"]
+        ]
+    return {
+        "id": id,
+        "lon": 28.18,
+        "lat": -25.745,
+        "name": "Cafe",
+        "category": "cafe",
+        "basic_category": "eat",
+        **kwargs,
+    }
 
 
 def north(metres):
@@ -41,16 +49,35 @@ class Run:
         self.root = root
         self.out = root / "out"
         self.cfg = root / "config.json"
-        self.cfg.write_text(json.dumps({
-            "releases": {"prev": "2026-10-21.0", "curr": "2026-11-18.0"},
-            "aoi": {"west": 28.168, "south": -25.758, "east": 28.205, "north": -25.732},
-            "buffer_deg": 0.01, "move_threshold_m": 25.0, "minor_move_m": 5.0,
-            "major_move_m": 100.0, "max_excluded_share": 0.05, **config,
-        }), encoding="utf-8")
+        self.cfg.write_text(
+            json.dumps(
+                {
+                    "releases": {"prev": "2026-10-21.0", "curr": "2026-11-18.0"},
+                    "aoi": {"west": 28.168, "south": -25.758, "east": 28.205, "north": -25.732},
+                    "buffer_deg": 0.01,
+                    "move_threshold_m": 25.0,
+                    "minor_move_m": 5.0,
+                    "major_move_m": 100.0,
+                    "max_excluded_share": 0.05,
+                    **config,
+                }
+            ),
+            encoding="utf-8",
+        )
         self.prev = write_places(root / "prev.parquet", prev, minimal=minimal)
         self.curr = write_places(root / "curr.parquet", curr, minimal=minimal)
-        self.args = ["build", "--config", str(self.cfg), "--prev", str(self.prev),
-                     "--curr", str(self.curr), "--out", str(self.out), "--no-history"]
+        self.args = [
+            "build",
+            "--config",
+            str(self.cfg),
+            "--prev",
+            str(self.prev),
+            "--curr",
+            str(self.curr),
+            "--out",
+            str(self.out),
+            "--no-history",
+        ]
         if oracle is not None:
             cl = write_changelog(root / "changelog.parquet", oracle)
             self.args += ["--changelog", str(cl)]
@@ -64,23 +91,34 @@ class Run:
 
     @property
     def features(self):
-        features = json.loads((self.out / "changes.geojson").read_text(encoding="utf-8"))["features"]
+        features = json.loads((self.out / "changes.geojson").read_text(encoding="utf-8"))[
+            "features"
+        ]
         return {f["properties"]["id"]: f for f in features}
 
     def prop(self, id="subject"):
         return self.features[id]["properties"]
 
     def snapshot(self):
-        return {p.relative_to(self.out).as_posix(): p.read_bytes()
-                for p in self.out.rglob("*") if p.is_file()}
+        return {
+            p.relative_to(self.out).as_posix(): p.read_bytes()
+            for p in self.out.rglob("*")
+            if p.is_file()
+        }
 
 
-@pytest.mark.parametrize("distance,kind,band", [
-    (0, "unchanged", "stable"), (4.999, "unchanged", "stable"),
-    (5.001, "shifted", "minor"), (24.999, "shifted", "minor"),
-    (25.001, "moved", "material"), (99.999, "moved", "material"),
-    (100.001, "moved", "major"),
-])
+@pytest.mark.parametrize(
+    "distance,kind,band",
+    [
+        (0, "unchanged", "stable"),
+        (4.999, "unchanged", "stable"),
+        (5.001, "shifted", "minor"),
+        (24.999, "shifted", "minor"),
+        (25.001, "moved", "material"),
+        (99.999, "moved", "material"),
+        (100.001, "moved", "major"),
+    ],
+)
 def test_thresholds_and_move_bands(tmp_path, distance, kind, band):
     run = Run(tmp_path, [place()], [place(lat=north(distance))])
     assert run.build() == 0
@@ -94,7 +132,9 @@ def test_thresholds_and_move_bands(tmp_path, distance, kind, band):
 
 
 @pytest.mark.parametrize("field", ["name", "category", "basic_category"])
-@pytest.mark.parametrize("distance,kind", [(0, "attribute_changed"), (10, "attribute_changed"), (30, "moved")])
+@pytest.mark.parametrize(
+    "distance,kind", [(0, "attribute_changed"), (10, "attribute_changed"), (30, "moved")]
+)
 def test_null_to_value_and_priority(tmp_path, field, distance, kind):
     run = Run(tmp_path, [place(**{field: None})], [place(lat=north(distance))])
     assert run.build() == 0
@@ -102,14 +142,19 @@ def test_null_to_value_and_priority(tmp_path, field, distance, kind):
     assert run.prop()[field + "_changed"] is True
 
 
-@pytest.mark.parametrize("old,new,kind", [
-    (None, "Cafe", "added"), ("Cafe", None, "removed"),
-    (" Cafe   North ", "cafe north", "case_or_spacing"),
-    ("Cafe-North!", "Cafe North", "punctuation"),
-    ("Cafe", "Cafe North", "expanded_or_trimmed"),
-    ("Cafe North", "Cafe", "expanded_or_trimmed"),
-    ("Cafe", "Bakery", "different"), ("", "Cafe", "added"),
-])
+@pytest.mark.parametrize(
+    "old,new,kind",
+    [
+        (None, "Cafe", "added"),
+        ("Cafe", None, "removed"),
+        (" Cafe   North ", "cafe north", "case_or_spacing"),
+        ("Cafe-North!", "Cafe North", "punctuation"),
+        ("Cafe", "Cafe North", "expanded_or_trimmed"),
+        ("Cafe North", "Cafe", "expanded_or_trimmed"),
+        ("Cafe", "Bakery", "different"),
+        ("", "Cafe", "added"),
+    ],
+)
 def test_name_change_kinds(tmp_path, old, new, kind):
     run = Run(tmp_path, [place(name=old)], [place(name=new)])
     assert run.build() == 0
@@ -118,8 +163,11 @@ def test_name_change_kinds(tmp_path, old, new, kind):
 
 
 def test_brand_match_and_unchanged_name_kind(tmp_path):
-    run = Run(tmp_path, [place(), place("same")],
-              [place(name="Brand", brand_name="BRAND"), place("same", lat=north(30))])
+    run = Run(
+        tmp_path,
+        [place(), place("same")],
+        [place(name="Brand", brand_name="BRAND"), place("same", lat=north(30))],
+    )
     assert run.build() == 0
     assert run.prop()["name_matches_brand"] is True
     assert run.prop("same")["name_change_kind"] is None
@@ -127,9 +175,11 @@ def test_brand_match_and_unchanged_name_kind(tmp_path):
 
 
 def test_study_membership_and_boundary_crossers(tmp_path):
-    run = Run(tmp_path,
-              [place("outside", lon=28.16), place("cross", lon=28.1679), place("edge", lon=28.168)],
-              [place("outside", lon=28.161), place("cross", lon=28.169)])
+    run = Run(
+        tmp_path,
+        [place("outside", lon=28.16), place("cross", lon=28.1679), place("edge", lon=28.168)],
+        [place("outside", lon=28.161), place("cross", lon=28.169)],
+    )
     assert run.build() == 0
     assert set(run.features) == {"cross", "edge"}
     assert run.prop("cross")["change_type"] == "moved"
@@ -148,22 +198,39 @@ def test_confidence_alone_is_unchanged_and_optional_columns(tmp_path, minimal):
 
 
 def test_lifecycle_flags_do_not_classify(tmp_path):
-    run = Run(tmp_path, [place(operating_status="open", confidence=None)],
-              [place(operating_status="permanently_closed", confidence=0)])
+    run = Run(
+        tmp_path,
+        [place(operating_status="open", confidence=None)],
+        [place(operating_status="permanently_closed", confidence=0)],
+    )
     assert run.build() == 0
     assert run.summary["change_counts"]["unchanged"] == 1
     assert run.summary["flag_counts"]["status_changed"] == 1
     assert run.summary["flag_counts"]["confidence_to_zero"] == 1
 
 
-@pytest.mark.parametrize("region,code", [("GP", "ZA-GP"), ("gauteng", "ZA-GP"),
-    ("WC", "ZA-WC"), ("KwaZulu Natal", "ZA-KZN"), ("KwaZulu-Natal", "ZA-KZN"),
-    ("North West", "ZA-NW"), ("Mpumalanga", "ZA-MP"), ("Limpopo", "ZA-LP"),
-    ("Eastern Cape", "ZA-EC"), ("Free State", "ZA-FS"), ("Northern Cape", "ZA-NC")])
+@pytest.mark.parametrize(
+    "region,code",
+    [
+        ("GP", "ZA-GP"),
+        ("gauteng", "ZA-GP"),
+        ("WC", "ZA-WC"),
+        ("KwaZulu Natal", "ZA-KZN"),
+        ("KwaZulu-Natal", "ZA-KZN"),
+        ("North West", "ZA-NW"),
+        ("Mpumalanga", "ZA-MP"),
+        ("Limpopo", "ZA-LP"),
+        ("Eastern Cape", "ZA-EC"),
+        ("Free State", "ZA-FS"),
+        ("Northern Cape", "ZA-NC"),
+    ],
+)
 def test_address_and_phone_format_only(tmp_path, region, code):
-    run = Run(tmp_path,
-              [place(addresses=[{"region": region, "country": "ZA"}], phones=["012 345-6789"])],
-              [place(addresses=[{"region": code, "country": "ZA"}], phones=["+27123456789"])])
+    run = Run(
+        tmp_path,
+        [place(addresses=[{"region": region, "country": "ZA"}], phones=["012 345-6789"])],
+        [place(addresses=[{"region": code, "country": "ZA"}], phones=["+27123456789"])],
+    )
     assert run.build() == 0
     summary = run.summary
     assert summary["change_counts"]["unchanged"] == 1
@@ -180,12 +247,16 @@ def test_phone_without_country_is_real_enrichment(tmp_path):
     assert run.summary["format_only_field_counts"].get("phones", 0) == 0
 
 
-@pytest.mark.parametrize("bad,reason", [
-    (place(id=None), "missing_id"), (place(id=""), "missing_id"),
-    (place(geometry=None), "missing_geometry"),
-    (place(wkt="LINESTRING (28.18 -25.745, 28.181 -25.745)"), "non_point_geometry"),
-    (place(lon=181), "invalid_coordinates"),
-])
+@pytest.mark.parametrize(
+    "bad,reason",
+    [
+        (place(id=None), "missing_id"),
+        (place(id=""), "missing_id"),
+        (place(geometry=None), "missing_geometry"),
+        (place(wkt="LINESTRING (28.18 -25.745, 28.181 -25.745)"), "non_point_geometry"),
+        (place(lon=181), "invalid_coordinates"),
+    ],
+)
 def test_exclusion_reasons(tmp_path, bad, reason):
     good = [place(str(i)) for i in range(20)]
     run = Run(tmp_path, good + [bad], good)
@@ -208,7 +279,9 @@ def test_duplicate_copies_excluded_even_if_other_side_valid(tmp_path):
     assert "duplicate_id" in (run.out / "qa_report.md").read_text(encoding="utf-8")
 
 
-@pytest.mark.parametrize("failure", ["empty_prev", "empty_curr", "missing_prev", "missing_curr", "exclusion_gate"])
+@pytest.mark.parametrize(
+    "failure", ["empty_prev", "empty_curr", "missing_prev", "missing_curr", "exclusion_gate"]
+)
 def test_failed_run_preserves_previous_outputs(tmp_path, failure):
     run = Run(tmp_path, [place()], [place(name="New")])
     assert run.build() == 0
@@ -225,18 +298,33 @@ def test_failed_run_preserves_previous_outputs(tmp_path, failure):
 
 def test_reconciliation_and_byte_identical_rerun(tmp_path):
     prev = [place("removed"), place("moved"), place("renamed"), place("shifted"), place("same")]
-    curr = [place("added"), place("moved", lat=north(40)), place("renamed", name="New"),
-            place("shifted", lat=north(10)), place("same")]
+    curr = [
+        place("added"),
+        place("moved", lat=north(40)),
+        place("renamed", name="New"),
+        place("shifted", lat=north(10)),
+        place("same"),
+    ]
     run = Run(tmp_path, prev, curr)
     assert run.build() == 0
-    assert run.summary["change_counts"] == {"excluded": 0, "added": 1, "removed": 1,
-        "moved": 1, "attribute_changed": 1, "shifted": 1, "unchanged": 1}
+    assert run.summary["change_counts"] == {
+        "excluded": 0,
+        "added": 1,
+        "removed": 1,
+        "moved": 1,
+        "attribute_changed": 1,
+        "shifted": 1,
+        "unchanged": 1,
+    }
     summary = run.summary
     assert summary["considered_ids"] == sum(summary["change_counts"].values()) == 6
     assert summary["union_ids"] == summary["considered_ids"] + summary["buffer_only_ids"] == 6
     for side in ("prev", "curr"):
-        assert summary["input_rows"][side] == summary["valid_rows"][side] + sum(
-            summary["excluded_rows_by_reason"][side].values()) == 5
+        assert (
+            summary["input_rows"][side]
+            == summary["valid_rows"][side] + sum(summary["excluded_rows_by_reason"][side].values())
+            == 5
+        )
     for identity in summary["reconciliation"].values():
         assert identity["holds"] is True
         assert identity["lhs"] == identity["rhs"]
@@ -248,8 +336,18 @@ def test_reconciliation_and_byte_identical_rerun(tmp_path):
     assert not (tmp_path / "runs").exists()
 
 
-@pytest.mark.parametrize("scenario", ["added", "removed", "moved", "shifted", "attribute_changed",
-                                      "unchanged", "reverse_not_required"])
+@pytest.mark.parametrize(
+    "scenario",
+    [
+        "added",
+        "removed",
+        "moved",
+        "shifted",
+        "attribute_changed",
+        "unchanged",
+        "reverse_not_required",
+    ],
+)
 @pytest.mark.parametrize("mismatch", [False, True])
 def test_changelog_rules(tmp_path, scenario, mismatch):
     prev, curr = [place("anchor"), place()], [place("anchor"), place()]
@@ -277,8 +375,10 @@ def test_changelog_rules(tmp_path, scenario, mismatch):
             columns = []
         else:
             cl_type = "unchanged"
-    oracle = [{"id": "anchor", "change_type": "unchanged", "columns_changed": []},
-              {"id": "subject", "change_type": cl_type, "columns_changed": columns}]
+    oracle = [
+        {"id": "anchor", "change_type": "unchanged", "columns_changed": []},
+        {"id": "subject", "change_type": cl_type, "columns_changed": columns},
+    ]
     run = Run(tmp_path, prev, curr, oracle=oracle)
     assert run.build() == 0  # oracle disagreement is reported, not a §6 fatal gate
     check = run.summary["changelog_check"]
@@ -288,16 +388,26 @@ def test_changelog_rules(tmp_path, scenario, mismatch):
 
 
 def test_configurable_thresholds(tmp_path):
-    run = Run(tmp_path, [place()], [place(lat=north(12))],
-              minor_move_m=2, move_threshold_m=10, major_move_m=11)
+    run = Run(
+        tmp_path,
+        [place()],
+        [place(lat=north(12))],
+        minor_move_m=2,
+        move_threshold_m=10,
+        major_move_m=11,
+    )
     assert run.build() == 0
     assert run.prop()["change_type"] == "moved"
     assert run.prop()["move_band"] == "major"
 
 
 def test_changelog_unchanged_rejects_enrichment(tmp_path):
-    run = Run(tmp_path, [place(websites=None)], [place(websites=["https://example.org"])],
-              oracle=[{"id": "subject", "change_type": "unchanged", "columns_changed": []}])
+    run = Run(
+        tmp_path,
+        [place(websites=None)],
+        [place(websites=["https://example.org"])],
+        oracle=[{"id": "subject", "change_type": "unchanged", "columns_changed": []}],
+    )
     assert run.build() == 0
     assert run.summary["change_counts"]["unchanged"] == 1
     assert run.summary["changelog_check"]["total_mismatches"] == 1

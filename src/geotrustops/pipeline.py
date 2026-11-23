@@ -29,19 +29,50 @@ from geotrustops.config import Config
 from geotrustops.extract import sha256
 
 CHANGE_TYPES = [
-    "excluded", "added", "removed", "moved", "attribute_changed", "shifted", "unchanged",
+    "excluded",
+    "added",
+    "removed",
+    "moved",
+    "attribute_changed",
+    "shifted",
+    "unchanged",
 ]
 EXPORTED_TYPES = ["added", "removed", "moved", "attribute_changed", "shifted"]
 MOVE_BANDS = ["stable", "minor", "material", "major"]
 NAME_CHANGE_KINDS = [
-    "added", "removed", "case_or_spacing", "punctuation", "expanded_or_trimmed", "different",
+    "added",
+    "removed",
+    "case_or_spacing",
+    "punctuation",
+    "expanded_or_trimmed",
+    "different",
 ]
 ENRICH_FIELDS = ["addresses", "brand", "emails", "phones", "socials", "websites"]  # sorted
 EXCLUSION_REASONS = [
-    "missing_id", "duplicate_id", "missing_geometry", "non_point_geometry", "invalid_coordinates",
+    "missing_id",
+    "duplicate_id",
+    "missing_geometry",
+    "non_point_geometry",
+    "invalid_coordinates",
 ]
-REQUIRED_COLUMNS = {"id", "geometry", "names", "taxonomy", "basic_category", "confidence", "sources"}
-OPTIONAL_COLUMNS = {"operating_status", "addresses", "phones", "websites", "emails", "socials", "brand"}
+REQUIRED_COLUMNS = {
+    "id",
+    "geometry",
+    "names",
+    "taxonomy",
+    "basic_category",
+    "confidence",
+    "sources",
+}
+OPTIONAL_COLUMNS = {
+    "operating_status",
+    "addresses",
+    "phones",
+    "websites",
+    "emails",
+    "socials",
+    "brand",
+}
 
 # ISO 3166-2 codes for South African provinces, keyed by the upper-cased spellings seen in the
 # source (codes and names). Contract §1 "Address normalisation". Constant data, not user input.
@@ -284,8 +315,13 @@ FROM flags
 """
 
 _BOOL_FLAGS = [
-    "name_changed", "name_matches_brand", "category_changed", "basic_category_changed",
-    "status_changed", "confidence_to_zero", "crossed_aoi_boundary",
+    "name_changed",
+    "name_matches_brand",
+    "category_changed",
+    "basic_category_changed",
+    "status_changed",
+    "confidence_to_zero",
+    "crossed_aoi_boundary",
 ]
 FORMAT_FIELDS = ["addresses", "phones"]
 
@@ -301,43 +337,67 @@ _PHONES_NORM = (
 
 def _select_exprs(con: duckdb.DuckDBPyConnection, path: Path) -> dict[str, str]:
     """Per-file SQL expressions: geometry decoding, and NULL for absent optional columns."""
-    cols = {r[0]: str(r[1]) for r in con.execute(
-        "SELECT column_name, column_type FROM (DESCRIBE SELECT * FROM read_parquet($p))",
-        {"p": path.as_posix()},
-    ).fetchall()}
+    cols = {
+        r[0]: str(r[1])
+        for r in con.execute(
+            "SELECT column_name, column_type FROM (DESCRIBE SELECT * FROM read_parquet($p))",
+            {"p": path.as_posix()},
+        ).fetchall()
+    }
     missing = REQUIRED_COLUMNS - set(cols)
     if missing:
         raise PipelineError(f"{path}: required column(s) missing: {sorted(missing)}")
     has = set(cols) & OPTIONAL_COLUMNS
     null = "NULL::VARCHAR"
-    as_json = {c: (f"to_json({c})::VARCHAR" if c in has else null)
-               for c in ("phones", "websites", "emails", "socials", "brand")}
+    as_json = {
+        c: (f"to_json({c})::VARCHAR" if c in has else null)
+        for c in ("phones", "websites", "emails", "socials", "brand")
+    }
     region = _region_case("a.region")
     return {
-        "geom_expr": ("geometry" if cols["geometry"].upper().startswith("GEOMETRY")
-                      else "TRY(ST_GeomFromWKB(geometry))"),
+        "geom_expr": (
+            "geometry"
+            if cols["geometry"].upper().startswith("GEOMETRY")
+            else "TRY(ST_GeomFromWKB(geometry))"
+        ),
         "operating_status": "operating_status" if "operating_status" in has else null,
         "addresses_raw": "to_json(addresses)::VARCHAR" if "addresses" in has else null,
         "addresses_norm": (
             "to_json(list_transform(addresses, a -> struct_pack("
             "freeform := a.freeform, locality := a.locality, postcode := a.postcode, "
             f"region := {region}, country := a.country)))::VARCHAR"
-        ) if "addresses" in has else null,
+        )
+        if "addresses" in has
+        else null,
         "brand_name": 'brand.names."primary"' if "brand" in has else null,
         "phones_norm": _PHONES_NORM.format(
             za="coalesce(addresses[1].country = 'ZA', false)" if "addresses" in has else "false"
-        ) if "phones" in has else null,
+        )
+        if "phones" in has
+        else null,
         **as_json,
     }
 
 
-def _rows(con: duckdb.DuckDBPyConnection, sql: str, params: dict | None = None) -> list[dict]:
+def _rows(
+    con: duckdb.DuckDBPyConnection, sql: str, params: dict[str, Any] | None = None
+) -> list[dict[str, Any]]:
     cur = con.execute(sql, params or {})
     names = [d[0] for d in cur.description]
     return [dict(zip(names, r, strict=True)) for r in cur.fetchall()]
 
 
-def _scalar(con: duckdb.DuckDBPyConnection, sql: str, params: dict | None = None) -> Any:
+def _one_row(
+    con: duckdb.DuckDBPyConnection, sql: str, params: dict[str, Any] | None = None
+) -> tuple[Any, ...]:
+    """Run a query that must return exactly one row (e.g. aggregate counts); fail clearly if it does not."""
+    row = con.execute(sql, params or {}).fetchone()
+    if row is None:
+        raise PipelineError(f"query returned no row: {sql.strip().splitlines()[0][:80]}")
+    return tuple(row)
+
+
+def _scalar(con: duckdb.DuckDBPyConnection, sql: str, params: dict[str, Any] | None = None) -> Any:
     row = con.execute(sql, params or {}).fetchone()
     return row[0] if row else None
 
@@ -356,33 +416,55 @@ def run(prev: Path, curr: Path, changelog: Path | None, cfg: Config) -> Result:
             con.execute(sql, {"path": path.as_posix(), "side": side})
         a = cfg.aoi
         con.execute(_EXCLUDE, {"west": a.west, "east": a.east, "south": a.south, "north": a.north})
-        con.execute(_CLASSIFY.format(), {"threshold": cfg.move_threshold_m,
-                                         "minor": cfg.minor_move_m, "major": cfg.major_move_m})
+        con.execute(
+            _CLASSIFY.format(),
+            {
+                "threshold": cfg.move_threshold_m,
+                "minor": cfg.minor_move_m,
+                "major": cfg.major_move_m,
+            },
+        )
         summary = _summarize(con, cfg, Path(prev), Path(curr))
         _gate(summary, cfg)
         result = Result(summary=summary)
         result.changes = _changes(con)
-        result.classification = dict(con.execute(
-            "SELECT id, CASE WHEN considered THEN change_type ELSE 'not_in_study' END "
-            "FROM ids ORDER BY id").fetchall())
-        result.excluded_rows = _rows(con, """
+        result.classification = dict(
+            con.execute(
+                "SELECT id, CASE WHEN considered THEN change_type ELSE 'not_in_study' END "
+                "FROM ids ORDER BY id"
+            ).fetchall()
+        )
+        result.excluded_rows = _rows(
+            con,
+            """
             SELECT side, src_row, id, exclusion_reason, geom_type,
                    round(lon, 6) AS lon, round(lat, 6) AS lat, name
-            FROM rows WHERE exclusion_reason IS NOT NULL ORDER BY side, id NULLS FIRST, src_row""")
-        result.top_moves = _rows(con, """
+            FROM rows WHERE exclusion_reason IS NOT NULL ORDER BY side, id NULLS FIRST, src_row""",
+        )
+        result.top_moves = _rows(
+            con,
+            """
             SELECT id, prev_name, curr_name, round(distance_m, 1) AS distance_m, crossed_aoi_boundary
             FROM ids WHERE considered AND change_type = 'moved'
-            ORDER BY distance_m DESC, id LIMIT 10""")
-        result.renames = _rows(con, """
+            ORDER BY distance_m DESC, id LIMIT 10""",
+        )
+        result.renames = _rows(
+            con,
+            """
             SELECT id, name_change_kind, prev_name, curr_name, name_matches_brand
-            FROM ids WHERE considered AND name_changed ORDER BY name_change_kind, id""")
-        result.lifecycle = _rows(con, """
+            FROM ids WHERE considered AND name_changed ORDER BY name_change_kind, id""",
+        )
+        result.lifecycle = _rows(
+            con,
+            """
             SELECT id, curr_name, prev_operating_status, curr_operating_status,
                    prev_confidence, curr_confidence
-            FROM ids WHERE considered AND (status_changed OR confidence_to_zero) ORDER BY id""")
+            FROM ids WHERE considered AND (status_changed OR confidence_to_zero) ORDER BY id""",
+        )
         if changelog is not None:
             summary["changelog_check"], result.changelog_mismatches = _changelog_check(
-                con, Path(changelog))
+                con, Path(changelog)
+            )
         else:
             summary["changelog_check"] = None
         return result
@@ -391,31 +473,54 @@ def run(prev: Path, curr: Path, changelog: Path | None, cfg: Config) -> Result:
 
 
 def _counts(con: duckdb.DuckDBPyConnection, column: str, keys: list[str]) -> dict[str, int]:
-    found = dict(con.execute(
-        f"SELECT {column}, count(*) FROM ids WHERE considered AND {column} IS NOT NULL GROUP BY 1"  # noqa: S608
-    ).fetchall())
+    found = dict(
+        con.execute(
+            f"SELECT {column}, count(*) FROM ids WHERE considered AND {column} IS NOT NULL GROUP BY 1"  # noqa: S608
+        ).fetchall()
+    )
     return {k: int(found.get(k, 0)) for k in keys}
 
 
-def _summarize(con: duckdb.DuckDBPyConnection, cfg: Config, prev: Path, curr: Path) -> dict:
+def _summarize(
+    con: duckdb.DuckDBPyConnection, cfg: Config, prev: Path, curr: Path
+) -> dict[str, Any]:
     input_rows, valid_rows, excluded_by_reason = {}, {}, {}
     for side in ("prev", "curr"):
-        input_rows[side] = int(_scalar(con, "SELECT count(*) FROM rows WHERE side = $s", {"s": side}))
-        valid_rows[side] = int(_scalar(
-            con, "SELECT count(*) FROM rows WHERE side = $s AND exclusion_reason IS NULL", {"s": side}))
-        found = dict(con.execute(
-            "SELECT exclusion_reason, count(*) FROM rows WHERE side = $s AND exclusion_reason IS NOT NULL "
-            "GROUP BY 1", {"s": side}).fetchall())
+        input_rows[side] = int(
+            _scalar(con, "SELECT count(*) FROM rows WHERE side = $s", {"s": side})
+        )
+        valid_rows[side] = int(
+            _scalar(
+                con,
+                "SELECT count(*) FROM rows WHERE side = $s AND exclusion_reason IS NULL",
+                {"s": side},
+            )
+        )
+        found = dict(
+            con.execute(
+                "SELECT exclusion_reason, count(*) FROM rows WHERE side = $s AND exclusion_reason IS NOT NULL "
+                "GROUP BY 1",
+                {"s": side},
+            ).fetchall()
+        )
         excluded_by_reason[side] = {r: int(found.get(r, 0)) for r in EXCLUSION_REASONS}
 
     change_counts = _counts(con, "change_type", CHANGE_TYPES)
     # coalesce(..., 0): count_if returns NULL (not 0) when every flag is NULL, e.g. no matched ids.
     flag_sql = ", ".join(f"coalesce(count_if({f}), 0)" for f in _BOOL_FLAGS)
-    flag_counts = dict(zip(_BOOL_FLAGS, (int(x) for x in con.execute(
-        f"SELECT {flag_sql} FROM ids WHERE considered").fetchone()), strict=True))  # noqa: S608
+    flag_sql_full = f"SELECT {flag_sql} FROM ids WHERE considered"  # noqa: S608 - internal column names
+    flag_row = _one_row(con, flag_sql_full)
+    flag_counts = dict(zip(_BOOL_FLAGS, (int(x) for x in flag_row), strict=True))
+
     def list_count(column: str, f: str) -> int:
-        return int(_scalar(con, f"SELECT count(*) FROM ids WHERE considered "  # noqa: S608
-                                f"AND list_contains(string_split({column}, ';'), $f)", {"f": f}))
+        return int(
+            _scalar(
+                con,
+                f"SELECT count(*) FROM ids WHERE considered "  # noqa: S608
+                f"AND list_contains(string_split({column}, ';'), $f)",
+                {"f": f},
+            )
+        )
 
     enrich_counts = {f: list_count("enrichment_changed", f) for f in ENRICH_FIELDS}
     format_counts = {f: list_count("format_only_changed", f) for f in FORMAT_FIELDS}
@@ -430,50 +535,59 @@ def _summarize(con: duckdb.DuckDBPyConnection, cfg: Config, prev: Path, curr: Pa
     # Independent baselines from Stage B rows only, using plain set operations and no Stage C
     # table: identities counted from the table they check would still pass if an id were dropped
     # (proven by the fault-injection tests). Grain of every set: one distinct id.
-    src = dict(zip(["union", "considered", "excluded", "c_curr", "c_prev", "matched"], (int(x) for x in
-        con.execute("""
-        WITH ids_all  AS (SELECT DISTINCT id FROM rows WHERE id IS NOT NULL),
-             ex       AS (SELECT DISTINCT id FROM rows WHERE id IS NOT NULL AND exclusion_reason IS NOT NULL),
-             study    AS (SELECT DISTINCT id FROM rows WHERE in_aoi),
-             ex_loc   AS (SELECT DISTINCT id FROM rows WHERE id IN (SELECT id FROM ex)
-                            AND (point_in_aoi OR (exclusion_reason IS NOT NULL AND point_in_aoi IS NULL))),
-             cons     AS (SELECT id FROM study UNION SELECT id FROM ex_loc),
-             clean    AS (SELECT id FROM cons EXCEPT SELECT id FROM ex),
-             v_curr   AS (SELECT DISTINCT id FROM rows WHERE side = 'curr' AND exclusion_reason IS NULL),
-             v_prev   AS (SELECT DISTINCT id FROM rows WHERE side = 'prev' AND exclusion_reason IS NULL)
-        SELECT (SELECT count(*) FROM ids_all),
-               (SELECT count(*) FROM cons),
-               (SELECT count(*) FROM (SELECT id FROM cons INTERSECT SELECT id FROM ex)),
-               (SELECT count(*) FROM (SELECT id FROM clean INTERSECT SELECT id FROM v_curr)),
-               (SELECT count(*) FROM (SELECT id FROM clean INTERSECT SELECT id FROM v_prev)),
-               (SELECT count(*) FROM (SELECT id FROM clean INTERSECT SELECT id FROM v_curr
-                                      INTERSECT SELECT id FROM v_prev))
-        """).fetchone()), strict=True))
+    baseline = _one_row(con, _BASELINE_SQL)
+    src = dict(
+        zip(
+            ["union", "considered", "excluded", "c_curr", "c_prev", "matched"],
+            (int(x) for x in baseline),
+            strict=True,
+        )
+    )
 
-    def identity(lhs: int, rhs: int, text: str) -> dict:
+    def identity(lhs: int, rhs: int, text: str) -> dict[str, Any]:
         return {"identity": text, "lhs": lhs, "rhs": rhs, "holds": lhs == rhs}
 
     reconciliation = {
-        "rows_prev": identity(input_rows["prev"], valid_rows["prev"] + excl_rows["prev"],
-                              "R_prev = V_prev + X_prev"),
-        "rows_curr": identity(input_rows["curr"], valid_rows["curr"] + excl_rows["curr"],
-                              "R_curr = V_curr + X_curr"),
-        "ids_union": identity(src["union"], distinct_classified,
-                              "distinct source ids (Stage B) = distinct classified ids (Stage C)"),
-        "ids_unique": identity(union_ids, distinct_classified,
-                               "classified rows (Stage C) = distinct classified ids (one row per id)"),
-        "ids_considered": identity(src["considered"], considered,
-                                   "study population (Stage B) = considered ids (Stage C)"),
-        "ids_partition": identity(src["considered"], sum(change_counts.values()),
-                                  "study population (Stage B) = sum of change types"),
-        "excluded": identity(src["excluded"], change_counts["excluded"],
-                             "excluded ids in study (Stage B) = excluded"),
-        "matched": identity(src["matched"], matched,
-                            "valid in both, in study, not excluded (Stage B) = moved + attribute_changed + shifted + unchanged"),
-        "curr_side": identity(src["c_curr"], change_counts["added"] + matched,
-                              "C_curr (Stage B) = added + matched"),
-        "prev_side": identity(src["c_prev"], change_counts["removed"] + matched,
-                              "C_prev (Stage B) = removed + matched"),
+        "rows_prev": identity(
+            input_rows["prev"], valid_rows["prev"] + excl_rows["prev"], "R_prev = V_prev + X_prev"
+        ),
+        "rows_curr": identity(
+            input_rows["curr"], valid_rows["curr"] + excl_rows["curr"], "R_curr = V_curr + X_curr"
+        ),
+        "ids_union": identity(
+            src["union"],
+            distinct_classified,
+            "distinct source ids (Stage B) = distinct classified ids (Stage C)",
+        ),
+        "ids_unique": identity(
+            union_ids,
+            distinct_classified,
+            "classified rows (Stage C) = distinct classified ids (one row per id)",
+        ),
+        "ids_considered": identity(
+            src["considered"], considered, "study population (Stage B) = considered ids (Stage C)"
+        ),
+        "ids_partition": identity(
+            src["considered"],
+            sum(change_counts.values()),
+            "study population (Stage B) = sum of change types",
+        ),
+        "excluded": identity(
+            src["excluded"], change_counts["excluded"], "excluded ids in study (Stage B) = excluded"
+        ),
+        "matched": identity(
+            src["matched"],
+            matched,
+            "valid in both, in study, not excluded (Stage B) = moved + attribute_changed + shifted + unchanged",
+        ),
+        "curr_side": identity(
+            src["c_curr"], change_counts["added"] + matched, "C_curr (Stage B) = added + matched"
+        ),
+        "prev_side": identity(
+            src["c_prev"],
+            change_counts["removed"] + matched,
+            "C_prev (Stage B) = removed + matched",
+        ),
     }
     return {
         "pipeline_version": __version__,
@@ -481,8 +595,11 @@ def _summarize(con: duckdb.DuckDBPyConnection, cfg: Config, prev: Path, curr: Pa
         "releases": {"prev": cfg.prev_release, "curr": cfg.curr_release},
         "aoi": cfg.aoi.as_dict(),
         "extraction_bbox": cfg.extraction_bbox.as_dict(),
-        "thresholds_m": {"minor_move": cfg.minor_move_m, "move": cfg.move_threshold_m,
-                         "major_move": cfg.major_move_m},
+        "thresholds_m": {
+            "minor_move": cfg.minor_move_m,
+            "move": cfg.move_threshold_m,
+            "major_move": cfg.major_move_m,
+        },
         "inputs_sha256": {"prev": sha256(prev), "curr": sha256(curr)},
         "input_rows": input_rows,
         "valid_rows": valid_rows,
@@ -504,7 +621,7 @@ def _summarize(con: duckdb.DuckDBPyConnection, cfg: Config, prev: Path, curr: Pa
     }
 
 
-def _gate(summary: dict, cfg: Config) -> None:
+def _gate(summary: dict[str, Any], cfg: Config) -> None:
     """Contract §6 hard failures (missing files/columns are checked earlier)."""
     failures = []
     for side in ("prev", "curr"):
@@ -514,7 +631,9 @@ def _gate(summary: dict, cfg: Config) -> None:
             continue
         share = sum(summary["excluded_rows_by_reason"][side].values()) / rows
         if share > cfg.max_excluded_share:
-            failures.append(f"{side}: {share:.1%} rows excluded (limit {cfg.max_excluded_share:.0%})")
+            failures.append(
+                f"{side}: {share:.1%} rows excluded (limit {cfg.max_excluded_share:.0%})"
+            )
     for name, ident in summary["reconciliation"].items():
         if not ident["holds"]:
             failures.append(f"reconciliation {name} failed: {ident['lhs']} != {ident['rhs']}")
@@ -522,10 +641,12 @@ def _gate(summary: dict, cfg: Config) -> None:
         raise PipelineError("quality gate failed: " + "; ".join(failures))
 
 
-def _changes(con: duckdb.DuckDBPyConnection) -> list[dict]:
+def _changes(con: duckdb.DuckDBPyConnection) -> list[dict[str, Any]]:
     """One record per exported id, sorted by id (contract §5)."""
     types = ", ".join(f"'{t}'" for t in EXPORTED_TYPES)
-    return _rows(con, f"""
+    return _rows(
+        con,
+        f"""
         SELECT id, change_type, round(distance_m, 1) AS distance_m, move_band,
             prev_name, curr_name, prev_category, curr_category,
             prev_basic_category, curr_basic_category,
@@ -535,7 +656,29 @@ def _changes(con: duckdb.DuckDBPyConnection) -> list[dict]:
             name_changed, name_change_kind, name_matches_brand, category_changed,
             basic_category_changed, status_changed, confidence_to_zero, enrichment_changed,
             format_only_changed, crossed_aoi_boundary, source_datasets, source_licences
-        FROM ids WHERE considered AND change_type IN ({types}) ORDER BY id""")  # noqa: S608
+        FROM ids WHERE considered AND change_type IN ({types}) ORDER BY id""",  # noqa: S608 - only the fixed EXPORTED_TYPES constant is interpolated
+    )  # noqa: S608
+
+
+# Independent Stage B baselines for contract §4 (grain of every CTE: one distinct id).
+_BASELINE_SQL = """
+        WITH ids_all  AS (SELECT DISTINCT id FROM rows WHERE id IS NOT NULL),
+             ex       AS (SELECT DISTINCT id FROM rows WHERE id IS NOT NULL AND exclusion_reason IS NOT NULL),
+             study    AS (SELECT DISTINCT id FROM rows WHERE in_aoi),
+             ex_loc   AS (SELECT DISTINCT id FROM rows WHERE id IN (SELECT id FROM ex)
+                            AND (point_in_aoi OR (exclusion_reason IS NOT NULL AND point_in_aoi IS NULL))),
+             cons     AS (SELECT id FROM study UNION SELECT id FROM ex_loc),
+             clean    AS (SELECT id FROM cons EXCEPT SELECT id FROM ex),
+             v_curr   AS (SELECT DISTINCT id FROM rows WHERE side = 'curr' AND exclusion_reason IS NULL),
+             v_prev   AS (SELECT DISTINCT id FROM rows WHERE side = 'prev' AND exclusion_reason IS NULL)
+        SELECT (SELECT count(*) FROM ids_all),
+               (SELECT count(*) FROM cons),
+               (SELECT count(*) FROM (SELECT id FROM cons INTERSECT SELECT id FROM ex)),
+               (SELECT count(*) FROM (SELECT id FROM clean INTERSECT SELECT id FROM v_curr)),
+               (SELECT count(*) FROM (SELECT id FROM clean INTERSECT SELECT id FROM v_prev)),
+               (SELECT count(*) FROM (SELECT id FROM clean INTERSECT SELECT id FROM v_curr
+                                      INTERSECT SELECT id FROM v_prev))
+        """
 
 
 # --- §9 changelog oracle --------------------------------------------------------------------
@@ -560,29 +703,42 @@ _ORACLE_RULES = {
 }
 
 
-def _changelog_check(con: duckdb.DuckDBPyConnection, path: Path) -> tuple[dict, list[dict]]:
+def _changelog_check(
+    con: duckdb.DuckDBPyConnection, path: Path
+) -> tuple[dict[str, Any], list[dict[str, Any]]]:
     if not path.exists():
         raise PipelineError(f"changelog file not found: {path}")
-    con.execute("""CREATE OR REPLACE TABLE changelog AS
-        SELECT id, change_type, columns_changed FROM read_parquet($p)""", {"p": path.as_posix()})
+    con.execute(
+        """CREATE OR REPLACE TABLE changelog AS
+        SELECT id, change_type, columns_changed FROM read_parquet($p)""",
+        {"p": path.as_posix()},
+    )
     dup = int(_scalar(con, "SELECT count(*) - count(DISTINCT id) FROM changelog"))
     rules, mismatches = {}, []
     for name, (scope, expect) in _ORACLE_RULES.items():
         base = f"FROM ids o LEFT JOIN changelog cl USING (id) WHERE o.considered AND ({scope})"
         # coalesce(..., false): an absent changelog row makes the expectation NULL -> a mismatch
-        found = _rows(con, f"""
+        found = _rows(
+            con,
+            f"""
             SELECT o.id, o.change_type AS geotrustops, cl.change_type AS changelog,
                    array_to_string(cl.columns_changed, ';') AS columns_changed
-            {base} AND NOT coalesce({expect}, false) ORDER BY o.id""")  # noqa: S608 - fixed rule text
+            {base} AND NOT coalesce({expect}, false) ORDER BY o.id""",
+        )  # noqa: S608 - fixed rule text
         checked = int(_scalar(con, f"SELECT count(*) {base}"))  # noqa: S608
         rules[name] = {"checked": checked, "mismatches": len(found)}
         mismatches += [{"rule": name, **m} for m in found]
-    changelog_types = dict(con.execute("""
+    changelog_types = dict(
+        con.execute("""
         SELECT coalesce(cl.change_type, '(absent)'), count(*)
-        FROM ids o LEFT JOIN changelog cl USING (id) WHERE o.considered GROUP BY 1 ORDER BY 1""").fetchall())
-    crosstab = _rows(con, """
+        FROM ids o LEFT JOIN changelog cl USING (id) WHERE o.considered GROUP BY 1 ORDER BY 1""").fetchall()
+    )
+    crosstab = _rows(
+        con,
+        """
         SELECT o.change_type AS geotrustops, coalesce(cl.change_type, '(absent)') AS changelog, count(*) AS n
-        FROM ids o LEFT JOIN changelog cl USING (id) WHERE o.considered GROUP BY ALL ORDER BY 1, 2""")
+        FROM ids o LEFT JOIN changelog cl USING (id) WHERE o.considered GROUP BY ALL ORDER BY 1, 2""",
+    )
     return (
         {
             "changelog_sha256": sha256(path),

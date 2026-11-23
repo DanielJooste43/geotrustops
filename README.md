@@ -1,5 +1,7 @@
 # GeoTrustOps
 
+[![ci](https://github.com/DanielJooste43/geotrustops/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/DanielJooste43/geotrustops/actions/workflows/tests.yml)
+
 **Material-change review for map-data releases.** GeoTrustOps compares two pinned releases of
 [Overture Maps](https://overturemaps.org/) places for a study area, classifies every record's change, proves the
 counts reconcile, and cross-checks its result against Overture's own changelog.
@@ -80,7 +82,22 @@ What each of these caught is in [`docs/engineering_review_log.md`](docs/engineer
 
 ## Stack
 
-Python 3.12 · DuckDB 1.4.2 (SQL, `spatial`, `httpfs`) · GeoParquet on S3 · pytest · GitHub Actions
+Python 3.12 · DuckDB 1.4.2 (SQL, `spatial`, `httpfs`) · GeoParquet on S3 · pytest · ruff · mypy (strict) · GitHub Actions
+
+## Third-party tools and services
+
+Each was checked against its own licence before use. None is redistributed with this project.
+
+| Component | Used for | Licence |
+|---|---|---|
+| DuckDB 1.4.2 and its `spatial` / `httpfs` extensions | SQL engine, geometry, S3 reads | MIT |
+| Python 3.12 | runtime | PSF-2.0 |
+| hatchling | build backend | MIT |
+| pytest 9.2.0, pytest-cov 7.1.0 | tests, coverage | MIT |
+| ruff 0.17.6 | lint and formatting | MIT |
+| mypy 2.4.1 | static type checking | MIT (some bundled files PSF-2.0) |
+| GitHub Actions: `actions/checkout` v7.0.1, `actions/setup-python` v7.1.0 | CI (pinned to commit SHAs) | MIT |
+| Overture Maps data via AWS Open Data | source data | see [DATA_LICENSE.md](DATA_LICENSE.md) |
 
 ## Data and licence
 

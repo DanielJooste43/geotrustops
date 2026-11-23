@@ -74,13 +74,19 @@ for alias, rel in (("p", PREV), ("c", CURR)):
         "null_name": one(f"SELECT count(*) FROM {alias} WHERE coalesce(name,'')=''"),
         "null_category": one(f"SELECT count(*) FROM {alias} WHERE category IS NULL"),
         "null_basic_category": one(f"SELECT count(*) FROM {alias} WHERE basic_category IS NULL"),
-        "operating_status": dict(rows(f"SELECT operating_status, count(*) FROM {alias} GROUP BY 1")),
-        "source_licences": dict(rows(
-            f"SELECT s.license, count(*) FROM {alias}, UNNEST(sources) AS t(s) GROUP BY 1 ORDER BY 2 DESC"
-        )),
-        "source_datasets": dict(rows(
-            f"SELECT s.dataset, count(*) FROM {alias}, UNNEST(sources) AS t(s) GROUP BY 1 ORDER BY 2 DESC"
-        )),
+        "operating_status": dict(
+            rows(f"SELECT operating_status, count(*) FROM {alias} GROUP BY 1")
+        ),
+        "source_licences": dict(
+            rows(
+                f"SELECT s.license, count(*) FROM {alias}, UNNEST(sources) AS t(s) GROUP BY 1 ORDER BY 2 DESC"
+            )
+        ),
+        "source_datasets": dict(
+            rows(
+                f"SELECT s.dataset, count(*) FROM {alias}, UNNEST(sources) AS t(s) GROUP BY 1 ORDER BY 2 DESC"
+            )
+        ),
         "top_categories": rows(
             f"SELECT category, count(*) FROM {alias} GROUP BY 1 ORDER BY 2 DESC LIMIT 8"
         ),
@@ -88,7 +94,7 @@ for alias, rel in (("p", PREV), ("c", CURR)):
     out[rel] = q
 
 # Candidate changes. Grain: one id from the union of both releases.
-con.execute(f"""
+con.execute("""
     CREATE TABLE j AS
     SELECT
         coalesce(c.id, p.id) AS id,
@@ -123,18 +129,30 @@ out["comparison"] = {
         classes.get("added", 0) + both == out[CURR]["rows"]  # type: ignore[index]
         and classes.get("removed", 0) + both == out[PREV]["rows"]  # type: ignore[index]
     ),
-    "matched_secondary_flags": dict(zip(
-        ["name_diff", "cat_diff", "basic_diff", "status_diff", "version_diff",
-         "moved_gt_0_1m", "moved_gt_5m", "moved_gt_25m", "moved_gt_100m"],
-        rows("""SELECT count_if(name_diff), count_if(cat_diff), count_if(basic_diff),
+    "matched_secondary_flags": dict(
+        zip(
+            [
+                "name_diff",
+                "cat_diff",
+                "basic_diff",
+                "status_diff",
+                "version_diff",
+                "moved_gt_0_1m",
+                "moved_gt_5m",
+                "moved_gt_25m",
+                "moved_gt_100m",
+            ],
+            rows("""SELECT count_if(name_diff), count_if(cat_diff), count_if(basic_diff),
                 count_if(status_diff), count_if(version_diff),
                 count_if(dist_m > 0.1), count_if(dist_m > 5), count_if(dist_m > 25),
                 count_if(dist_m > 100)
                 FROM k WHERE NOT is_new AND NOT is_gone""")[0],
-    )),
+            strict=True,
+        )
+    ),
     # ID churn probe: a removed record and an added record with the same name
     # within 50 m are probably the same place re-issued under a new id.
-    "removed_added_same_name_within_50m": one(f"""
+    "removed_added_same_name_within_50m": one("""
         SELECT count(*) FROM
           (SELECT p.* FROM p JOIN k ON k.id = p.id AND k.change_type = 'removed') r
           JOIN (SELECT c.* FROM c JOIN k ON k.id = c.id AND k.change_type = 'added') a
@@ -152,4 +170,6 @@ out["comparison"] = {
 
 print(json.dumps(out, indent=2, default=str))
 (ROOT / "docs").mkdir(exist_ok=True)
-(ROOT / "docs" / "feasibility_probe.json").write_text(json.dumps(out, indent=2, default=str), "utf-8")
+(ROOT / "docs" / "feasibility_probe.json").write_text(
+    json.dumps(out, indent=2, default=str), "utf-8"
+)

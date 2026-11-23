@@ -42,15 +42,22 @@ def _fmt(v: float | None) -> str:
 
 def _valid(lon: float | None, lat: float | None) -> bool:
     """A usable WGS84 position: present, finite and in range (contract §2)."""
-    return (lon is not None and lat is not None and math.isfinite(lon) and math.isfinite(lat)
-            and -180 <= lon <= 180 and -90 <= lat <= 90)
+    return (
+        lon is not None
+        and lat is not None
+        and math.isfinite(lon)
+        and math.isfinite(lat)
+        and -180 <= lon <= 180
+        and -90 <= lat <= 90
+    )
 
 
 def haversine_m(lon1: float, lat1: float, lon2: float, lat2: float) -> float:
     p1, p2 = math.radians(lat1), math.radians(lat2)
-    a = math.sin((p2 - p1) / 2) ** 2 + math.cos(p1) * math.cos(p2) * math.sin(
-        math.radians(lon2 - lon1) / 2
-    ) ** 2
+    a = (
+        math.sin((p2 - p1) / 2) ** 2
+        + math.cos(p1) * math.cos(p2) * math.sin(math.radians(lon2 - lon1) / 2) ** 2
+    )
     return 2 * 6371000 * math.asin(math.sqrt(a))
 
 
@@ -77,11 +84,16 @@ def main() -> None:
             print(f"    WARNING: {len(rows)} rows with this id (duplicate)")
         for name, category, basic, geom_type, lon, lat in rows:
             # unknown (not False) when the position is invalid, matching contract §2
-            inside = ((aoi["west"] <= lon <= aoi["east"] and aoi["south"] <= lat <= aoi["north"])
-                      if _valid(lon, lat) else "unknown (invalid position)")
+            inside = (
+                (aoi["west"] <= lon <= aoi["east"] and aoi["south"] <= lat <= aoi["north"])
+                if _valid(lon, lat)
+                else "unknown (invalid position)"
+            )
             print(f"    name={name!r} | category={category} | basic={basic}")
-            print(f"    geometry={geom_type or 'missing/unparsable'} lon={_fmt(lon)} lat={_fmt(lat)}"
-                  f" | inside_aoi={inside}")
+            print(
+                f"    geometry={geom_type or 'missing/unparsable'} lon={_fmt(lon)} lat={_fmt(lat)}"
+                f" | inside_aoi={inside}"
+            )
     if len(found["prev"]) == 1 and len(found["curr"]) == 1:
         (*_, lon1, lat1), (*_, lon2, lat2) = found["prev"][0], found["curr"][0]
         if not (_valid(lon1, lat1) and _valid(lon2, lat2)):
