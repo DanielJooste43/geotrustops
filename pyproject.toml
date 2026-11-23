@@ -9,13 +9,20 @@ name = "geotrustops"
 version = "0.4.0"
 description = "Classify material changes between two pinned Overture Maps places releases, with QA and reconciliation."
 readme = "README.md"
-requires-python = ">=3.11"
+# CI tests exactly this version; widen only together with a CI matrix.
+requires-python = ">=3.12"
 license = { text = "MIT" }
+authors = [{ name = "Daniel Jooste" }]
 # Pinned exactly: the reference project's tests broke across DuckDB versions.
 dependencies = ["duckdb==1.4.2"]
 
+[project.urls]
+Repository = "https://github.com/DanielJooste43/geotrustops"
+Issues = "https://github.com/DanielJooste43/geotrustops/issues"
+
 [project.optional-dependencies]
-dev = ["pytest>=8", "pytest-cov>=5"]
+# Development tools pinned exactly so CI results do not change when a new tool version is released.
+dev = ["pytest==9.2.0", "pytest-cov==7.1.0", "ruff==0.17.6", "mypy==2.4.1"]
 
 [project.scripts]
 geotrustops = "geotrustops.cli:main_entry"
@@ -27,3 +34,24 @@ packages = ["src/geotrustops"]
 testpaths = ["tests"]
 pythonpath = ["."]
 markers = ["realdata: needs the pinned extracts in data/raw (skipped if absent)"]
+
+[tool.ruff]
+line-length = 100          # formatter wraps code at 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "S", "SIM", "PTH"]
+
+[tool.ruff.lint.pycodestyle]
+max-line-length = 120      # embedded SQL and comments may run to 120; the formatter does not split strings
+
+[tool.ruff.lint.per-file-ignores]
+# Tests use assert by design; their SQL is built from fixture-controlled paths.
+"tests/*" = ["S101", "S608"]
+# One-off feasibility probes query local extracts with SQL assembled from internal constants.
+"scripts/probe_*.py" = ["S608"]
+
+[tool.mypy]
+strict = true
+python_version = "3.12"
+files = ["src"]

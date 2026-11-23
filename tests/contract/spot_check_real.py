@@ -8,8 +8,8 @@ exported class, seed 20261123; this is a spot-check, not exhaustive validation.
 import hashlib
 import json
 import math
-from pathlib import Path
 import random
+from pathlib import Path
 
 import duckdb
 
@@ -25,7 +25,7 @@ def main():
     root = Path(__file__).resolve().parents[2]
     summary = json.loads((root / "out/summary.json").read_text(encoding="utf-8"))
     features = json.loads((root / "out/changes.geojson").read_text(encoding="utf-8"))["features"]
-    rng = random.Random(20261123)
+    rng = random.Random(20261123)  # noqa: S311 - reproducible sample choice, not security
     sample = [
         rng.choice(
             sorted(
@@ -50,7 +50,7 @@ def main():
             query, {"path": path.as_posix(), "ids": [f["properties"]["id"] for f in sample]}
         )
         columns = [d[0] for d in result.description]
-        rows = [dict(zip(columns, row)) for row in result.fetchall()]
+        rows = [dict(zip(columns, row, strict=True)) for row in result.fetchall()]
         assert len(rows) == len({r["id"] for r in rows})
         raw[side] = {r["id"]: r for r in rows}
     con.close()

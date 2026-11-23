@@ -59,7 +59,7 @@ def extract(con: duckdb.DuckDBPyConnection, release: str) -> None:
     except duckdb.Error:
         tmp.unlink(missing_ok=True)
         raise
-    row = con.execute("SELECT count(*) FROM read_parquet(?)", [tmp.as_posix()]).fetchone()
+    row = con.execute("SELECT count(*) FROM read_parquet($p)", {"p": tmp.as_posix()}).fetchone()
     rows = int(row[0]) if row else 0
     if rows == 0:
         tmp.unlink(missing_ok=True)

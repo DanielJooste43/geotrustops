@@ -379,13 +379,25 @@ def _select_exprs(con: duckdb.DuckDBPyConnection, path: Path) -> dict[str, str]:
     }
 
 
-def _rows(con: duckdb.DuckDBPyConnection, sql: str, params: dict | None = None) -> list[dict]:
+def _rows(
+    con: duckdb.DuckDBPyConnection, sql: str, params: dict[str, Any] | None = None
+) -> list[dict[str, Any]]:
     cur = con.execute(sql, params or {})
     names = [d[0] for d in cur.description]
     return [dict(zip(names, r, strict=True)) for r in cur.fetchall()]
 
 
-def _scalar(con: duckdb.DuckDBPyConnection, sql: str, params: dict | None = None) -> Any:
+def _one_row(
+    con: duckdb.DuckDBPyConnection, sql: str, params: dict[str, Any] | None = None
+) -> tuple[Any, ...]:
+    """Run a query that must return exactly one row (e.g. aggregate counts); fail clearly if it does not."""
+    row = con.execute(sql, params or {}).fetchone()
+    if row is None:
+        raise PipelineError(f"query returned no row: {sql.strip().splitlines()[0][:80]}")
+    return tuple(row)
+
+
+def _scalar(con: duckdb.DuckDBPyConnection, sql: str, params: dict[str, Any] | None = None) -> Any:
     row = con.execute(sql, params or {}).fetchone()
     return row[0] if row else None
 
@@ -469,7 +481,9 @@ def _counts(con: duckdb.DuckDBPyConnection, column: str, keys: list[str]) -> dic
     return {k: int(found.get(k, 0)) for k in keys}
 
 
-def _summarize(con: duckdb.DuckDBPyConnection, cfg: Config, prev: Path, curr: Path) -> dict:
+def _summarize(
+    con: duckdb.DuckDBPyConnection, cfg: Config, prev: Path, curr: Path
+) -> dict[str, Any]:
     input_rows, valid_rows, excluded_by_reason = {}, {}, {}
     for side in ("prev", "curr"):
         input_rows[side] = int(
@@ -494,16 +508,9 @@ def _summarize(con: duckdb.DuckDBPyConnection, cfg: Config, prev: Path, curr: Pa
     change_counts = _counts(con, "change_type", CHANGE_TYPES)
     # coalesce(..., 0): count_if returns NULL (not 0) when every flag is NULL, e.g. no matched ids.
     flag_sql = ", ".join(f"coalesce(count_if({f}), 0)" for f in _BOOL_FLAGS)
-    flag_counts = dict(
-        zip(
-            _BOOL_FLAGS,
-            (
-                int(x)
-                for x in con.execute(f"SELECT {flag_sql} FROM ids WHERE considered").fetchone()
-            ),
-            strict=True,
-        )
-    )  # noqa: S608
+    flag_sql_full = f"SELECT {flag_sql} FROM ids WHERE considered"  # noqa: S608 - internal column names
+    flag_row = _one_row(con, flag_sql_full)
+    flag_counts = dict(zip(_BOOL_FLAGS, (int(x) for x in flag_row), strict=True))
 
     def list_count(column: str, f: str) -> int:
         return int(
@@ -528,35 +535,16 @@ def _summarize(con: duckdb.DuckDBPyConnection, cfg: Config, prev: Path, curr: Pa
     # Independent baselines from Stage B rows only, using plain set operations and no Stage C
     # table: identities counted from the table they check would still pass if an id were dropped
     # (proven by the fault-injection tests). Grain of every set: one distinct id.
+    baseline = _one_row(con, _BASELINE_SQL)
     src = dict(
         zip(
             ["union", "considered", "excluded", "c_curr", "c_prev", "matched"],
-            (
-                int(x)
-                for x in con.execute("""
-        WITH ids_all  AS (SELECT DISTINCT id FROM rows WHERE id IS NOT NULL),
-             ex       AS (SELECT DISTINCT id FROM rows WHERE id IS NOT NULL AND exclusion_reason IS NOT NULL),
-             study    AS (SELECT DISTINCT id FROM rows WHERE in_aoi),
-             ex_loc   AS (SELECT DISTINCT id FROM rows WHERE id IN (SELECT id FROM ex)
-                            AND (point_in_aoi OR (exclusion_reason IS NOT NULL AND point_in_aoi IS NULL))),
-             cons     AS (SELECT id FROM study UNION SELECT id FROM ex_loc),
-             clean    AS (SELECT id FROM cons EXCEPT SELECT id FROM ex),
-             v_curr   AS (SELECT DISTINCT id FROM rows WHERE side = 'curr' AND exclusion_reason IS NULL),
-             v_prev   AS (SELECT DISTINCT id FROM rows WHERE side = 'prev' AND exclusion_reason IS NULL)
-        SELECT (SELECT count(*) FROM ids_all),
-               (SELECT count(*) FROM cons),
-               (SELECT count(*) FROM (SELECT id FROM cons INTERSECT SELECT id FROM ex)),
-               (SELECT count(*) FROM (SELECT id FROM clean INTERSECT SELECT id FROM v_curr)),
-               (SELECT count(*) FROM (SELECT id FROM clean INTERSECT SELECT id FROM v_prev)),
-               (SELECT count(*) FROM (SELECT id FROM clean INTERSECT SELECT id FROM v_curr
-                                      INTERSECT SELECT id FROM v_prev))
-        """).fetchone()
-            ),
+            (int(x) for x in baseline),
             strict=True,
         )
     )
 
-    def identity(lhs: int, rhs: int, text: str) -> dict:
+    def identity(lhs: int, rhs: int, text: str) -> dict[str, Any]:
         return {"identity": text, "lhs": lhs, "rhs": rhs, "holds": lhs == rhs}
 
     reconciliation = {
@@ -633,7 +621,7 @@ def _summarize(con: duckdb.DuckDBPyConnection, cfg: Config, prev: Path, curr: Pa
     }
 
 
-def _gate(summary: dict, cfg: Config) -> None:
+def _gate(summary: dict[str, Any], cfg: Config) -> None:
     """Contract §6 hard failures (missing files/columns are checked earlier)."""
     failures = []
     for side in ("prev", "curr"):
@@ -653,7 +641,7 @@ def _gate(summary: dict, cfg: Config) -> None:
         raise PipelineError("quality gate failed: " + "; ".join(failures))
 
 
-def _changes(con: duckdb.DuckDBPyConnection) -> list[dict]:
+def _changes(con: duckdb.DuckDBPyConnection) -> list[dict[str, Any]]:
     """One record per exported id, sorted by id (contract §5)."""
     types = ", ".join(f"'{t}'" for t in EXPORTED_TYPES)
     return _rows(
@@ -668,8 +656,29 @@ def _changes(con: duckdb.DuckDBPyConnection) -> list[dict]:
             name_changed, name_change_kind, name_matches_brand, category_changed,
             basic_category_changed, status_changed, confidence_to_zero, enrichment_changed,
             format_only_changed, crossed_aoi_boundary, source_datasets, source_licences
-        FROM ids WHERE considered AND change_type IN ({types}) ORDER BY id""",
+        FROM ids WHERE considered AND change_type IN ({types}) ORDER BY id""",  # noqa: S608 - only the fixed EXPORTED_TYPES constant is interpolated
     )  # noqa: S608
+
+
+# Independent Stage B baselines for contract §4 (grain of every CTE: one distinct id).
+_BASELINE_SQL = """
+        WITH ids_all  AS (SELECT DISTINCT id FROM rows WHERE id IS NOT NULL),
+             ex       AS (SELECT DISTINCT id FROM rows WHERE id IS NOT NULL AND exclusion_reason IS NOT NULL),
+             study    AS (SELECT DISTINCT id FROM rows WHERE in_aoi),
+             ex_loc   AS (SELECT DISTINCT id FROM rows WHERE id IN (SELECT id FROM ex)
+                            AND (point_in_aoi OR (exclusion_reason IS NOT NULL AND point_in_aoi IS NULL))),
+             cons     AS (SELECT id FROM study UNION SELECT id FROM ex_loc),
+             clean    AS (SELECT id FROM cons EXCEPT SELECT id FROM ex),
+             v_curr   AS (SELECT DISTINCT id FROM rows WHERE side = 'curr' AND exclusion_reason IS NULL),
+             v_prev   AS (SELECT DISTINCT id FROM rows WHERE side = 'prev' AND exclusion_reason IS NULL)
+        SELECT (SELECT count(*) FROM ids_all),
+               (SELECT count(*) FROM cons),
+               (SELECT count(*) FROM (SELECT id FROM cons INTERSECT SELECT id FROM ex)),
+               (SELECT count(*) FROM (SELECT id FROM clean INTERSECT SELECT id FROM v_curr)),
+               (SELECT count(*) FROM (SELECT id FROM clean INTERSECT SELECT id FROM v_prev)),
+               (SELECT count(*) FROM (SELECT id FROM clean INTERSECT SELECT id FROM v_curr
+                                      INTERSECT SELECT id FROM v_prev))
+        """
 
 
 # --- §9 changelog oracle --------------------------------------------------------------------
@@ -694,7 +703,9 @@ _ORACLE_RULES = {
 }
 
 
-def _changelog_check(con: duckdb.DuckDBPyConnection, path: Path) -> tuple[dict, list[dict]]:
+def _changelog_check(
+    con: duckdb.DuckDBPyConnection, path: Path
+) -> tuple[dict[str, Any], list[dict[str, Any]]]:
     if not path.exists():
         raise PipelineError(f"changelog file not found: {path}")
     con.execute(

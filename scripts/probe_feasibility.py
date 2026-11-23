@@ -94,7 +94,7 @@ for alias, rel in (("p", PREV), ("c", CURR)):
     out[rel] = q
 
 # Candidate changes. Grain: one id from the union of both releases.
-con.execute(f"""
+con.execute("""
     CREATE TABLE j AS
     SELECT
         coalesce(c.id, p.id) AS id,
@@ -147,11 +147,12 @@ out["comparison"] = {
                 count_if(dist_m > 0.1), count_if(dist_m > 5), count_if(dist_m > 25),
                 count_if(dist_m > 100)
                 FROM k WHERE NOT is_new AND NOT is_gone""")[0],
+            strict=True,
         )
     ),
     # ID churn probe: a removed record and an added record with the same name
     # within 50 m are probably the same place re-issued under a new id.
-    "removed_added_same_name_within_50m": one(f"""
+    "removed_added_same_name_within_50m": one("""
         SELECT count(*) FROM
           (SELECT p.* FROM p JOIN k ON k.id = p.id AND k.change_type = 'removed') r
           JOIN (SELECT c.* FROM c JOIN k ON k.id = c.id AND k.change_type = 'added') a
