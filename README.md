@@ -84,6 +84,6 @@ Python 3.12 · DuckDB 1.4.2 (SQL, `spatial`, `httpfs`) · GeoParquet on S3 · py
 
 ## Data and licence
 
-Code: MIT ([LICENSE](LICENSE)). Data: © Overture Maps Foundation and its sources; place records are licensed per
-source (CDLA-Permissive-2.0, Apache-2.0, CC0-1.0), carried in each output feature's `source_licences`.
-See [Overture attribution](https://docs.overturemaps.org/attribution/).
+Code: MIT ([LICENSE](LICENSE)). Data is **not** MIT: it is derived from Overture Maps Foundation releases and keeps
+each source's licence (CDLA-Permissive-2.0, Apache-2.0, CC0-1.0), named in every output feature's `source_licences`.
+Licence texts, the Foursquare notice and how to attribute: [DATA_LICENSE.md](DATA_LICENSE.md), [NOTICE](NOTICE), [LICENSES/](LICENSES/).
