@@ -1,0 +1,12 @@
+id,manual_class,manual_notes
+227c27ad-3577-4bab-b6ee-aacc0e8acf09,removed,not in current release output
+38e8b170-e796-4e60-bde7-7829cba3a335,unchanged,both releases are exactly the same
+4f0a2ded-79d0-43eb-a3db-f73dd07d74ef,not_in_study,both current and previous relase show inside-aoi as false
+ac0516d6-f37f-4f13-bf30-aa4a2089ad0c,attribute_changed,category changed from "b2b_energy_and_utility_service" to "professional_service" and basic chcnaged from "b2b_energy_and_utility_service" to "professional_service"
+bacf939b-498c-4f33-b343-c93bff7f1dc5,shifted,distance prev to curr: 23.22 m
+c2a653a9-6002-4a83-9dac-de0e8931167e,moved,distance prev to curr: 57.42 m and the name also changed
+c8052c35-d5b6-4a11-823d-cca3a135b083,moved,distance prev to curr: 209.97 m
+db887223-d6f8-461e-9404-d8aced94c9ee,added,only shows in curr 2026-11-18.0
+dd792f22-e2ff-4e6f-be33-639af11b8f60,attribute_changed,name changed from 'Dazzling Smile Dental' to 'Dazzling smile dental' removing capitalisation on second word
+eadc06c8-70b2-4aa9-ba72-72c829e258f0,moved,distance prev to curr: 27.36 m
+f5b46d69-599e-4e6e-bb6c-a40b28702801,shifted,distance prev to curr: 7.97 m
