@@ -1,0 +1,24 @@
+{
+  "releases": {
+    "prev": "2026-10-21.0",
+    "curr": "2026-11-18.0"
+  },
+  "aoi": {
+    "west": 28.168,
+    "south": -25.758,
+    "east": 28.205,
+    "north": -25.732
+  },
+  "buffer_deg": 0.01,
+  "minor_move_m": 5.0,
+  "move_threshold_m": 25.0,
+  "major_move_m": 100.0,
+  "max_excluded_share": 0.05,
+  "out_dir": "out",
+  "source": {
+    "release_uri": "s3://overturemaps-us-west-2/release/{release}/theme=places/type=place/*.parquet",
+    "changelog_uri": "s3://overturemaps-us-west-2/changelog/{release}/theme=places/type=place/*/*.parquet",
+    "s3_region": "us-west-2"
+  },
+  "notes": "Primary pair. curr's changelog is relative to the release immediately before curr; prev must be that release for the changelog cross-check (contract section 9) to be valid."
+}

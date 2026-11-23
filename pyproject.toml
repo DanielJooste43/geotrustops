@@ -1,0 +1,29 @@
+# GeoTrustOps: material-change review for two pinned Overture places releases.
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "geotrustops"
+version = "0.4.0"
+description = "Classify material changes between two pinned Overture Maps places releases, with QA and reconciliation."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+# Pinned exactly: the reference project's tests broke across DuckDB versions.
+dependencies = ["duckdb==1.4.2"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "pytest-cov>=5"]
+
+[project.scripts]
+geotrustops = "geotrustops.cli:main_entry"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/geotrustops"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+markers = ["realdata: needs the pinned extracts in data/raw (skipped if absent)"]
