@@ -66,6 +66,29 @@
       and over half its places carry only "Pretoria" as address. Suggestive of a "Pretoria" geocode, not proof.
   - **Reading:** small stacks are mostly shared address points (the revised hypothesis holds there); the largest
     stacks look like coarse, city-level fallback points (the original hypothesis may hold there after all).
+  - **Quality framing (2026-11-24):** a stack is a positional defect whatever its cause. Forty shops in one mall
+    on one point are "explained" but still send every visitor to the same spot, so a user must correct or accept
+    the error. The aim is to **diagnose the cause** of each stack, not to excuse it.
+  - **Exploratory profile** (`scripts/investigate/stacked_profile.py`; descriptive, no thresholds depend on it).
+    Candidate causes seen in the data, none verified:
+    - *Postal-box addresses:* 57 stacked places have a "Private Bag"/"PO Box" address (singles: 4 of 4,776). 75 of
+      the 78 stacked "libraries" come from AllThePlaces and are organisations with postal addresses (e.g. "Private
+      Bag x680"); the 51-place stack is 84% postal. A postal box cannot be geocoded to a street.
+    - *Town-only addresses:* the 91-place stack is 93% "Pretoria"-only addresses (meta), about 80 m from Church
+      Square: a likely town-level fallback point.
+    - *Reduced coordinate precision:* stacked places have ≤ 5 decimals far more often (54–76%) than single places
+      (11%; median 8 decimals). The 66-place stack is entirely at 4 decimals (about 11 m), so truncation merges
+      places with different street addresses.
+    - *Shared street address:* small stacks (median 3 places) mostly share a numbered street address (e.g. 15
+      places at one Madiba Street number): a building or address point without unit-level positions.
+    - *Split clusters:* 142 places within about 1 m form four "exact" stacks.
+  - **Indicators that do not separate stacks:** confidence (median 0.51–0.57 in every group, so filtering on
+    confidence will not remove stacked places); source update year (all 2026); website/phone completeness.
+    **Weak indicators:** missing category (7–13% stacked vs 3% single), brand present (3–4% vs 11%).
+  - **Persistence:** 93–96% of stacked places were at the same point in the October release; stacks persist
+    between releases rather than appearing and disappearing.
+  - **Measurement note:** "has a number" also counts postal numbers ("Private Bag x680"); a check for place
+    words in names failed validation and was dropped.
   - **Next (decision needed):** (1) pre-register a refined rule (H2 needs a street number; H1 needs one consistent
     anchor; points within 2 m form one stack; H3 = ≥ 50% city-only addresses) and test it on the **October**
     release as held-out data, since this release has now been seen; and/or (2) stage B with building footprints and
