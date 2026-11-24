@@ -1,0 +1,101 @@
+{
+  "about": "SHA-256 manifest of the pinned extracts. The files are kept in a private archive (see README, Reproducibility); geotrustops fetch accepts a restored file only if it matches this manifest byte for byte.",
+  "archive_tag": "extracts-2026-11-23",
+  "files": [
+    {
+      "asset": "places_2026-09-23.1.parquet",
+      "kind": "release",
+      "release": "2026-09-23.1",
+      "source_uri": "s3://overturemaps-us-west-2/release/2026-09-23.1/theme=places/type=place/*.parquet",
+      "extraction_bbox": {
+        "west": 28.157999999999998,
+        "south": -25.768,
+        "east": 28.215,
+        "north": -25.721999999999998
+      },
+      "filter": "Overture bbox struct overlaps extraction_bbox",
+      "row_count": 7811,
+      "file": "places.parquet",
+      "sha256": "a309a92a031dfa1162f556a18dcf02cfa87123c234a47949d943f68a2c86f746",
+      "bytes": 947248,
+      "extracted_utc": "2026-11-23T09:31:09+00:00",
+      "duckdb_version": "1.4.2"
+    },
+    {
+      "asset": "places_2026-10-21.0.parquet",
+      "kind": "release",
+      "release": "2026-10-21.0",
+      "source_uri": "s3://overturemaps-us-west-2/release/2026-10-21.0/theme=places/type=place/*.parquet",
+      "extraction_bbox": {
+        "west": 28.157999999999998,
+        "south": -25.768,
+        "east": 28.215,
+        "north": -25.721999999999998
+      },
+      "filter": "Overture bbox struct overlaps extraction_bbox",
+      "row_count": 8209,
+      "file": "places.parquet",
+      "sha256": "f69ec5ca48f04a6564952f76eb0ea78c1c6a85086da7f440e863862c076fe1c8",
+      "bytes": 993791,
+      "extracted_utc": "2026-11-23T08:52:41+00:00",
+      "duckdb_version": "1.4.2"
+    },
+    {
+      "asset": "places_2026-11-18.0.parquet",
+      "kind": "release",
+      "release": "2026-11-18.0",
+      "source_uri": "s3://overturemaps-us-west-2/release/2026-11-18.0/theme=places/type=place/*.parquet",
+      "extraction_bbox": {
+        "west": 28.157999999999998,
+        "south": -25.768,
+        "east": 28.215,
+        "north": -25.721999999999998
+      },
+      "filter": "Overture bbox struct overlaps extraction_bbox",
+      "row_count": 8189,
+      "file": "places.parquet",
+      "sha256": "ea1a5c837dde146147db6540c60c617c68b6b2d0817a02953646f43e7055358e",
+      "bytes": 984632,
+      "extracted_utc": "2026-11-23T08:53:15+00:00",
+      "duckdb_version": "1.4.2"
+    },
+    {
+      "asset": "places_changelog_2026-10-21.0.parquet",
+      "kind": "changelog",
+      "release": "2026-10-21.0",
+      "source_uri": "s3://overturemaps-us-west-2/changelog/2026-10-21.0/theme=places/type=place/*/*.parquet",
+      "extraction_bbox": {
+        "west": 28.157999999999998,
+        "south": -25.768,
+        "east": 28.215,
+        "north": -25.721999999999998
+      },
+      "filter": "Overture bbox struct overlaps extraction_bbox",
+      "row_count": 8209,
+      "file": "places_changelog.parquet",
+      "sha256": "7e2e0287af00bec74d0d486d1b07fe7a168b3d6f19c471a653b6abd7af8a9873",
+      "bytes": 259994,
+      "extracted_utc": "2026-11-23T09:31:39+00:00",
+      "duckdb_version": "1.4.2"
+    },
+    {
+      "asset": "places_changelog_2026-11-18.0.parquet",
+      "kind": "changelog",
+      "release": "2026-11-18.0",
+      "source_uri": "s3://overturemaps-us-west-2/changelog/2026-11-18.0/theme=places/type=place/*/*.parquet",
+      "extraction_bbox": {
+        "west": 28.157999999999998,
+        "south": -25.768,
+        "east": 28.215,
+        "north": -25.721999999999998
+      },
+      "filter": "Overture bbox struct overlaps extraction_bbox",
+      "row_count": 8516,
+      "file": "places_changelog.parquet",
+      "sha256": "a6f6f00fd5767b4e412b53525fe85d7274b68251e9ddd518bbdf4d70e7c51fb5",
+      "bytes": 272588,
+      "extracted_utc": "2026-11-23T08:53:49+00:00",
+      "duckdb_version": "1.4.2"
+    }
+  ]
+}

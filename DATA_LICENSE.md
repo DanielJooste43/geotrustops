@@ -13,7 +13,18 @@ releases and keeps the licence of each source record.
 | `tests/golden/` | place ids used as hand-classified test cases |
 | `docs/feasibility_probe.json` | sample counts and records from the initial feasibility probe |
 
-Raw extracts (`data/raw/`) are not committed; `geotrustops fetch` downloads them from Overture's public bucket.
+Raw extracts (`data/raw/`) are not committed or republished; `geotrustops fetch` downloads them from Overture's public
+bucket, or from a private archive once Overture has removed a release. `data/archive.json` holds only their checksums.
+
+### Raw extracts supplied for verification
+
+The archived extracts are unmodified Overture records clipped to the extraction area (study area plus 0.01°); the
+changelog extracts keep only `id`, `change_type`, `columns_changed` and `bbox`. Unlike the outputs they include the
+source `phones`, `emails`, `websites` and `socials` fields. They are shared only on request for verification, together
+with `LICENSES/` and `NOTICE`, are deleted 12 months after the v1.0 release, and any record is removed on request.
+Licence review (2026-11-24): the extracts contain only the three licences below, and Overture's
+[attribution page](https://docs.overturemaps.org/attribution/) states no further restriction on redistribution.
+Overture states no licence for the GERS changelog; only identifiers and change codes are kept from it.
 
 ## Source licences
 
