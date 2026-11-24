@@ -119,6 +119,30 @@
   - Otherwise → **unknown: manual inspection**.
   - Output: clusters and places per likely cause, per release; the 10 largest clusters with their cause.
   - Out of scope (scope guard): external datasets, unlikely-feature overlaps, severity scores, position fixes.
+  - **Result on November under the registered cascade** (exploration release, seen before): 503 clusters holding
+    1,951 places (2 m clustering; 960 on exact stacks). Shared address point 911 (46.7%), one compact building 286,
+    street-centreline geocode 205, town-only address 196, unknown 133, multi-tenant address 109, postal address 52,
+    duplicate records 39, intersection 11, large building 9. Floors unknown for 40 of 47 building matches.
+    The three largest city-centre clusters (143, 106, 36 places) lie 28, 44 and 24 m from Overture's "Pretoria"
+    locality point; no cluster was within 2 m of any division point. 66 of 105 places in the cluster labelled
+    "one compact building" are at exactly 4 decimals.
+- **Stage C amendment (2026-11-24, recorded before the October run; October is the confirmation release).**
+  Each change is judged by whether it changes what an evaluator does next, not by counts alone:
+  - *Town point*: the 2 m match is dropped (it needs a supplier to use exactly Overture's coordinates, which
+    never happened). New step after the postal step: **10+ places and centre within 50 m** of a division point →
+    **near a town point (likely town-level geocode)**. Suppliers' town points differ by tens of metres; a fallback
+    point gathers many unrelated places, so small clusters (genuine neighbours in a dense centre) are excluded.
+  - *Rounded coordinates*: **≥ 50%** of the cluster's points at ≤ 4 decimals (was: every point; 2 m clustering
+    pulls in neighbouring points with more decimals).
+  - *Multi-tenant address* is merged into **shared address point**, with the note "unit numbers recorded": same
+    cause, same action.
+  - *Building*: footprint area alone decides **large building (mall-like)** (≥ 10,000 m²) versus **compact
+    building**; floor counts are missing for most buildings.
+  - Dropped from the cascade: complex anchor words (thin and contradictory in large stacks), category fit
+    (ingestion pipeline's job), source mix (does not separate stacked from single places).
+  - Kept as headline findings: confidence does not separate stacked places; stacks persist between releases.
+  - New order: duplicates → shared address → postal → near a town point → town-only address → rounded coordinates →
+    building → intersection → street centreline → unknown. Every cluster: manual inspection recommended.
   - **Next (decision needed):** (1) pre-register a refined rule (H2 needs a street number; H1 needs one consistent
     anchor; points within 2 m form one stack; H3 = ≥ 50% city-only addresses) and test it on the **October**
     release as held-out data, since this release has now been seen; and/or (2) stage B with building footprints and
@@ -154,3 +178,10 @@
 - **Observed (Oct→Nov):** median confidence 0.48 (added) and 0.43 (removed) vs 0.56 (matched).
 - **Hypothesis:** low-confidence records are less stable between releases. Correlation only.
 - **Confirm if:** the pattern holds in Sep.1→Oct as well. **Result:** _(pending)_
+
+## I-7 Organisations categorised as libraries — open, small (logged 2026-11-24)
+- **Observed:** 75 places from one AllThePlaces directory are categorised `library` but are government
+  departments, institutes and companies with postal-box addresses (found during I-1).
+- **Hypothesis:** a library-directory source whose members are organisations, not libraries; a category defect,
+  separate from stacking.
+- **Confirm if:** most of these records come from one source and few names contain "library". **Result:** _(pending)_

@@ -5,16 +5,19 @@ The cascade, thresholds and order are pre-registered in docs/investigation_backl
 wins and every cluster is flagged for manual inspection. Overture data only:
 places plus divisions, buildings and transportation for the same release (fetch_context_layers.py).
 
+Amended cascade (2026-11-24, recorded before the October run; see the backlog for the reasoning):
+
   0 cluster: places within 2 m (single-linkage)
   1 duplicates >= 50% (same normalised name or phone)          -> duplicate records (stop)
-  2 >= 50% share a base street address with a street number    -> shared address point / multi-tenant address
+  2 >= 50% share a base street address with a street number    -> shared address point (+ "unit numbers recorded")
   3 >= 50% postal-box addresses: >= 50% share the same box     -> one institution, shared postal box
                                  otherwise                     -> postal address, no street
-    >= 50% town-only addresses                                  -> town-only address (step 4 may replace it)
-  4 centre within 2 m of a division point                       -> town-level geocode
-  5 every point has <= 4 decimals in lon and lat                -> rounded coordinates
-  6 centre inside a building: >= 10,000 m2 and floors <= 3/unknown -> large building (mall-like), else compact
-  7 centre within 2 m of a connector / road segment             -> intersection / street-centreline geocode
+  4 10+ places and centre within 50 m of a division point       -> near a town point (likely town-level geocode)
+  5 >= 50% town-only addresses                                  -> town-only address
+  6 >= 50% of points have <= 4 decimals in lon and lat          -> rounded coordinates
+  7 centre inside a building: footprint >= 10,000 m2            -> large building (mall-like), else compact building
+  8 centre within 2 m of a connector                            -> intersection geocode
+  9 centre within 2 m of a road segment                         -> street-centreline geocode
   otherwise                                                     -> unknown: manual inspection
 
 Usage: python scripts/investigate/stack_causes.py [release]   (default: the configured current release)
@@ -40,7 +43,11 @@ from geotrustops.extract import release_path, verify_manifest  # noqa: E402
 
 NEAR_M = 2.0
 SHARE = 0.5
-MALL_M2, MALL_FLOORS = 10_000.0, 3
+TOWN_M, TOWN_MIN_SIZE = (
+    50.0,
+    10,
+)  # suppliers' town points differ by tens of metres; fallbacks gather many places
+MALL_M2 = 10_000.0  # floor counts are mostly missing, so footprint area alone stands in for "many entrances"
 TOWN_SUBTYPES = ["locality", "localadmin", "borough", "macrohood", "neighborhood", "microhood"]
 POSTAL = (
     r"(?i)\b(?:private\s+ba[gy]|p\.?\s?o\.?\s+box|po\s?box|postnet\s+suite|posbus|privaatsak)\b"
@@ -238,32 +245,32 @@ def main(argv: list[str]) -> int:
         if dup_s >= SHARE:
             cause = "duplicate records"
         elif base_s >= SHARE:
-            cause = "multi-tenant address" if unit_s >= SHARE else "shared address point"
+            cause = "shared address point" + (" (unit numbers recorded)" if unit_s >= SHARE else "")
         elif postal_s >= SHARE:
             cause = (
                 "one institution, shared postal box"
                 if box_s >= SHARE
                 else "postal address, no street"
             )
+        elif size >= TOWN_MIN_SIZE and town.get(cl, math.inf) <= TOWN_M:
+            cause = "near a town point (likely town-level geocode)"
+        elif town_s >= SHARE:
+            cause = "town-only address"
+        elif (
+            sum(decimals(x) <= 4 and decimals(y) <= 4 for x, y in zip(lons, lats, strict=True))
+            >= SHARE * size
+        ):
+            cause = "rounded coordinates"
+        elif cl in bld:
+            area, floors = bld[cl]
+            floors_unknown += floors is None
+            cause = "large building (mall-like)" if area >= MALL_M2 else "one compact building"
+        elif conn.get(cl, math.inf) <= NEAR_M:
+            cause = "intersection geocode" + (" (address says corner)" if corner else "")
+        elif road.get(cl, math.inf) <= NEAR_M:
+            cause = "street-centreline geocode"
         else:
-            tentative = "town-only address" if town_s >= SHARE else None
-            if town.get(cl, math.inf) <= NEAR_M:
-                cause = "town-level geocode"
-            elif tentative:
-                cause = tentative
-            elif all(decimals(x) <= 4 for x in lons) and all(decimals(y) <= 4 for y in lats):
-                cause = "rounded coordinates"
-            elif cl in bld:
-                area, floors = bld[cl]
-                floors_unknown += floors is None
-                large = area >= MALL_M2 and (floors is None or floors <= MALL_FLOORS)
-                cause = "large building (mall-like)" if large else "one compact building"
-            elif conn.get(cl, math.inf) <= NEAR_M:
-                cause = "intersection geocode" + (" (address says corner)" if corner else "")
-            elif road.get(cl, math.inf) <= NEAR_M:
-                cause = "street-centreline geocode"
-            else:
-                cause = "unknown: manual inspection"
+            cause = "unknown: manual inspection"
         results.append(
             (cl, size, clon, clat, cause, bool(any_dup) and cause != "duplicate records", names)
         )
