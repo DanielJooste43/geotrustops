@@ -89,6 +89,32 @@
     between releases rather than appearing and disappearing.
   - **Measurement note:** "has a number" also counts postal numbers ("Private Bag x680"); a check for place
     words in names failed validation and was dropped.
+- **Stage C: likely-cause cascade (pre-registered 2026-11-24, before any of its data was downloaded).**
+  Purpose: assign each cluster a *likely cause* from simple checks on Overture data only; every cluster, explained
+  or not, is flagged for **manual inspection**. The label is a guide for reviewers, not a verdict.
+  Script: `scripts/investigate/stack_causes.py`. Run on November (`2026-11-18.0`) and repeated on October
+  (`2026-10-21.0`) for comparison. Extra Overture layers from the same release as the places, extraction bbox only:
+  divisions (`division` points), buildings (`building`), transportation (`connector`, `segment`); ODbL, used for
+  internal analysis only.
+  0. *Cluster*: places within 2 m of each other (single-linkage) form one cluster; clusters of 2+ places are tested.
+  1. *Duplicate records*: places in the cluster with the same normalised name or the same phone number as another
+     place in it. If duplicates are ≥ 50% of the cluster: **duplicate records**, stop. Otherwise attach the flag
+     "contains duplicates" and continue.
+  2. *Shared street address*: ≥ 50% share one base address (unit designators removed) that contains a street number
+     → **shared address point**; if ≥ 50% also carry a unit designator → **multi-tenant address**.
+  3. *Address quality*: ≥ 50% have a postal-box address → **postal address, no street**. ≥ 50% have a town-only
+     address (no digit) → **town-only address**, and continue to step 4 (step 4's label replaces it if it matches).
+  4. *Town point*: cluster centre within 2 m of a division point (locality, localadmin, borough, macrohood,
+     neighborhood, microhood) → **town-level geocode**.
+  5. *Rounded coordinates*: every point in the cluster has ≤ 4 decimals in both lon and lat → **rounded coordinates**.
+  6. *Building*: cluster centre inside a building footprint. Footprint ≥ 10,000 m² and (floors ≤ 3 or floors
+     unknown) → **large building (mall-like)**; otherwise → **one compact building**. Report how often floors are
+     unknown.
+  7. *Street geometry*: centre within 2 m of a connector → **intersection geocode** (noted when the address says
+     "Cnr"/"Corner"); else within 2 m of a road segment → **street-centreline geocode**.
+  - Otherwise → **unknown: manual inspection**.
+  - Output: clusters and places per likely cause, per release; the 10 largest clusters with their cause.
+  - Out of scope (scope guard): external datasets, unlikely-feature overlaps, severity scores, position fixes.
   - **Next (decision needed):** (1) pre-register a refined rule (H2 needs a street number; H1 needs one consistent
     anchor; points within 2 m form one stack; H3 = ≥ 50% city-only addresses) and test it on the **October**
     release as held-out data, since this release has now been seen; and/or (2) stage B with building footprints and
