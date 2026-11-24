@@ -20,6 +20,7 @@ from geotrustops.pipeline import PipelineError, Result, run
 
 ROOT = Path.cwd()
 HISTORY = ROOT / "runs" / "history.jsonl"
+ARCHIVE = ROOT / "data" / "archive.json"
 
 
 def _parser() -> argparse.ArgumentParser:
@@ -29,6 +30,14 @@ def _parser() -> argparse.ArgumentParser:
     sub = p.add_subparsers(dest="command", required=True)
     f = sub.add_parser("fetch", help="download pinned extracts into --raw-dir")
     f.add_argument("--force", action="store_true", help="re-download even if files exist")
+    f.add_argument(
+        "--source",
+        choices=["auto", "s3", "archive"],
+        default="auto",
+        help="auto: Overture S3, falling back to the private archive (default); "
+        "s3 or archive: only that source",
+    )
+    f.add_argument("--archive", type=Path, default=ARCHIVE, help=argparse.SUPPRESS)
     b = sub.add_parser("build", help="compare releases and write outputs")
     b.add_argument("--prev", type=Path, help="explicit prev parquet (skips manifest checks)")
     b.add_argument("--curr", type=Path, help="explicit curr parquet (skips manifest checks)")
@@ -107,7 +116,7 @@ def main(argv: list[str] | None = None) -> int:
     try:
         cfg = load_config(args.config)
         if args.command == "fetch":
-            fetch(cfg, args.raw_dir, force=args.force)
+            fetch(cfg, args.raw_dir, force=args.force, source=args.source, archive=args.archive)
             return 0
         if (args.prev is None) != (args.curr is None):
             raise PipelineError("give both --prev and --curr, or neither")

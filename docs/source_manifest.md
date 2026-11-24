@@ -26,6 +26,19 @@ Full hashes are in `data/raw/*.manifest.json` (local, not committed).
 - Schema: `id, bbox, columns_changed (VARCHAR[]), change_type, theme, type`
 - Used only to cross-check GeoTrustOps classes (contract §9). Changelogs exist for every release back to `2024-06-13-beta.0`.
 
+## Archived extracts (current layout)
+
+The pinned extracts in the current `data/raw/` layout (`releases/<release>/places.parquet`,
+`changelog/<release>/places_changelog.parquet`) are listed with size, row count and full SHA-256 in
+[`data/archive.json`](../data/archive.json): releases `2026-09-23.1`, `2026-10-21.0`, `2026-11-18.0` and changelogs
+`2026-10-21.0`, `2026-11-18.0` (3,458,253 bytes in total). They replace the earlier single-file extracts listed above.
+
+Retention (Overture [release calendar](https://docs.overturemaps.org/release-calendar/), read 2026-11-24): public
+releases are kept "for a maximum of 60 days (two monthly releases)"; versioned changelogs remain available for all
+releases. Once S3 removes a release, `geotrustops fetch` restores it from a private archive and verifies it against
+`data/archive.json` (README, Reproducibility). Verified 2026-11-24: restoring all five files this way and rebuilding
+both pairs gives outputs byte-identical to the committed `out/` and `out_pairs/`.
+
 ## Study area
 WGS84 lon/lat bbox: west `28.168`, south `-25.758`, east `28.205`, north `-25.732` (central Pretoria). Not expanded.
 Filter: Overture `bbox` struct overlaps the AOI (identical rule for both releases).

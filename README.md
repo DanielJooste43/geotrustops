@@ -51,6 +51,22 @@ python -m venv .venv
 A second release pair: `geotrustops build --config config/pair_sep_oct.json`.
 Inspect any record against the raw data: `python scripts/lookup_id.py <overture-id>`.
 
+## Reproducibility
+
+Overture keeps each release on S3 for at most 60 days, partly to honour data-protection removal requests, so the
+pinned releases used here will disappear from the public bucket. Their extracts are therefore **not** republished:
+they include business contact fields (phones, emails, websites, social links) that the outputs leave out.
+
+- Every pinned extract is listed with its size and SHA-256 in [`data/archive.json`](data/archive.json).
+- The files themselves are kept in a private archive. While S3 still serves a release, `geotrustops fetch` reads S3;
+  when it no longer does, `fetch` restores the file from the archive (`GEOTRUSTOPS_ARCHIVE_REPO`,
+  `GEOTRUSTOPS_ARCHIVE_TOKEN`) and accepts it only if size and SHA-256 match the committed manifest.
+  `fetch --source s3` or `--source archive` forces one source.
+- Restoring all five extracts from the archive and rebuilding both release pairs reproduces the committed `out/` and
+  `out_pairs/` files byte for byte.
+- **Access for verification is available on request** (open an issue). The archive is kept only to verify the
+  published results: it is deleted 12 months after the v1.0 release, and any record is removed from it on request.
+
 ## Outputs
 
 | File | For |
@@ -102,6 +118,7 @@ Each was checked against its own licence before use. None is redistributed with 
 | mypy 2.4.1 | static type checking | MIT (some bundled files PSF-2.0) |
 | GitHub Actions: `actions/checkout` v7.0.1, `actions/setup-python` v7.1.0 | CI (pinned to commit SHAs) | MIT |
 | Overture Maps data via AWS Open Data | source data | see [DATA_LICENSE.md](DATA_LICENSE.md) |
+| GitHub Releases (private repository) | archive of the pinned extracts | GitHub Terms of Service; data licences as above |
 
 ## Data and licence
 

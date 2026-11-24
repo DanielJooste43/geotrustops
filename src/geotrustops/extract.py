@@ -10,6 +10,12 @@ Layout (data/raw is git-ignored):
 
 The spatial extension is deliberately NOT loaded here, so `geometry` is stored as plain
 WKB bytes exactly as delivered; the pipeline decodes it (it accepts BLOB or GEOMETRY).
+
+Archive fallback: Overture keeps a release on S3 for at most 60 days. `data/archive.json`
+(committed) lists every pinned extract with its SHA-256; the files themselves sit in a
+private archive (GitHub release assets). When S3 no longer serves a release, `fetch`
+restores the file from that archive and accepts it only if size and SHA-256 match the
+committed manifest. Repository and token come from the environment, never from files.
 """
 
 from __future__ import annotations
@@ -17,12 +23,24 @@ from __future__ import annotations
 import datetime as dt
 import hashlib
 import json
+import os
+import re
+import shutil
+import urllib.error
+import urllib.request
+from collections.abc import Callable
 from pathlib import Path
-from typing import Any
+from typing import Any, Literal
 
 import duckdb
 
 from geotrustops.config import BBox, Config
+
+ARCHIVE_REPO_ENV = "GEOTRUSTOPS_ARCHIVE_REPO"  # "<account>/<repo>" of the private archive
+ARCHIVE_TOKEN_ENV = "GEOTRUSTOPS_ARCHIVE_TOKEN"  # noqa: S105 - variable name, not a secret
+Source = Literal["auto", "s3", "archive"]
+# Downloads one archive asset (by name) to the given path.
+AssetFetcher = Callable[[str, Path], None]
 
 
 class ExtractError(RuntimeError):
@@ -102,12 +120,140 @@ def _download(
     return manifest
 
 
-def fetch(cfg: Config, raw_dir: Path, force: bool = False) -> list[dict[str, Any]]:
-    """Download both releases and the curr changelog unless already present."""
-    con = duckdb.connect()
-    con.execute("INSTALL httpfs; LOAD httpfs;")
-    con.execute("SET s3_region = $r", {"r": cfg.s3_region})
+def load_archive(path: Path) -> tuple[str, list[dict[str, Any]]]:
+    """Read the committed archive manifest: (release tag, file entries)."""
+    try:
+        doc = json.loads(path.read_text(encoding="utf-8"))
+        return str(doc["archive_tag"]), list(doc["files"])
+    except (OSError, ValueError, KeyError, TypeError) as exc:
+        raise ExtractError(f"cannot read archive manifest {path}: {exc}") from exc
+
+
+def _request(url: str, token: str, accept: str) -> urllib.request.Request:
+    if not url.startswith("https://"):
+        raise ExtractError(f"refusing non-HTTPS archive URL: {url}")
+    headers = {"Accept": accept, "User-Agent": "geotrustops"}
+    req = urllib.request.Request(url, headers=headers)  # noqa: S310 - scheme checked above
+    req.add_header("X-GitHub-Api-Version", "2022-11-28")
+    # Unredirected: asset downloads redirect to a pre-signed storage URL, which must not receive
+    # the token (it would leak it, and the storage service rejects a second credential).
+    req.add_unredirected_header("Authorization", f"Bearer {token}")
+    return req
+
+
+def github_asset_fetcher(repo: str, tag: str, token: str) -> AssetFetcher:
+    """Fetch assets of release `tag` in the (private) GitHub repository `repo`."""
+    if not re.fullmatch(r"[\w.-]+/[\w.-]+", repo):
+        raise ExtractError(f"{ARCHIVE_REPO_ENV} must look like <account>/<repo>, got {repo!r}")
+    assets: dict[str, str] = {}
+
+    def _get(name: str, dest: Path) -> None:
+        try:
+            if not assets:
+                api = f"https://api.github.com/repos/{repo}/releases/tags/{tag}"
+                listing = _request(api, token, "application/vnd.github+json")
+                with urllib.request.urlopen(listing) as r:  # noqa: S310 - HTTPS checked in _request
+                    assets.update({a["name"]: a["url"] for a in json.load(r)["assets"]})
+            if name not in assets:
+                raise ExtractError(f"archive release {tag} has no asset {name}")
+            download = _request(assets[name], token, "application/octet-stream")
+            with urllib.request.urlopen(download) as r, dest.open("wb") as f:  # noqa: S310
+                shutil.copyfileobj(r, f)
+        except urllib.error.HTTPError as exc:  # the message never contains the token
+            raise ExtractError(f"archive download of {name} failed: HTTP {exc.code}") from exc
+        except (urllib.error.URLError, OSError) as exc:
+            raise ExtractError(f"archive download of {name} failed: {exc}") from exc
+
+    return _get
+
+
+def _fetcher_from_env(tag: str) -> AssetFetcher:
+    repo, token = os.environ.get(ARCHIVE_REPO_ENV), os.environ.get(ARCHIVE_TOKEN_ENV)
+    if not repo or not token:
+        raise ExtractError(
+            f"the archive needs {ARCHIVE_REPO_ENV} and {ARCHIVE_TOKEN_ENV}; "
+            "access is available on request (README, Reproducibility)"
+        )
+    return github_asset_fetcher(repo, tag, token)
+
+
+def restore_from_archive(
+    entry: dict[str, Any], tag: str, bbox: BBox, out: Path, fetch_asset: AssetFetcher
+) -> dict[str, Any]:
+    """Download one archived extract; keep it only if size and SHA-256 match the manifest."""
+    if entry.get("extraction_bbox") != bbox.as_dict():
+        raise ExtractError(f"archived {entry['asset']} was extracted for another bbox")
+    out.parent.mkdir(parents=True, exist_ok=True)
+    tmp = out.with_suffix(".parquet.tmp")
+    try:
+        fetch_asset(entry["asset"], tmp)
+        size, digest = tmp.stat().st_size, sha256(tmp)
+        if size != entry["bytes"] or digest != entry["sha256"]:
+            raise ExtractError(
+                f"archived {entry['asset']} does not match data/archive.json "
+                f"({size} B, sha256 {digest[:12]}...): rejected"
+            )
+    except BaseException:
+        tmp.unlink(missing_ok=True)
+        raise
+    tmp.replace(out)
+    manifest = {
+        **{k: v for k, v in entry.items() if k != "asset"},
+        "file": out.name,
+        "restored_from": f"archive release {tag}, asset {entry['asset']}",
+    }
+    _manifest_path(out).write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+    return manifest
+
+
+def fetch(
+    cfg: Config,
+    raw_dir: Path,
+    force: bool = False,
+    source: Source = "auto",
+    archive: Path | None = None,
+    fetch_asset: AssetFetcher | None = None,
+) -> list[dict[str, Any]]:
+    """Get both releases and the curr changelog unless already present.
+
+    source: "s3" reads Overture only; "archive" restores from the archive only; "auto" reads
+    S3 and falls back to the archive for any file S3 cannot provide.
+    """
     bbox = cfg.extraction_bbox
+    archive_tag: str | None = None
+    archive_files: list[dict[str, Any]] = []
+
+    def from_archive(out: Path, kind: str, release: str) -> dict[str, Any]:
+        nonlocal archive_tag, archive_files, fetch_asset
+        if archive_tag is None:
+            archive_tag, archive_files = load_archive(
+                archive or Path.cwd() / "data" / "archive.json"
+            )
+        entry = next(
+            (e for e in archive_files if e.get("kind") == kind and e.get("release") == release),
+            None,
+        )
+        if entry is None:
+            raise ExtractError(f"no archived {kind} for release {release} in the archive manifest")
+        if fetch_asset is None:
+            fetch_asset = _fetcher_from_env(archive_tag)
+        return restore_from_archive(entry, archive_tag, bbox, out, fetch_asset)
+
+    con: duckdb.DuckDBPyConnection | None = None
+
+    def connect() -> duckdb.DuckDBPyConnection:
+        nonlocal con
+        if con is None:
+            c = duckdb.connect()
+            try:
+                c.execute("INSTALL httpfs; LOAD httpfs;")
+                c.execute("SET s3_region = $r", {"r": cfg.s3_region})
+            except duckdb.Error as exc:  # e.g. offline: the extension cannot be installed
+                c.close()
+                raise ExtractError(f"cannot prepare S3 access: {exc}") from exc
+            con = c
+        return con
+
     jobs = [
         (
             release_path(raw_dir, rel),
@@ -132,11 +278,22 @@ def fetch(cfg: Config, raw_dir: Path, force: bool = False) -> list[dict[str, Any
                 print(f"skip: {out} exists (use --force to re-download)")
                 results.append(json.loads(_manifest_path(out).read_text(encoding="utf-8")))
                 continue
-            m = _download(con, uri, select, bbox, out, meta)
-            print(f"{meta['kind']} {meta['release']}: {m['row_count']} rows -> {out}")
+            kind, release = meta["kind"], meta["release"]
+            if source == "archive":
+                m = from_archive(out, kind, release)
+            else:
+                try:
+                    m = _download(connect(), uri, select, bbox, out, meta)
+                except ExtractError as exc:
+                    if source == "s3":
+                        raise
+                    print(f"S3 could not provide {kind} {release} ({exc}); trying the archive")
+                    m = from_archive(out, kind, release)
+            print(f"{kind} {release}: {m['row_count']} rows -> {out}")
             results.append(m)
     finally:
-        con.close()
+        if con is not None:
+            con.close()
     return results
 
 

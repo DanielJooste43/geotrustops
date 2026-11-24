@@ -31,4 +31,5 @@ Foursquare OS Places records were obtained through Overture Maps Foundation rele
 GeoTrustOps further modified these records: selected fields were extracted and flattened, records were
 clipped to a study area, compared between releases, classified, and written as GeoJSON/JSON/Markdown
 outputs with added change attributes. Records from Foursquare are identified by "Apache-2.0" in each
-output feature's source_licences property.
+output feature's source_licences property. Raw extracts supplied for verification are clipped to the
+extraction area and are otherwise unchanged.
