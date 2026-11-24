@@ -17,15 +17,36 @@
 - **Observed (2026-11-23, Nov release, AOI):** 960 of 5,736 places (≈17%) share an exact coordinate with at
   least one other place, on 196 distinct points. Largest stacks: 91, 66, 51, 46, 44 places, each with all
   **different** names (e.g. a music studio, tutors, motor dealer, coffee shop on one point).
-- **Hypothesis:** these are fallback geocodes (suburb, street, postcode or building centroids), not real positions.
+- **Original hypothesis (superseded 2026-11-24 before any analysis):** fallback geocodes at suburb, street or
+  postcode centroids. Revised because businesses are rarely geocoded to an area centroid; shared buildings and
+  shared address points are far more likely, and can be tested with fields already in the records.
 - **Why it matters:** a person navigating to any of those 91 places is sent to the same spot; positional quality is
   worse than the release-to-release "unchanged" suggests. Also the trigger of a geometry-handling crash fixed earlier (engineering review log).
-- **Method:** (a) for the top 10 stacks, compare the point to suburb/postcode centroids (Overture `divisions` or
-  addresses' `postcode`/`locality`); (b) share of stacked places by source dataset; (c) do stacked places
-  move more or less between releases?
-- **Confirm if:** most large stacks coincide (≤ 50 m) with an administrative or postcode centroid, or are
-  dominated by one source. **Reject if:** stacks are single buildings with plausibly co-located tenants
-  (e.g. an office tower or mall: check names and categories).
+- **Hypotheses (pre-registered 2026-11-24):** **H1 shared complex**: the places are tenants of one building or
+  complex. **H2 shared address point**: the places share one street address and so geocode to one point.
+  **H0 unexplained**: neither; goes to stage B.
+- **Data:** November release (`2026-11-18.0`), places inside the study AOI. A *stack* is 2 or more places on an
+  identical coordinate; a *large stack* has 10 or more. Script: `scripts/investigate/stacked_coordinates.py`.
+- **Stage A (place records only):**
+  1. *Unit designators* in the freeform address or the name ("Shop 3", "Unit 12", "Suite 4", "Office 2", "Shop G14",
+     "Stall", "Kiosk", "Floor"/"Level", "Block"). Removing them gives a *base address* (lowercase, punctuation
+     removed, spaces collapsed). Per stack: share of places with a unit designator; share of places on the
+     stack's most common base address.
+  2. *Complex anchor* in the name **or** the freeform address. Strong: mall, shopping centre/center, shopping
+     complex, retail park/centre/block, plaza, arcade, business park, office park, complex, tower(s). Weak
+     (ambiguous, reported separately): centre/center, building, house, court, square.
+  3. *Category fit*: share of the stack's places whose category would not fit inside a complex (natural features
+     such as river, lake, mountain, forest, nature reserve; whole-area features such as neighbourhood or city;
+     large transport infrastructure such as airport or train station; farms; campgrounds).
+- **Per-stack classification:** **H2** if ≥ 50% of places share the most common base address. Otherwise **H1** if
+  ≥ 50% carry a unit designator, or a strong anchor is present and ≤ 10% of categories do not fit. Otherwise **H0**.
+  A missing address counts as no evidence, not as a different address.
+- **Outcome rule:** *explained* (lead rejected as fallback geocodes) if H1 + H2 cover ≥ 80% of stacked places
+  **and** ≥ 8 of the 10 largest stacks. Otherwise *inconclusive*, and the H0 stacks go to stage B.
+- **Stage B (only if needed; licence review first):** test H0 stacks against Overture building footprints (point
+  inside one building; building name) and address points (structured number/street/unit). Both themes may be
+  partly ODbL-licensed.
+- **Descriptive only:** source-dataset mix per stack.
 - **Result:** _(pending)_
 
 ## I-2 Wrong-province region recode — open, small
