@@ -39,6 +39,19 @@ releases. Once S3 removes a release, `geotrustops fetch` restores it from a priv
 `data/archive.json` (README, Reproducibility). Verified 2026-11-24: restoring all five files this way and rebuilding
 both pairs gives outputs byte-identical to the committed `out/` and `out_pairs/`.
 
+## Context layers for the stacked-coordinates investigation
+
+Downloaded by `scripts/investigate/fetch_context_layers.py` for the extraction bbox, from the same releases as the
+places, each with a manifest (source URI, row count, SHA-256) under `data/raw/context/<release>/<type>/`
+(git-ignored). Licence: ODbL 1.0 (see `DATA_LICENSE.md`). Observed 2026-11-24:
+
+| Type | Source URI pattern | Rows 2026-10-21.0 | Rows 2026-11-18.0 |
+|---|---|---|---|
+| division | `…/theme=divisions/type=division/*.parquet` | 14 | 14 |
+| building | `…/theme=buildings/type=building/*.parquet` | 10,826 | 11,305 |
+| connector | `…/theme=transportation/type=connector/*.parquet` | 6,380 | 6,702 |
+| segment | `…/theme=transportation/type=segment/*.parquet` | 4,960 | 5,118 |
+
 ## Study area
 WGS84 lon/lat bbox: west `28.168`, south `-25.758`, east `28.205`, north `-25.732` (central Pretoria). Not expanded.
 Filter: Overture `bbox` struct overlaps the AOI (identical rule for both releases).

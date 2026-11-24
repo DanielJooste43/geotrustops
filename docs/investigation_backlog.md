@@ -89,6 +89,9 @@
     between releases rather than appearing and disappearing.
   - **Measurement note:** "has a number" also counts postal numbers ("Private Bag x680"); a check for place
     words in names failed validation and was dropped.
+- **Review fix (2026-11-24):** missing categories are now coalesced to "not unfit" (a missing category is no
+  evidence, the same policy as a missing address). Re-running stage A gives the same counts and outcome (111 stacked
+  places have no category; no stack crossed the 10% threshold).
 - **Stage C: likely-cause cascade (pre-registered 2026-11-24, before any of its data was downloaded).**
   Purpose: assign each cluster a *likely cause* from simple checks on Overture data only; every cluster, explained
   or not, is flagged for **manual inspection**. The label is a guide for reviewers, not a verdict.

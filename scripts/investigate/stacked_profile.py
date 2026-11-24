@@ -1,4 +1,5 @@
-# ruff: noqa: S608, E501
+# ruff: noqa: S608, E501 - f-strings insert only internal table names, the fixed AOI filter and the group order;
+# every value (file paths, regexes, category lists) is a named parameter.
 """I-1 exploratory profile of stack groups (descriptive only; no thresholds depend on it).
 
 Run from the repo root: python scripts/investigate/stacked_profile.py
@@ -21,7 +22,8 @@ c.execute("LOAD spatial")
 
 
 def base(path: str, name: str) -> None:
-    c.execute(f"""CREATE OR REPLACE TABLE {name} AS
+    c.execute(
+        f"""CREATE OR REPLACE TABLE {name} AS
       SELECT id, ST_X(ST_GeomFromWKB(geometry)) AS lon, ST_Y(ST_GeomFromWKB(geometry)) AS lat,
              names."primary" AS name, coalesce(addresses[1].freeform, '') AS addr,
              addresses[1].locality AS locality, addresses[1].postcode AS postcode,
@@ -31,7 +33,9 @@ def base(path: str, name: str) -> None:
              list_transform(sources, s -> s.dataset) AS datasets,
              list_transform(sources, s -> s.update_time) AS updates,
              CAST(geometry AS BLOB) AS wkb
-      FROM read_parquet('{path}')""")
+      FROM read_parquet($path)""",
+        {"path": path},
+    )
     c.execute(f"DELETE FROM {name} WHERE NOT ({AOI})")
 
 
@@ -40,13 +44,13 @@ base(P_OCT, "octo")
 
 # Stage A class per stack (same rules as the committed script).
 c.execute(
-    f"""CREATE TABLE s AS
+    """CREATE TABLE s AS
   WITH st AS (SELECT *, count(*) OVER (PARTITION BY lon, lat) AS size FROM nov),
   f AS (SELECT *, regexp_matches(addr || ' ' || coalesce(name, ''), $u) AS has_unit,
           nullif(trim(regexp_replace(regexp_replace(lower(regexp_replace(addr, $u, ' ', 'g')), '[^a-z0-9 ]', ' ', 'g'),
                  '\\s+', ' ', 'g')), '') AS base_addr,
           regexp_matches(coalesce(name, '') || ' ' || addr, $s) AS strong,
-          (cat IN ({",".join(repr(x) for x in sc.UNFIT)}) OR top_cat = 'geographic_entities') AS unfit
+          coalesce(cat IN (SELECT unnest($unfit::VARCHAR[])) OR top_cat = 'geographic_entities', false) AS unfit
         FROM st),
   m AS (SELECT lon, lat, max(n) AS modal_n FROM (SELECT lon, lat, base_addr, count(*) n FROM f
         WHERE base_addr IS NOT NULL AND size >= 2 GROUP BY ALL) GROUP BY ALL),
@@ -56,7 +60,7 @@ c.execute(
     CASE WHEN coalesce(m.modal_n, 0) / a.size >= 0.5 THEN 'H2'
          WHEN a.us >= 0.5 OR (a.sa AND a.uf <= 0.1) THEN 'H1' ELSE 'H0' END AS cls
   FROM a LEFT JOIN m USING (lon, lat)""",
-    {"u": sc.UNIT, "s": sc.STRONG},
+    {"u": sc.UNIT, "s": sc.STRONG, "unfit": sc.UNFIT},
 )
 c.execute("""CREATE TABLE g AS
   SELECT n.*, coalesce(s.cls, 'single') AS grp, coalesce(s.size, 1) AS size,

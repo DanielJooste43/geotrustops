@@ -92,6 +92,50 @@ def clusters(points: list[tuple[str, float, float]]) -> dict[str, int]:
     return {points[i][0]: find(i) for i in range(len(points))}
 
 
+def likely_cause(
+    *,
+    size: int,
+    dup_share: float,
+    base_share: float,
+    unit_share: float,
+    postal_share: float,
+    box_share: float,
+    town_only_share: float,
+    rounded_share: float,
+    town_point_m: float,
+    building_area_m2: float | None,
+    connector_m: float,
+    road_m: float,
+    corner: bool,
+) -> str:
+    """The pre-registered cascade for one cluster: first matching step wins (see module docstring)."""
+    if dup_share >= SHARE:
+        return "duplicate records"
+    if base_share >= SHARE:
+        return "shared address point" + (" (unit numbers recorded)" if unit_share >= SHARE else "")
+    if postal_share >= SHARE:
+        return (
+            "one institution, shared postal box"
+            if box_share >= SHARE
+            else "postal address, no street"
+        )
+    if size >= TOWN_MIN_SIZE and town_point_m <= TOWN_M:
+        return "near a town point (likely town-level geocode)"
+    if town_only_share >= SHARE:
+        return "town-only address"
+    if rounded_share >= SHARE:
+        return "rounded coordinates"
+    if building_area_m2 is not None:
+        return (
+            "large building (mall-like)" if building_area_m2 >= MALL_M2 else "one compact building"
+        )
+    if connector_m <= NEAR_M:
+        return "intersection geocode" + (" (address says corner)" if corner else "")
+    if road_m <= NEAR_M:
+        return "street-centreline geocode"
+    return "unknown: manual inspection"
+
+
 def main(argv: list[str]) -> int:
     cfg = load_config(ROOT / "config" / "study_area.json")
     release = argv[0] if argv else cfg.curr_release
@@ -115,8 +159,10 @@ def main(argv: list[str]) -> int:
     )
     rows = con.execute("SELECT id, lon, lat FROM p ORDER BY id").fetchall()
     cid = clusters(rows)
-    con.execute("CREATE TABLE c (id VARCHAR, cluster INTEGER)")
-    con.executemany("INSERT INTO c VALUES (?, ?)", list(cid.items()))
+    con.execute(
+        "CREATE TABLE c AS SELECT unnest($ids) AS id, unnest($clusters)::INTEGER AS cluster",
+        {"ids": list(cid.keys()), "clusters": list(cid.values())},
+    )
 
     # Per-place features; clusters of 2+ places only.
     con.execute(
@@ -241,36 +287,26 @@ def main(argv: list[str]) -> int:
         dup_s,
         any_dup,
     ) in ks:
-        cause = None
-        if dup_s >= SHARE:
-            cause = "duplicate records"
-        elif base_s >= SHARE:
-            cause = "shared address point" + (" (unit numbers recorded)" if unit_s >= SHARE else "")
-        elif postal_s >= SHARE:
-            cause = (
-                "one institution, shared postal box"
-                if box_s >= SHARE
-                else "postal address, no street"
-            )
-        elif size >= TOWN_MIN_SIZE and town.get(cl, math.inf) <= TOWN_M:
-            cause = "near a town point (likely town-level geocode)"
-        elif town_s >= SHARE:
-            cause = "town-only address"
-        elif (
-            sum(decimals(x) <= 4 and decimals(y) <= 4 for x, y in zip(lons, lats, strict=True))
-            >= SHARE * size
-        ):
-            cause = "rounded coordinates"
-        elif cl in bld:
-            area, floors = bld[cl]
-            floors_unknown += floors is None
-            cause = "large building (mall-like)" if area >= MALL_M2 else "one compact building"
-        elif conn.get(cl, math.inf) <= NEAR_M:
-            cause = "intersection geocode" + (" (address says corner)" if corner else "")
-        elif road.get(cl, math.inf) <= NEAR_M:
-            cause = "street-centreline geocode"
-        else:
-            cause = "unknown: manual inspection"
+        rounded = sum(
+            decimals(x) <= 4 and decimals(y) <= 4 for x, y in zip(lons, lats, strict=True)
+        )
+        cause = likely_cause(
+            size=size,
+            dup_share=dup_s,
+            base_share=base_s,
+            unit_share=unit_s,
+            postal_share=postal_s,
+            box_share=box_s,
+            town_only_share=town_s,
+            rounded_share=rounded / size,
+            town_point_m=town.get(cl, math.inf),
+            building_area_m2=bld[cl][0] if cl in bld else None,
+            connector_m=conn.get(cl, math.inf),
+            road_m=road.get(cl, math.inf),
+            corner=bool(corner),
+        )
+        if cause in ("large building (mall-like)", "one compact building"):
+            floors_unknown += bld[cl][1] is None
         results.append(
             (cl, size, clon, clat, cause, bool(any_dup) and cause != "duplicate records", names)
         )

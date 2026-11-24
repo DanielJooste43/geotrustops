@@ -40,6 +40,23 @@ Each output feature names its sources and licences in `source_datasets` and `sou
 
 Per-source details: [Overture attribution and licensing](https://docs.overturemaps.org/attribution/).
 
+## Context layers used for analysis only (not redistributed)
+
+The stacked-coordinates investigation (`scripts/investigate/`, `docs/investigation_backlog.md` I-1) reads three more
+Overture themes for the extraction area: **divisions** (town and suburb points), **buildings** (footprints) and
+**transportation** (road connectors and segments). Overture publishes these themes under the
+[Open Database License (ODbL)](https://opendatacommons.org/licenses/odbl/1-0/); their main source is OpenStreetMap
+([Overture attribution](https://docs.overturemaps.org/attribution/)).
+
+| Theme | Licence | How it is used here | Shared? |
+|---|---|---|---|
+| divisions, buildings, transportation | ODbL 1.0 (© OpenStreetMap contributors, Overture Maps Foundation) | downloaded to `data/raw/context/` (git-ignored) by `scripts/investigate/fetch_context_layers.py`; read by `scripts/investigate/stack_causes.py` | no: only counts and summaries appear in this repository |
+
+Licence review (2026-11-24): use for internal analysis, with counts and summaries published with attribution. Data
+derived from these layers for individual places (e.g. a likely cause per place) would be a derivative database under
+ODbL; if it is ever published it will be a separate file under ODbL with this attribution, kept apart from the
+outputs above.
+
 ## Attribution
 
 If you reuse these outputs, please cite:

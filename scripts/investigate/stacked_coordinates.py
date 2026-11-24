@@ -88,7 +88,8 @@ feat AS (
             '[^a-z0-9 ]', ' ', 'g'), '\\s+', ' ', 'g')), '') AS base_addr,
         regexp_matches(coalesce(name, '') || ' ' || addr, $strong) AS strong,
         regexp_matches(coalesce(name, '') || ' ' || addr, $weak) AS weak,
-        (cat IN (SELECT unnest($unfit::VARCHAR[])) OR top_cat = 'geographic_entities') AS unfit
+        -- a missing category is no evidence of an unfit place (same policy as a missing address)
+        coalesce(cat IN (SELECT unnest($unfit::VARCHAR[])) OR top_cat = 'geographic_entities', false) AS unfit
     FROM stacked WHERE stack_size >= 2
 ),
 modal AS (
