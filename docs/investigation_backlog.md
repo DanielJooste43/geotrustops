@@ -13,7 +13,7 @@
 
 ---
 
-## I-1 Stacked coordinates — **open, highest value**
+## I-1 Stacked coordinates — **verified as a triage method (2026-11-24)**
 - **Observed (2026-11-23, Nov release, AOI):** 960 of 5,736 places (≈17%) share an exact coordinate with at
   least one other place, on 196 distinct points. Largest stacks: 91, 66, 51, 46, 44 places, each with all
   **different** names (e.g. a music studio, tutors, motor dealer, coffee shop on one point).
@@ -143,6 +143,38 @@
   - Kept as headline findings: confidence does not separate stacked places; stacks persist between releases.
   - New order: duplicates → shared address → postal → near a town point → town-only address → rounded coordinates →
     building → intersection → street centreline → unknown. Every cluster: manual inspection recommended.
+- **Stage C result (amended cascade, 2026-11-24).**
+
+  | Likely cause | October (confirmation): clusters / places | November: clusters / places |
+  |---|---|---|
+  | shared address point | 319 / 934 (47.2%) | 315 / 911 (46.7%) |
+  | near a town point (likely town-level geocode) | 3 / 271 (13.7%) | 3 / 285 (14.6%) |
+  | one compact building | 42 / 185 | 43 / 181 |
+  | unknown: manual inspection | 28 / 127 (6.4%) | 29 / 133 (6.8%) |
+  | shared address point (unit numbers recorded) | 52 / 116 | 49 / 109 |
+  | rounded coordinates | 1 / 107 | 1 / 105 |
+  | town-only address | 36 / 90 | 34 / 90 |
+  | postal address, no street | 1 / 53 | 1 / 52 |
+  | duplicate records | 16 / 40 | 16 / 39 |
+  | street-centreline geocode | 9 / 35 | 7 / 26 |
+  | intersection geocode (address says corner) | 2 / 13 | 2 / 11 |
+  | large building (mall-like) | 2 / 6 | 3 / 9 |
+
+  - Clusters: October 511 holding 1,977 places; November 503 holding 1,951. A likely cause other than "unknown"
+    for 93.6% (October) and 93.2% (November) of clustered places. Clusters that also contain duplicates: 7 / 6.
+  - The 10 largest clusters get the same cause in both releases (three city-centre clusters near the "Pretoria"
+    point; one rounded-coordinates cluster; one postal cluster; five shared address points).
+  - **What October shows, and what it does not:** 93–96% of stacked places sit on the same point in both
+    releases, so October is mostly the same records. It shows the labels are stable on a release that was not used
+    to tune the rule; it is not an independent validation on new places.
+  - **Outcome:** stage C registered no pass mark of its own, so the stage A outcome rule is the yardstick (a cause
+    for ≥ 80% of clustered places and for ≥ 8 of the 10 largest). October meets it: 93.6% and 10 of 10.
+    `verified` as a *triage method* (likely causes from simple checks, reproducible across releases);
+    no individual cause is verified without manual inspection. Headline findings for evaluators: about a third of
+    places in central Pretoria share a point within 2 m with another place; confidence does not separate them;
+    the largest stacks are likely town-level fallback points; stacks persist between releases.
+  - **Not yet decided:** whether and how to publish per-place likely causes (ODbL share-alike applies to data
+    derived from the context layers; counts and summaries are fine with attribution).
   - **Next (decision needed):** (1) pre-register a refined rule (H2 needs a street number; H1 needs one consistent
     anchor; points within 2 m form one stack; H3 = ≥ 50% city-only addresses) and test it on the **October**
     release as held-out data, since this release has now been seen; and/or (2) stage B with building footprints and
