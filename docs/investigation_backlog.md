@@ -102,7 +102,11 @@
      "contains duplicates" and continue.
   2. *Shared street address*: ≥ 50% share one base address (unit designators removed) that contains a street number
      → **shared address point**; if ≥ 50% also carry a unit designator → **multi-tenant address**.
-  3. *Address quality*: ≥ 50% have a postal-box address → **postal address, no street**. ≥ 50% have a town-only
+  3. *Address quality*: ≥ 50% have a postal-box address. If ≥ 50% of the cluster share the **same** box (e.g.
+     "Private Bag X680", compared on the box type and number) → **one institution, shared postal box**; otherwise
+     → **postal address, no street**. (Amended 2026-11-24 before the cascade was run: a shared private bag marks one
+     institution, such as a university, while different boxes on one point suggest a fallback point. The earlier
+     stage A profile had shown that the 51-place stack is mostly postal with few repeated boxes.) ≥ 50% have a town-only
      address (no digit) → **town-only address**, and continue to step 4 (step 4's label replaces it if it matches).
   4. *Town point*: cluster centre within 2 m of a division point (locality, localadmin, borough, macrohood,
      neighborhood, microhood) → **town-level geocode**.
