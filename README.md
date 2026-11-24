@@ -86,6 +86,7 @@ wrong.
 | Contract tests (`tests/contract/`) | written from the specification alone, without reading the implementation |
 | Golden records (`tests/golden/`) | real places classified by hand from raw data before the pipeline's answers were seen (11/11 agree) |
 | Overture changelog oracle | produced by Overture, not by this project (0 mismatches on both release pairs) |
+| Weekly real-data run (`.github/workflows/real-data.yml`) | restores the hash-pinned inputs, runs the real-data tests and requires the rebuilt outputs to match the committed ones byte for byte |
 
 Every pull request also runs the `lint`, `types` and `pytest` checks and receives an AI-assisted code review (Codex)
 before merge, guided by the project's review rules in [`AGENTS.md`](AGENTS.md). Findings are verified before they are
@@ -116,7 +117,7 @@ Each was checked against its own licence before use. None is redistributed with 
 | pytest 9.2.0, pytest-cov 7.1.0 | tests, coverage | MIT |
 | ruff 0.17.6 | lint and formatting | MIT |
 | mypy 2.4.1 | static type checking | MIT (some bundled files PSF-2.0) |
-| GitHub Actions: `actions/checkout` v7.0.1, `actions/setup-python` v7.1.0 | CI (pinned to commit SHAs) | MIT |
+| GitHub Actions: `actions/checkout` v7.0.1, `actions/setup-python` v7.1.0, `actions/upload-artifact` v7.0.2 | CI (pinned to commit SHAs) | MIT |
 | Overture Maps data via AWS Open Data | source data | see [DATA_LICENSE.md](DATA_LICENSE.md) |
 | GitHub Releases (private repository) | archive of the pinned extracts | GitHub Terms of Service; data licences as above |
 

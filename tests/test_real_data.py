@@ -1,4 +1,4 @@
-"""Regression tests on the pinned real extracts (skipped when data/raw is absent, e.g. in CI).
+"""Regression tests on the pinned real extracts (skipped when data/raw is absent, as in the PR checks).
 
 The inputs are pinned and hash-checked by their manifests, so exact counts are a legitimate
 *regression* baseline: if they change, the inputs or the rules changed. They are not evidence of

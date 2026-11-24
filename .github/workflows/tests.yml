@@ -48,6 +48,7 @@ jobs:
           python-version: "3.12"
       - run: pip install -e ".[dev]"
       # Real-data tests need the pinned Overture extracts (data/raw, not committed) and are skipped here;
-      # synthetic, contract and fault-injection tests run on every pull request.
+      # synthetic, contract and fault-injection tests run on every pull request. The weekly
+      # real-data workflow runs them against the archived extracts.
       - name: pytest
         run: python -m pytest -q
