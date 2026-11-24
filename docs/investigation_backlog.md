@@ -47,7 +47,30 @@
   inside one building; building name) and address points (structured number/street/unit). Both themes may be
   partly ODbL-licensed.
 - **Descriptive only:** source-dataset mix per stack.
-- **Result:** _(pending)_
+- **Result (2026-11-24, stage A): `inconclusive`** under the pre-registered rule.
+  - Reproduced the observation exactly: 5,736 places in the AOI; 960 (16.7%) on 196 stacks; 14 large stacks.
+  - H2 153 stacks / 503 places (52.4%); H1 11 / 254 (26.5%); H0 32 / 203 (21.1%). H1 + H2 = **78.9%** (rule:
+    ≥ 80%); top 10 explained **8** (rule: ≥ 8). Coverage misses by 1.1 points, so the rule says inconclusive.
+  - **Measurement caveats found when checking what the measures captured** (thresholds not changed):
+    - *H2 overcounts for the largest stacks.* The 91-place stack counts as H2 because its most common base address
+      is just `pretoria` (48 places; 51 of 91 have a city-only address). That is a shared *town*, not a shared
+      address point. Small stacks look different: 153 of 193 stacks with an address have a street number in their
+      most common base address, consistent with genuine shared address points.
+    - *H1 anchors are thin and contradictory in the large stacks.* 2–4 of 27–67 places carry an anchor, and one
+      stack mixes "Shopping Centre", "Office Park" and "Retail Park": several complexes on one point, which fits a
+      coarse fallback point better than one building.
+    - *Exact equality splits clusters.* Four "stacks" of 48, 45, 36 and 13 places lie within about 1 m of each
+      other (around 28.18763, −25.74587), i.e. one cluster of 142 places.
+    - *A likely city-level fallback point.* The 91-place stack (28.18832, −25.74579) lies about 80 m from the
+      `Church Square` plaza point in the same extract (28.188068, −25.746466), in the historic centre of Pretoria,
+      and over half its places carry only "Pretoria" as address. Suggestive of a "Pretoria" geocode, not proof.
+  - **Reading:** small stacks are mostly shared address points (the revised hypothesis holds there); the largest
+    stacks look like coarse, city-level fallback points (the original hypothesis may hold there after all).
+  - **Next (decision needed):** (1) pre-register a refined rule (H2 needs a street number; H1 needs one consistent
+    anchor; points within 2 m form one stack; H3 = ≥ 50% city-only addresses) and test it on the **October**
+    release as held-out data, since this release has now been seen; and/or (2) stage B with building footprints and
+    address points after a licence review. Publish nothing until `verified`.
+
 
 ## I-2 Wrong-province region recode — open, small
 - **Observed:** 1 place (`Bushbuck Group`) changed region `GP` → `ZA-MP` (Gauteng → Mpumalanga) inside central Pretoria.
