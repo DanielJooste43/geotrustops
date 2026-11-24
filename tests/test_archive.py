@@ -174,11 +174,15 @@ def test_committed_manifest_covers_every_configured_pair():
 
 @pytest.mark.realdata
 def test_committed_manifest_matches_the_local_extracts():
-    if not (RAW / "releases").exists():
-        pytest.skip("pinned extracts not present in data/raw")
+    # A plain `geotrustops fetch` gets only the primary pair, so check whichever extracts exist.
     _, files = load_archive(ARCHIVE_JSON)
+    checked = 0
     for f in files:
         sub = "releases" if f["kind"] == "release" else "changelog"
         name = "places.parquet" if f["kind"] == "release" else "places_changelog.parquet"
         path = RAW / sub / f["release"] / name
-        assert sha256(path) == f["sha256"], path
+        if path.exists():
+            assert sha256(path) == f["sha256"], path
+            checked += 1
+    if checked == 0:
+        pytest.skip("no pinned extracts present in data/raw")
