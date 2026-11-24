@@ -6,7 +6,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "geotrustops"
-version = "0.4.0"
+version = "0.5.0"
 description = "Classify material changes between two pinned Overture Maps places releases, with QA and reconciliation."
 readme = "README.md"
 # CI tests exactly this version; widen only together with a CI matrix.
