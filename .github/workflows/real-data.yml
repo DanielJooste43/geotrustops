@@ -1,0 +1,79 @@
+name: real-data
+
+# Weekly check that the published outputs still follow from the hash-pinned inputs:
+# restore the pinned extracts, run the full suite including real-data tests, rebuild both
+# release pairs and require them to match the committed outputs byte for byte.
+# Never runs on pull requests, so the archive token is not exposed to forks.
+on:
+  schedule:
+    - cron: "0 5 * * 1" # Mondays 05:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: real-data
+  cancel-in-progress: true
+
+# Actions are pinned to full commit SHAs (tags can be moved); the comment gives the release.
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.12"
+      - run: pip install -e ".[dev]"
+
+      # The archive holds exactly the files listed in data/archive.json; each restored file is
+      # checked against its committed size and SHA-256. Raw files stay on the runner.
+      - name: Restore pinned extracts
+        env:
+          GEOTRUSTOPS_ARCHIVE_REPO: ${{ vars.GEOTRUSTOPS_ARCHIVE_REPO }}
+          GEOTRUSTOPS_ARCHIVE_TOKEN: ${{ secrets.GEOTRUSTOPS_ARCHIVE_TOKEN }}
+        run: |
+          geotrustops fetch --source archive
+          geotrustops --config config/pair_sep_oct.json fetch --source archive
+
+      # -rs lists any skipped test with its reason, so a silently skipped real-data test shows.
+      - name: pytest (including real-data tests)
+        run: python -m pytest -q -rs
+
+      # The summary is written from the freshly rebuilt outputs, before the comparison.
+      - name: Rebuild both pairs
+        run: |
+          geotrustops build --no-history
+          geotrustops build --config config/pair_sep_oct.json --no-history
+          python - <<'EOF' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          from pathlib import Path
+          print("| Pair | Changes | Reconciliation | Changelog mismatches |")
+          print("|---|---|---|---|")
+          for path in sorted(Path(".").glob("out*/**/summary.json")):
+              s = json.loads(path.read_text(encoding="utf-8"))
+              pair = f"{s['releases']['prev']} to {s['releases']['curr']}"
+              counts = ", ".join(f"{k} {v}" for k, v in s["change_counts"].items())
+              holds = sum(r["holds"] for r in s["reconciliation"].values())
+              mismatches = (s["changelog_check"] or {}).get("total_mismatches")
+              print(f"| {pair} | {counts} | {holds}/{len(s['reconciliation'])} hold | {mismatches} |")
+          EOF
+
+      - name: Compare with the committed outputs (must be byte-identical)
+        run: git diff --stat --exit-code -- out out_pairs
+
+      # Only outputs that are already public in this repository; never data/raw.
+      - name: Upload QA reports and summaries
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: qa-reports
+          path: |
+            out/qa_report.md
+            out/summary.json
+            out_pairs/*/qa_report.md
+            out_pairs/*/summary.json
+          if-no-files-found: warn
+          retention-days: 30
