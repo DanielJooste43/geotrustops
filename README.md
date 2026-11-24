@@ -119,6 +119,7 @@ Each was checked against its own licence before use. None is redistributed with 
 | mypy 2.4.1 | static type checking | MIT (some bundled files PSF-2.0) |
 | GitHub Actions: `actions/checkout` v7.0.1, `actions/setup-python` v7.1.0, `actions/upload-artifact` v7.0.2 | CI (pinned to commit SHAs) | MIT |
 | Overture Maps data via AWS Open Data | source data | see [DATA_LICENSE.md](DATA_LICENSE.md) |
+| Overture divisions, buildings and transportation themes | investigation context layers (analysis only, not redistributed) | ODbL 1.0; see [DATA_LICENSE.md](DATA_LICENSE.md) |
 | GitHub Releases (private repository) | archive of the pinned extracts | GitHub Terms of Service; data licences as above |
 
 ## Data and licence
