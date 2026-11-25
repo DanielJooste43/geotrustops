@@ -79,6 +79,30 @@ they include business contact fields (phones, emails, websites, social links) th
 These are **map-record** changes: `added` ≠ a business opened, `removed` ≠ closed, `moved` ≠ the old position was
 wrong.
 
+## Web map
+
+`web/` is a one-screen map of the exported files: change records by type (shape and colour), an overall-change view
+(one glow per changed record, with an optional smoothed density layer), quality flags for stacked places, a record
+inspector with previous and current values and positions, a keyboard-accessible records list, and a provenance panel
+with release ids, input checksums, reconciliation and the changelog cross-check.
+
+It reads `out/changes.geojson`, `out/summary.json` and `out_triage/stack_causes.json` only, and every number it shows
+comes from `summary.json` (or, for quality flags, from the triage file): it never recomputes a classification or a
+count ([ADR 0004](docs/decisions/0004-engine-interface-separation.md)). A typed adapter validates the files against
+the data contract and refuses to draw data that does not match.
+
+```powershell
+cd web
+npm ci
+npm run dev        # local map at the address it prints
+npm test           # adapter tests, including checks against the committed exports
+npm run licenses   # declared licence of every package; shipped code must be permissive
+npm run build      # type check and production build into web/dist
+```
+
+The basemap is OpenFreeMap's Dark style (no key); if it cannot be loaded, the records are shown on a plain
+background. Attribution stays visible on every screen size.
+
 ## How the results are verified
 
 | Check | Independent because |

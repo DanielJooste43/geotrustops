@@ -9,6 +9,7 @@
   </head>
   <body>
     <a class="skip" href="#filters">Skip to filters</a>
+    <button type="button" class="skip" data-panel="records">Open the records list</button>
     <header class="top">
       <div class="brand">
         <svg class="mark" viewBox="0 0 32 20" aria-hidden="true"><path d="M1 10h7l3-8 5 16 4-12 2 4h9" /></svg>
@@ -19,6 +20,7 @@
       </div>
       <p class="releases" id="releases" aria-live="polite">Loading releases…</p>
       <nav class="top-actions" aria-label="Panels">
+        <button type="button" data-panel="records">Records</button>
         <button type="button" data-panel="provenance">Provenance</button>
         <button type="button" data-panel="credits">Sources &amp; credits</button>
       </nav>
@@ -80,6 +82,17 @@
         <div id="inspector-body"></div>
       </aside>
     </main>
+
+    <dialog class="panel" id="panel-records" aria-labelledby="records-title">
+      <div class="panel-head">
+        <h2 id="records-title">Changed records</h2>
+        <button type="button" class="close" data-close aria-label="Close">×</button>
+      </div>
+      <p class="note small">Records of the change types selected in the filters. Choose one to show it on the map.</p>
+      <label class="search"><span>Search by name or category</span>
+        <input type="search" id="records-search" autocomplete="off" /></label>
+      <ul class="records" id="records-list"></ul>
+    </dialog>
 
     <dialog class="panel" id="panel-provenance" aria-labelledby="provenance-title">
       <div class="panel-head">

@@ -477,7 +477,45 @@ async function main(): Promise<void> {
     $("inspector-close").addEventListener("click", () => select(null));
     document.addEventListener("keydown", (e) => { if (e.key === "Escape") select(null); });
 
+    // Records list: the keyboard path to individual records (map points are not reachable with Tab).
+    let shownTypes: ChangeType[] = [...CHANGE_TYPES];
+    const search = $<HTMLInputElement>("records-search");
+    const sorted = [...changes.features].sort((a, b) =>
+      (a.properties.curr_name ?? a.properties.prev_name ?? "").localeCompare(b.properties.curr_name ?? b.properties.prev_name ?? ""));
+    const renderRecords = () => {
+      const q = search.value.trim().toLowerCase();
+      const list = $("records-list");
+      list.replaceChildren();
+      for (const f of sorted) {
+        const p = f.properties;
+        if (!shownTypes.includes(p.change_type)) continue;
+        const name = p.curr_name ?? p.prev_name ?? "(no name)";
+        const cat = p.curr_category ?? p.prev_category ?? "";
+        if (q && !name.toLowerCase().includes(q) && !cat.toLowerCase().includes(q)) continue;
+        const li = el("li");
+        const b = el("button");
+        b.type = "button";
+        const text = el("span");
+        text.append(el("span", undefined, name), el("br"), el("span", "meta", `${symbols[p.change_type].label}${cat ? ` · ${cat}` : ""} · id ${p.id.slice(0, 8)}`));
+        b.append(symbolSvg(symbols[p.change_type]), text, el("span", "meta", p.distance_m !== null && p.distance_m > 0 ? `${p.distance_m} m` : ""));
+        b.addEventListener("click", () => {
+          $<HTMLDialogElement>("panel-records").close();
+          select(f);
+          const target = { center: f.geometry.coordinates, zoom: Math.max(map.getZoom(), 17) };
+          if (reducedMotion) map.jumpTo(target);
+          else map.easeTo({ ...target, duration: 600 });
+          $("inspector-close").focus();
+        });
+        li.append(b);
+        list.append(li);
+      }
+    };
+    search.addEventListener("input", renderRecords);
+    renderRecords();
+
     renderFilters(summary, symbols, (shown) => {
+      shownTypes = shown;
+      renderRecords();
       const filter: FilterSpecification = ["in", ["get", "change_type"], ["literal", shown]];
       for (const l of [...TYPE_LAYERS, ...OVERALL_LAYERS, "overall-heat"]) map.setFilter(l, filter);
       if (selected && !shown.includes(byId.get(selected)!.properties.change_type)) select(null);
