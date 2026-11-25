@@ -38,6 +38,8 @@ from geotrustops.config import BBox, Config
 
 ARCHIVE_REPO_ENV = "GEOTRUSTOPS_ARCHIVE_REPO"  # "<account>/<repo>" of the private archive
 ARCHIVE_TOKEN_ENV = "GEOTRUSTOPS_ARCHIVE_TOKEN"  # noqa: S105 - variable name, not a secret
+# Columns kept in a changelog extract (contract §10); the build's cross-check reads columns_changed.
+CHANGELOG_SELECT = "id, change_type, columns_changed, bbox"
 Source = Literal["auto", "s3", "archive"]
 # Downloads one archive asset (by name) to the given path.
 AssetFetcher = Callable[[str, Path], None]
@@ -272,7 +274,7 @@ def fetch(
         (
             changelog_path(raw_dir, cfg.curr_release),
             cfg.changelog_uri.format(release=cfg.curr_release),
-            "id, change_type, columns_changed, bbox",
+            CHANGELOG_SELECT,
             {"kind": "changelog", "release": cfg.curr_release},
         )
     )
