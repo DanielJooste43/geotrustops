@@ -9,6 +9,7 @@ on:
       - "web/**"
       - "out/**"
       - "out_triage/**"
+      - "out_timeline/**"
       - ".github/workflows/pages.yml"
   workflow_dispatch:
 
