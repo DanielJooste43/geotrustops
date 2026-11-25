@@ -14,11 +14,14 @@ import duckdb
 import pytest
 
 from geotrustops.config import Config, ConfigError, load_config
+from geotrustops.extract import CHANGELOG_SELECT
 from geotrustops.timeline import (
     KINDS,
+    LEGACY_SELECT,
     TimelineError,
     TimelineInput,
     build_timeline,
+    changelog_select,
     load_timeline_config,
     write_timeline,
 )
@@ -274,3 +277,12 @@ def test_committed_curr_release_reconciles_with_the_change_run(committed: dict[s
         if p["change_type"] in ("moved", "shifted"):
             assert p["id"] in moves, p["id"]
             assert moves[p["id"]] == pytest.approx(p["distance_m"], abs=0.5)
+
+
+def test_shared_extracts_keep_the_build_columns() -> None:
+    # The timeline writes to the same path as the build's changelog extract: where a release's changelog has
+    # columns_changed, the extract must keep the build's exact column set, or a later `build` fails (contract §10).
+    new = ["id", "bbox", "columns_changed", "change_type", "theme", "type"]
+    old = ["id", "bbox", "change_type", "theme", "type"]
+    assert changelog_select(new) == CHANGELOG_SELECT
+    assert changelog_select(old) == LEGACY_SELECT

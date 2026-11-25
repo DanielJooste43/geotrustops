@@ -31,6 +31,7 @@ import duckdb
 
 from geotrustops.config import Config, ConfigError
 from geotrustops.extract import (
+    CHANGELOG_SELECT,
     ExtractError,
     changelog_path,
     download,
@@ -51,7 +52,9 @@ ATTRIBUTION = (
     "© Overture Maps Foundation, overturemaps.org. Places data from Meta, Microsoft, Foursquare "
     "(Copyright 2024 Foursquare Labs, Inc. All rights reserved.), AllThePlaces and other Overture sources."
 )
-SELECT = "id, change_type, bbox"  # the columns every changelog schema has
+# Changelogs before 2026-03-18.0 lack columns_changed. Extracts share their path with the build's changelog
+# extract, so a release whose changelog has the column keeps the build's exact column set (contract §10).
+LEGACY_SELECT = "id, change_type, bbox"
 EARTH_RADIUS_M = 6_371_008.8
 
 
@@ -104,6 +107,18 @@ def _partitions(con: duckdb.DuckDBPyConnection, uri: str) -> list[str]:
     return found
 
 
+def changelog_select(columns: list[str]) -> str:
+    """The columns to extract: the build's set when the changelog has columns_changed, else the legacy set."""
+    return CHANGELOG_SELECT if "columns_changed" in columns else LEGACY_SELECT
+
+
+def _columns(con: duckdb.DuckDBPyConnection, uri: str) -> list[str]:
+    rows = con.execute(
+        "DESCRIBE SELECT * FROM read_parquet($uri, hive_partitioning = true)", {"uri": uri}
+    ).fetchall()
+    return [str(r[0]) for r in rows]
+
+
 def fetch_timeline(cfg: Config, tcfg: TimelineConfig, raw_dir: Path, force: bool = False) -> None:
     """Download each release's changelog extract unless present; record which change sets Overture published."""
     con: duckdb.DuckDBPyConnection | None = None
@@ -125,7 +140,8 @@ def fetch_timeline(cfg: Config, tcfg: TimelineConfig, raw_dir: Path, force: bool
             con = con or s3_connection(cfg)
             parts = _partitions(con, uri)
             meta = {"kind": "changelog", "release": rel, "change_type_partitions": parts}
-            m = download(con, uri, SELECT, cfg.extraction_bbox, out, meta)
+            select = changelog_select(_columns(con, uri))
+            m = download(con, uri, select, cfg.extraction_bbox, out, meta)
             print(f"changelog {rel}: {m['row_count']} rows, change sets {', '.join(parts)}")
     finally:
         if con is not None:
