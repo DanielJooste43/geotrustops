@@ -17,7 +17,7 @@ import {
   type ChangeFeature, type ChangeProperties, type ChangeType, type Changes, type StackCluster, type Summary,
   type Timeline, type Triage,
 } from "./contract";
-import { Playback } from "./playback";
+import { HISTORY_CLICKABLE, Playback } from "./playback";
 import { drawSymbol, symbolSvg, symbolsFor, type Symbol } from "./symbols";
 
 const STYLE_URL = "https://tiles.openfreemap.org/styles/dark";
@@ -296,10 +296,12 @@ async function main(): Promise<void> {
 
   // The release timeline is optional and large: loaded on first use, and refused if it describes another run.
   let timelinePromise: Promise<Timeline> | null = null;
+  let timelineReady: Timeline | null = null; // set once loaded, for synchronous use in the click handler
   const getTimeline = (): Promise<Timeline> =>
     (timelinePromise ??= loadJson("./data/timeline.json").then((raw) => {
       const t = parseTimeline(raw);
       checkTimelineMatchesRun(t, changes);
+      timelineReady = t;
       return t;
     }));
 
@@ -465,6 +467,7 @@ async function main(): Promise<void> {
     const select = (f: ChangeFeature | null) => {
       if (selected) map.setFeatureState({ source: "changes", id: selected }, { selected: false });
       selected = f ? f.properties.id : null;
+      timelineOnlyOpen = false;
       const sel = map.getSource<GeoJSONSource>("selection");
       const trail = map.getSource<GeoJSONSource>("sel-trail");
       trail?.setData({ type: "FeatureCollection", features: [] });
@@ -487,16 +490,41 @@ async function main(): Promise<void> {
       const id = f.properties.id;
       getTimeline().then((tl) => {
         if (selected !== id) return; // another record was chosen meanwhile
-        const { points, runs } = renderHistorySection(tl, id);
-        if (runs.length === 0) return;
-        trail?.setData({
-          type: "FeatureCollection",
-          features: [
-            { type: "Feature", properties: {}, geometry: { type: "MultiLineString", coordinates: runs } },
-            ...points.map((c): Feature => ({ type: "Feature", properties: {}, geometry: { type: "Point", coordinates: c } })),
-          ],
-        });
+        drawRecordHistory(tl, id);
       }).catch(() => { /* history is optional; the History view's status line explains a failure */ });
+    };
+
+    // A record's positions by release: listed in the open inspector and drawn as its trail.
+    const drawRecordHistory = (tl: Timeline, id: string) => {
+      const { points, runs } = renderHistorySection(tl, id);
+      if (runs.length === 0) return;
+      map.getSource<GeoJSONSource>("sel-trail")?.setData({
+        type: "FeatureCollection",
+        features: [
+          { type: "Feature", properties: {}, geometry: { type: "MultiLineString", coordinates: runs } },
+          ...points.map((c): Feature => ({ type: "Feature", properties: {}, geometry: { type: "Point", coordinates: c } })),
+        ],
+      });
+    };
+
+    // History markers: a record in the current comparison opens its full details; any other timeline record opens
+    // a timeline-only panel (its id and positions by release). Nothing here is computed beyond listing its events.
+    let timelineOnlyOpen = false;
+    const selectTimelineRecord = (tl: Timeline, id: string) => {
+      const f = byId.get(id);
+      if (f) return select(f);
+      select(null);
+      timelineOnlyOpen = true;
+      $("inspector-title").textContent = `Record ${id.slice(0, 8)}`;
+      const body = $("inspector-body");
+      body.replaceChildren(el("span", "badge flag", "Release history only"));
+      const kv = el("dl", "kv");
+      kv.append(el("dt", undefined, "Record ID"), el("dd", "mono", id));
+      body.append(kv);
+      body.append(el("p", "note small", `Not among the changes between ${summary.releases.prev} and `
+        + `${summary.releases.curr}, so only its timeline is shown: no names or other attributes are in that file.`));
+      $("inspector").hidden = false;
+      drawRecordHistory(tl, id);
     };
 
     const byId = new Map(changes.features.map((f) => [f.properties.id, f]));
@@ -519,12 +547,20 @@ async function main(): Promise<void> {
         MapGeoJSONFeature | undefined;
       const id = change?.properties?.id as string | undefined;
       if (id) return select(byId.get(id) ?? null);
+      const marker = timelineReady
+        ? map.queryRenderedFeatures(e.point, { layers: visibleLayers(HISTORY_CLICKABLE) })[0]
+        : undefined;
+      const rid = timelineReady && marker ? timelineReady.ids[Number(marker.properties?.rid)] : undefined;
+      if (rid && timelineReady) {
+        playback?.stop();
+        return selectTimelineRecord(timelineReady, rid);
+      }
       const ring = triage ? map.queryRenderedFeatures(e.point, { layers: visibleLayers(["quality-ring"]) })[0] : undefined;
       const c = ring && triage ? triage.clusters[Number(ring.properties?.idx)] : undefined;
       if (c && triage) return selectCluster(c, triage);
       select(null);
     });
-    const hoverable = [...CHANGE_CLICKABLE, ...(triage ? ["quality-ring"] : [])];
+    const hoverable = [...CHANGE_CLICKABLE, ...(triage ? ["quality-ring"] : [])]; // history markers: added with them
     map.on("mouseenter", hoverable, () => { map.getCanvas().style.cursor = "pointer"; });
     map.on("mouseleave", hoverable, () => { map.getCanvas().style.cursor = ""; });
 
@@ -601,6 +637,7 @@ async function main(): Promise<void> {
       $("history-legend").hidden = !history;
       $("filters").hidden = history; // the change-type filters describe the two-release comparison only
       playback?.setVisible(history);
+      if (!history && timelineOnlyOpen) select(null); // a timeline-only record has no place in the comparison views
       if (!history || playback) return;
       select(null);
       status.textContent = "Loading the release history…";
@@ -611,6 +648,8 @@ async function main(): Promise<void> {
           note: $("pb-note"), bars: document.getElementById("pb-bars") as unknown as SVGSVGElement,
           trails: $<HTMLInputElement>("trails"),
         }, reducedMotion);
+        map.on("mouseenter", HISTORY_CLICKABLE, () => { map.getCanvas().style.cursor = "pointer"; });
+        map.on("mouseleave", HISTORY_CLICKABLE, () => { map.getCanvas().style.cursor = ""; });
         const first = tl.releases[0]!.release;
         const last = tl.releases[tl.releases.length - 1]!.release;
         status.textContent = `${tl.releases.length} releases, ${first} to ${last}. A spike can reflect a change in `

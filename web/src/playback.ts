@@ -9,6 +9,8 @@ import type { Feature, FeatureCollection } from "geojson";
 import { TIMELINE_KINDS, type Timeline, type TimelineEvent } from "./contract";
 
 export const HISTORY_LAYERS = ["tl-trail", "tl-glow", "tl-core"];
+/** Marker layers that can be clicked; each feature carries `rid`, the record's index into timeline.ids. */
+export const HISTORY_CLICKABLE = ["tl-core", "tl-glow"];
 const GLOW = "#e879f9";
 const TRAIL = "#fbbf24";
 const FADE = [0.34, 0.16, 0.07]; // glow opacity by age in releases: the current release, then the two before
@@ -135,7 +137,9 @@ export class Playback {
             lon = e[6] + (e[3] - e[6]) * t;
             lat = e[7] + (e[4] - e[7]) * t;
           }
-          features.push({ type: "Feature", properties: { age, moved }, geometry: { type: "Point", coordinates: [lon, lat] } });
+          features.push({
+            type: "Feature", properties: { age, moved, rid: e[2] }, geometry: { type: "Point", coordinates: [lon, lat] },
+          });
         }
       }
       return { type: "FeatureCollection", features };
