@@ -32,6 +32,20 @@
           Filters &amp; legend
         </button>
         <div class="rail-body" id="rail-body">
+          <fieldset class="views">
+            <legend>View</legend>
+            <div class="segmented" role="radiogroup" aria-label="Map view">
+              <label><input type="radio" name="view" value="types" checked /> <span>Change types</span></label>
+              <label><input type="radio" name="view" value="overall" /> <span>Overall change</span></label>
+            </div>
+            <div class="overall-legend" id="overall-legend" hidden>
+              <p class="legend-row"><span class="glow-swatch" aria-hidden="true"></span>
+                One glow per changed record; where records overlap, the glow brightens.</p>
+              <label class="filter"><input type="checkbox" id="density" /> <span class="name">Smoothed density</span></label>
+              <p class="note small" id="density-note" hidden>Kernel-smoothed density of the changed records shown.
+                It shows where record changes concentrate, not where data is wrong.</p>
+            </div>
+          </fieldset>
           <fieldset id="filters">
             <legend>Change type</legend>
             <div id="filter-list"></div>

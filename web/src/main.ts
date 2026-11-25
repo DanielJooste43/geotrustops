@@ -21,6 +21,10 @@ const STYLE_URL = "https://tiles.openfreemap.org/styles/dark";
 // credits it does not cover. Without the basemap (fallback), only the data credit applies.
 const DATA_ATTRIBUTION = '<a href="https://overturemaps.org/" target="_blank" rel="noopener">Overture Maps Foundation</a>';
 const BASEMAP_TIMEOUT_MS = 8000;
+const OVERALL = "#e879f9"; // one colour for every changed record in the overall view
+const TYPE_LAYERS = ["changes-halo", "changes"];
+const OVERALL_LAYERS = ["overall-glow", "overall-core"];
+const CLICKABLE = ["changes", "overall-core", "overall-glow"];
 setWorkerUrl(workerUrl);
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -305,6 +309,39 @@ async function main(): Promise<void> {
       },
     });
 
+    // Overall view: every changed record as the same glowing point. Overlapping halos brighten where records
+    // concentrate; nothing is aggregated or computed. The optional heatmap is a kernel-smoothed view of the same points.
+    map.addLayer({
+      id: "overall-heat", type: "heatmap", source: "changes", layout: { visibility: "none" },
+      paint: {
+        "heatmap-radius": ["interpolate", ["linear"], ["zoom"], 12, 14, 15, 28, 18, 60],
+        "heatmap-intensity": ["interpolate", ["linear"], ["zoom"], 12, 0.6, 16, 1.2],
+        "heatmap-opacity": 0.8,
+        "heatmap-color": [
+          "interpolate", ["linear"], ["heatmap-density"],
+          0, "rgba(217,70,239,0)", 0.15, "rgba(217,70,239,0.12)", 0.4, "rgba(217,70,239,0.32)",
+          0.7, "rgba(232,121,249,0.55)", 1, "rgba(245,208,254,0.75)",
+        ],
+      },
+    }, "changes-halo");
+    map.addLayer({
+      id: "overall-glow", type: "circle", source: "changes", layout: { visibility: "none" },
+      paint: {
+        "circle-radius": ["interpolate", ["linear"], ["zoom"], 12, 7, 15, 13, 18, 26],
+        "circle-color": OVERALL,
+        "circle-opacity": ["case", ["boolean", ["feature-state", "selected"], false], 0.7, 0.28],
+        "circle-blur": 1,
+      },
+    });
+    map.addLayer({
+      id: "overall-core", type: "circle", source: "changes", layout: { visibility: "none" },
+      paint: {
+        "circle-radius": ["interpolate", ["linear"], ["zoom"], 12, 1.6, 15, 2.6, 18, 4.5],
+        "circle-color": "#fdf4ff",
+        "circle-opacity": 0.95,
+      },
+    });
+
     // Selection: previous and current positions joined by a line.
     map.addSource("selection", { type: "geojson", data: { type: "FeatureCollection", features: [] } });
     map.addLayer({ id: "sel-line", type: "line", source: "selection", filter: ["==", ["geometry-type"], "LineString"], paint: { "line-color": "#f1f5f9", "line-width": 1.5, "line-dasharray": [2, 2] } });
@@ -340,25 +377,41 @@ async function main(): Promise<void> {
     };
 
     const byId = new Map(changes.features.map((f) => [f.properties.id, f]));
-    map.on("click", "changes", (e) => {
+    map.on("click", CLICKABLE, (e) => {
       const hit = e.features?.[0] as MapGeoJSONFeature | undefined;
       const id = hit?.properties?.id as string | undefined;
       select(id ? (byId.get(id) ?? null) : null);
     });
     map.on("click", (e) => {
-      if (!map.queryRenderedFeatures(e.point, { layers: ["changes"] }).length) select(null);
+      const visible = CLICKABLE.filter((l) => map.getLayoutProperty(l, "visibility") !== "none");
+      if (!map.queryRenderedFeatures(e.point, { layers: visible }).length) select(null);
     });
-    map.on("mouseenter", "changes", () => { map.getCanvas().style.cursor = "pointer"; });
-    map.on("mouseleave", "changes", () => { map.getCanvas().style.cursor = ""; });
+    map.on("mouseenter", CLICKABLE, () => { map.getCanvas().style.cursor = "pointer"; });
+    map.on("mouseleave", CLICKABLE, () => { map.getCanvas().style.cursor = ""; });
     $("inspector-close").addEventListener("click", () => select(null));
     document.addEventListener("keydown", (e) => { if (e.key === "Escape") select(null); });
 
     renderFilters(summary, symbols, (shown) => {
       const filter: FilterSpecification = ["in", ["get", "change_type"], ["literal", shown]];
-      map.setFilter("changes", filter);
-      map.setFilter("changes-halo", filter);
+      for (const l of [...TYPE_LAYERS, ...OVERALL_LAYERS, "overall-heat"]) map.setFilter(l, filter);
       if (selected && !shown.includes(byId.get(selected)!.properties.change_type)) select(null);
     });
+
+    // View switch: change types (shape + colour per class) or overall change (one glow per record).
+    const density = $<HTMLInputElement>("density");
+    const setVis = (ids: string[], on: boolean) => {
+      for (const l of ids) map.setLayoutProperty(l, "visibility", on ? "visible" : "none");
+    };
+    const applyView = () => {
+      const overall = document.querySelector<HTMLInputElement>('input[name="view"]:checked')?.value === "overall";
+      setVis(TYPE_LAYERS, !overall);
+      setVis(OVERALL_LAYERS, overall);
+      setVis(["overall-heat"], overall && density.checked);
+      $("overall-legend").hidden = !overall;
+      $("density-note").hidden = !(overall && density.checked);
+    };
+    for (const r of document.querySelectorAll<HTMLInputElement>('input[name="view"]')) r.addEventListener("change", applyView);
+    density.addEventListener("change", applyView);
   });
 
   map.on("error", (e) => {
