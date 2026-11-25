@@ -4,7 +4,7 @@ import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 import {
   CHANGE_TYPES, ContractError, checkSameRun, checkTimelineMatchesRun, checkTriageMatchesRun, parseChanges, parseSummary,
-  parseTimeline, parseTriage, positions, reconciliationHolds, recordHistory,
+  historyRuns, parseTimeline, parseTriage, positions, reconciliationHolds, recordHistory,
   type ChangeProperties,
 } from "../src/contract";
 
@@ -193,6 +193,23 @@ describe("parseTimeline", () => {
       events: [[1, 2, 0, 0.6, 0.5, 0, 0.5, 0.5, 10.1]], event_count: 1 });
     expect(recordHistory(parseTimeline(moveOnly), "a").map((s) => s.kind)).toEqual(["seen", "position_changed"]);
   });
+  it("lists a move's own origin when steps outside the study area are missing, and never joins across a removal", () => {
+    // a: removed at P in release 1; re-added and moved outside the study area (not in the file); in release 3 it
+    // moves back in from Q. The trail must start at Q, not at the removal point P.
+    const gap = tl({
+      releases: [rel("2026-01-01.0", { added: 1 }), rel("2026-02-01.0", { removed: 1 }), rel("2026-03-01.0"),
+        rel("2026-04-01.0", { position_changed: 1 })],
+      events: [[0, 0, 0, 0.5, 0.5, null, null, null, null], [1, 1, 0, 0.5, 0.5, null, null, null, null],
+        [3, 2, 0, 0.6, 0.5, 2, 0.9, 0.9, 50]],
+      event_count: 3, inputs_sha256: { "2026-04-01.0": "cl" },
+    });
+    const steps = recordHistory(parseTimeline(gap), "a");
+    expect(steps.map((s) => [s.release, s.kind, s.joined])).toEqual([
+      ["2026-01-01.0", "added", false], ["2026-02-01.0", "removed", false],
+      ["2026-03-01.0", "seen", false], ["2026-04-01.0", "position_changed", true],
+    ]);
+    expect(historyRuns(steps)).toEqual([[[0.9, 0.9], [0.6, 0.5]]]);
+  });
 });
 
 describe("real timeline file", () => {
@@ -202,6 +219,17 @@ describe("real timeline file", () => {
 
   it("ends at the committed change run and uses its changelog", () => {
     expect(() => checkTimelineMatchesRun(timeline, changes)).not.toThrow();
+  });
+  it("draws every recorded move from its own from position", () => {
+    for (const id of timeline.ids.slice(0, 4000)) {
+      const steps = recordHistory(timeline, id);
+      steps.forEach((s, i) => {
+        if (s.kind === "position_changed") expect(steps[i - 1]?.kind === "removed", id).toBe(false);
+      });
+    }
+    const steps = recordHistory(timeline, "4a277dd5-7b99-4a6f-aae8-97719e2345b4"); // moves back in from outside
+    const i = steps.findIndex((s) => s.release === "2026-09-23.1");
+    expect(steps[i - 1]).toMatchObject({ release: "2026-08-19.0", kind: "seen", lon: 28.179478, lat: -25.758072 });
   });
   it("gives every moved record of the change run a position history ending at its current position", () => {
     for (const f of changes.features.filter((x) => x.properties.change_type === "moved")) {

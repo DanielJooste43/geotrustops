@@ -347,18 +347,53 @@ export function checkTimelineMatchesRun(timeline: Timeline, changes: Changes): v
     "the timeline was built from a different changelog than the change run's cross-check");
 }
 
-/** A record's positions by release from the timeline: the from position of its first move, then each event. */
-export function recordHistory(timeline: Timeline, id: string): { release: string; kind: TimelineKind | "seen"; lon: number; lat: number; distance_m: number | null }[] {
+export interface HistoryStep {
+  release: string;
+  /** "seen": the last-seen position a move started from, listed because no earlier step shows it. */
+  kind: TimelineKind | "seen";
+  lon: number;
+  lat: number;
+  distance_m: number | null;
+  /** True when a line from the previous step to this one is a recorded move (contract §12); false starts a new run. */
+  joined: boolean;
+}
+
+/**
+ * A record's positions by release from the timeline. Each move is drawn from its own from position (the record's
+ * last-seen position), which is listed when the previous step is elsewhere: events outside the study area are not
+ * in the file, so consecutive events need not connect. Only a move joins two steps; an add, a removal or a listed
+ * origin starts a new run, so unrelated positions are never connected.
+ */
+export function recordHistory(timeline: Timeline, id: string): HistoryStep[] {
   const idx = timeline.ids.indexOf(id);
   if (idx < 0) return [];
-  const out: { release: string; kind: TimelineKind | "seen"; lon: number; lat: number; distance_m: number | null }[] = [];
+  const out: HistoryStep[] = [];
   for (const e of timeline.events) {
     if (e[2] !== idx) continue;
     const kind = TIMELINE_KINDS[e[1]]!;
-    if (kind === "position_changed" && out.length === 0 && e[5] !== null && e[6] !== null && e[7] !== null) {
-      out.push({ release: timeline.releases[e[5]]!.release, kind: "seen", lon: e[6], lat: e[7], distance_m: null });
+    const release = timeline.releases[e[0]]!.release;
+    if (kind === "position_changed" && e[5] !== null && e[6] !== null && e[7] !== null) {
+      const prev = out[out.length - 1];
+      const fromShown = prev !== undefined && prev.kind !== "removed" && prev.lon === e[6] && prev.lat === e[7];
+      if (!fromShown) {
+        out.push({ release: timeline.releases[e[5]]!.release, kind: "seen", lon: e[6], lat: e[7], distance_m: null, joined: false });
+      }
+      out.push({ release, kind, lon: e[3], lat: e[4], distance_m: e[8], joined: true });
+    } else {
+      out.push({ release, kind, lon: e[3], lat: e[4], distance_m: e[8], joined: false });
     }
-    out.push({ release: timeline.releases[e[0]]!.release, kind, lon: e[3], lat: e[4], distance_m: e[8] });
   }
   return out;
+}
+
+/** The recorded moves of a history as line runs: consecutive steps joined by a move, never across a break. */
+export function historyRuns(steps: HistoryStep[]): [number, number][][] {
+  const runs: [number, number][][] = [];
+  for (const s of steps) {
+    const p: [number, number] = [s.lon, s.lat];
+    const run = runs[runs.length - 1];
+    if (s.joined && run) run.push(p);
+    else runs.push([p]);
+  }
+  return runs.filter((r) => r.length >= 2);
 }

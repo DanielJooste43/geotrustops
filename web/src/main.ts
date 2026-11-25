@@ -13,7 +13,7 @@ import "maplibre-gl/dist/maplibre-gl.css";
 import "./styles.css";
 import {
   CHANGE_TYPES, ContractError, checkSameRun, checkTimelineMatchesRun, checkTriageMatchesRun, parseChanges, parseSummary,
-  parseTimeline, parseTriage, positions, reconciliationHolds, recordHistory,
+  historyRuns, parseTimeline, parseTriage, positions, reconciliationHolds, recordHistory,
   type ChangeFeature, type ChangeProperties, type ChangeType, type Changes, type StackCluster, type Summary,
   type Timeline, type Triage,
 } from "./contract";
@@ -254,14 +254,14 @@ function renderClusterInspector(c: StackCluster, triage: Triage): void {
   body.append(notice);
 }
 
-/** Appends a record's positions by release (from the timeline) to the open inspector; returns them for the map. */
-function renderHistorySection(tl: Timeline, id: string): [number, number][] {
+/** Appends a record's positions by release (from the timeline) to the open inspector; returns its trail for the map. */
+function renderHistorySection(tl: Timeline, id: string): { points: [number, number][]; runs: [number, number][][] } {
   const steps = recordHistory(tl, id);
-  if (steps.length === 0) return [];
+  if (steps.length === 0) return { points: [], runs: [] };
   const body = $("inspector-body");
   body.append(el("h3", undefined, "Position by release"));
   const list = el("ul", "history-list");
-  const label = { seen: "position", added: "added", removed: "removed (last position)", position_changed: "moved" };
+  const label = { seen: "last-seen position", added: "added", removed: "removed (last position)", position_changed: "moved" };
   for (const s of steps) {
     const li = el("li");
     const what = s.distance_m !== null ? `${label[s.kind]} ${s.distance_m} m` : label[s.kind];
@@ -271,8 +271,9 @@ function renderHistorySection(tl: Timeline, id: string): [number, number][] {
   }
   body.append(list);
   body.append(el("p", "note small",
-    "From Overture's changelogs: positions per release, not dates within it. The dotted line joins them in order."));
-  return steps.map((s) => [s.lon, s.lat] as [number, number]);
+    "From Overture's changelogs: positions per release, not dates within it. Dotted lines join a record's recorded "
+    + "moves only; steps outside the study area are not listed, so a move may start from a last-seen position."));
+  return { points: steps.map((s) => [s.lon, s.lat] as [number, number]), runs: historyRuns(steps) };
 }
 
 // ---------- map ----------
@@ -445,7 +446,7 @@ async function main(): Promise<void> {
     map.addLayer({ id: "sel-line", type: "line", source: "selection", filter: ["==", ["geometry-type"], "LineString"], paint: { "line-color": "#f1f5f9", "line-width": 1.5, "line-dasharray": [2, 2] } });
     map.addSource("sel-trail", { type: "geojson", data: { type: "FeatureCollection", features: [] } });
     map.addLayer({
-      id: "sel-trail-line", type: "line", source: "sel-trail", filter: ["==", ["geometry-type"], "LineString"],
+      id: "sel-trail-line", type: "line", source: "sel-trail", filter: ["in", ["geometry-type"], ["literal", ["LineString", "MultiLineString"]]],
       paint: { "line-color": "#fbbf24", "line-width": 1.5, "line-dasharray": [1, 2], "line-opacity": 0.9 },
     });
     map.addLayer({
@@ -486,13 +487,13 @@ async function main(): Promise<void> {
       const id = f.properties.id;
       getTimeline().then((tl) => {
         if (selected !== id) return; // another record was chosen meanwhile
-        const pts = renderHistorySection(tl, id);
-        if (pts.length < 2) return;
+        const { points, runs } = renderHistorySection(tl, id);
+        if (runs.length === 0) return;
         trail?.setData({
           type: "FeatureCollection",
           features: [
-            { type: "Feature", properties: {}, geometry: { type: "LineString", coordinates: pts } },
-            ...pts.map((c): Feature => ({ type: "Feature", properties: {}, geometry: { type: "Point", coordinates: c } })),
+            { type: "Feature", properties: {}, geometry: { type: "MultiLineString", coordinates: runs } },
+            ...points.map((c): Feature => ({ type: "Feature", properties: {}, geometry: { type: "Point", coordinates: c } })),
           ],
         });
       }).catch(() => { /* history is optional; the History view's status line explains a failure */ });
