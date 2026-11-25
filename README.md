@@ -84,13 +84,14 @@ wrong.
 ## Web map
 
 `web/` is a one-screen map of the exported files: change records by type (shape and colour), an overall-change view
-(one glow per changed record, with an optional smoothed density layer), quality flags for stacked places, a record
-inspector with previous and current values and positions, a keyboard-accessible records list, and a provenance panel
-with release ids, input checksums, reconciliation and the changelog cross-check.
+(one glow per changed record, with an optional smoothed density layer), a history view that plays the release
+timeline back release by release with movement trails, quality flags for stacked places, a record inspector with
+previous and current values, positions and the record's position by release, a keyboard-accessible records list, and
+a provenance panel with release ids, input checksums, reconciliation and the changelog cross-check.
 
-It reads `out/changes.geojson`, `out/summary.json` and `out_triage/stack_causes.json` only, and every number it shows
-comes from `summary.json` (or, for quality flags, from the triage file): it never recomputes a classification or a
-count ([ADR 0004](docs/decisions/0004-engine-interface-separation.md)). A typed adapter validates the files against
+It reads `out/changes.geojson`, `out/summary.json`, `out_triage/stack_causes.json` and `out_timeline/timeline.json`
+only, and every number it shows comes from `summary.json` (or, for quality flags and history, from the triage and
+timeline files): it never recomputes a classification or a count ([ADR 0004](docs/decisions/0004-engine-interface-separation.md)). A typed adapter validates the files against
 the data contract and refuses to draw data that does not match.
 
 ```powershell

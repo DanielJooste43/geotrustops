@@ -1,6 +1,6 @@
 // Copies the pipeline's exported files into the web app's public folder (ADR 0004: the map reads exported files only),
 // and the licence of the one shipped library (MapLibre GL JS, BSD-3-Clause: its notice must ship with the site).
-// Inputs: ../out/changes.geojson, ../out/summary.json, ../out_triage/stack_causes.json,
+// Inputs: ../out/changes.geojson, ../out/summary.json, ../out_triage/stack_causes.json, ../out_timeline/timeline.json,
 // node_modules/maplibre-gl/LICENSE.txt.
 // Outputs: public/data/, public/licenses/ (both git-ignored; rebuilt on every dev/build).
 // Fails if an input is missing, so a build can never ship without data or with stale data.
@@ -24,7 +24,14 @@ if (!existsSync(triage)) {
   process.exit(1);
 }
 copyFileSync(triage, dest + "stack_causes.json");
+// Release timeline (contract §12, written by `geotrustops timeline`).
+const timeline = fileURLToPath(new URL("../../out_timeline/timeline.json", import.meta.url));
+if (!existsSync(timeline)) {
+  console.error("copy-data: missing out_timeline/timeline.json (run geotrustops timeline)");
+  process.exit(1);
+}
+copyFileSync(timeline, dest + "timeline.json");
 const lic = fileURLToPath(new URL("../public/licenses/", import.meta.url));
 mkdirSync(lic, { recursive: true });
 copyFileSync(fileURLToPath(new URL("../node_modules/maplibre-gl/LICENSE.txt", import.meta.url)), lic + "maplibre-gl-LICENSE.txt");
-console.log("copy-data: changes, summary, stack_causes -> public/data/; MapLibre licence -> public/licenses/");
+console.log("copy-data: changes, summary, stack_causes, timeline -> public/data/; MapLibre licence -> public/licenses/");
