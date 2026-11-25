@@ -206,6 +206,7 @@ export interface Triage {
   method: string;
   cluster_rule_m: number;
   places_in_aoi: number;
+  inputs_sha256: { places: string } & Record<string, string>;
   cluster_count: number;
   clustered_places: number;
   licence: "ODbL-1.0";
@@ -221,6 +222,7 @@ export function parseTriage(raw: unknown): Triage {
   need(raw.schema_version === 1, `triage: schema ${String(raw.schema_version)}, map supports 1`);
   need(raw.licence === "ODbL-1.0" && typeof raw.licence_uri === "string", "triage: ODbL licence notice missing");
   need(typeof raw.attribution === "string" && typeof raw.release === "string", "triage: attribution/release missing");
+  need(isObject(raw.inputs_sha256) && typeof raw.inputs_sha256.places === "string", "triage: inputs_sha256 missing");
   need(Array.isArray(raw.clusters), "triage: clusters missing");
   need(raw.cluster_count === raw.clusters.length, "triage: cluster_count does not match the clusters listed");
   let places = 0;
@@ -236,4 +238,12 @@ export function parseTriage(raw: unknown): Triage {
   });
   need(places === raw.clustered_places, "triage: clustered_places does not match the clusters listed");
   return raw as unknown as Triage;
+}
+
+/** Quality flags describe one release; showing them with another change run would mislabel them (contract §11). */
+export function checkTriageMatchesRun(triage: Triage, summary: Summary): void {
+  need(triage.release === summary.releases.curr,
+    `quality flags are for release ${triage.release}, the change run's current release is ${summary.releases.curr}`);
+  need(triage.inputs_sha256.places === summary.inputs_sha256.curr,
+    "quality flags were computed from a different places extract than the change run");
 }
