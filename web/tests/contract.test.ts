@@ -3,7 +3,7 @@ import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 import {
-  CHANGE_TYPES, ContractError, checkSameRun, parseChanges, parseSummary, positions, reconciliationHolds,
+  CHANGE_TYPES, ContractError, checkSameRun, parseChanges, parseSummary, parseTriage, positions, reconciliationHolds,
   type ChangeProperties,
 } from "../src/contract";
 
@@ -83,5 +83,49 @@ describe("real exported files", () => {
       const expected = f.properties.change_type === "removed" ? prev : curr;
       expect(f.geometry.coordinates, f.properties.id).toEqual(expected);
     }
+  });
+});
+
+describe("parseTriage", () => {
+  const cluster = { size: 2, lon: 28.19, lat: -25.75, likely_cause: "one compact building", also_duplicates: false,
+    manual_inspection: true, ids: ["a", "b"] };
+  const doc = (over: object = {}) => ({ schema_version: 1, release: "r", method: "m", cluster_rule_m: 2,
+    places_in_aoi: 10, cluster_count: 1, clustered_places: 2, licence: "ODbL-1.0",
+    licence_uri: "https://opendatacommons.org/licenses/odbl/1-0/", attribution: "a", interpretation: "i",
+    clusters: [cluster], ...over });
+
+  it("accepts a valid file", () => { expect(parseTriage(doc()).clusters).toHaveLength(1); });
+  it("requires the ODbL notice (ODbL 4.2)", () => {
+    expect(() => parseTriage(doc({ licence: "CC0-1.0" }))).toThrow(/ODbL/);
+  });
+  it("requires the manual-inspection flag on every cluster", () => {
+    expect(() => parseTriage(doc({ clusters: [{ ...cluster, manual_inspection: false }] }))).toThrow(/manual/);
+  });
+  it("rejects a size that does not match its ids", () => {
+    expect(() => parseTriage(doc({ clusters: [{ ...cluster, size: 3 }], clustered_places: 3 }))).toThrow(/size/);
+  });
+  it("rejects totals that do not match the clusters", () => {
+    expect(() => parseTriage(doc({ clustered_places: 5 }))).toThrow(/clustered_places/);
+  });
+});
+
+describe("real triage file", () => {
+  const triage = parseTriage(JSON.parse(readFileSync(
+    fileURLToPath(new URL("../../out_triage/stack_causes.json", import.meta.url)), "utf8")) as unknown);
+  const summary = parseSummary(JSON.parse(readFileSync(
+    fileURLToPath(new URL("../../out/summary.json", import.meta.url)), "utf8")) as unknown);
+
+  it("describes the current release of the change outputs", () => {
+    expect(triage.release).toBe(summary.releases.curr);
+  });
+  it("places every cluster centre inside the study area", () => {
+    const { west, south, east, north } = summary.aoi;
+    for (const c of triage.clusters) {
+      expect(c.lon >= west && c.lon <= east && c.lat >= south && c.lat <= north, `${c.lon},${c.lat}`).toBe(true);
+    }
+  });
+  it("lists each place in at most one cluster", () => {
+    const ids = triage.clusters.flatMap((c) => c.ids);
+    expect(new Set(ids).size).toBe(ids.length);
   });
 });

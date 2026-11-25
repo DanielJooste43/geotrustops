@@ -187,3 +187,53 @@ export function positions(p: ChangeProperties): { prev: [number, number] | null;
   const curr = p.curr_lon !== null && p.curr_lat !== null ? ([p.curr_lon, p.curr_lat] as [number, number]) : null;
   return { prev, curr };
 }
+
+// ---------- quality triage file (out_triage/stack_causes.json, ODbL, schema_version 1) ----------
+
+export interface StackCluster {
+  size: number;
+  lon: number;
+  lat: number;
+  likely_cause: string;
+  also_duplicates: boolean;
+  manual_inspection: true;
+  ids: string[];
+}
+
+export interface Triage {
+  schema_version: 1;
+  release: string;
+  method: string;
+  cluster_rule_m: number;
+  places_in_aoi: number;
+  cluster_count: number;
+  clustered_places: number;
+  licence: "ODbL-1.0";
+  licence_uri: string;
+  attribution: string;
+  interpretation: string;
+  clusters: StackCluster[];
+}
+
+/** Validates the stacked-places triage file; throws ContractError on the first violation. */
+export function parseTriage(raw: unknown): Triage {
+  need(isObject(raw), "triage: not an object");
+  need(raw.schema_version === 1, `triage: schema ${String(raw.schema_version)}, map supports 1`);
+  need(raw.licence === "ODbL-1.0" && typeof raw.licence_uri === "string", "triage: ODbL licence notice missing");
+  need(typeof raw.attribution === "string" && typeof raw.release === "string", "triage: attribution/release missing");
+  need(Array.isArray(raw.clusters), "triage: clusters missing");
+  need(raw.cluster_count === raw.clusters.length, "triage: cluster_count does not match the clusters listed");
+  let places = 0;
+  raw.clusters.forEach((c: unknown, i: number) => {
+    const at = `clusters[${i}]`;
+    need(isObject(c), `${at}: not an object`);
+    need(typeof c.lon === "number" && typeof c.lat === "number", `${at}: centre missing`);
+    need(typeof c.likely_cause === "string" && c.likely_cause.length > 0, `${at}: likely_cause missing`);
+    need(c.manual_inspection === true, `${at}: every cluster must be flagged for manual inspection`);
+    need(Array.isArray(c.ids) && c.ids.every((x) => typeof x === "string"), `${at}: ids must be strings`);
+    need(typeof c.size === "number" && c.size >= 2 && c.size === c.ids.length, `${at}: size must equal ids (>= 2)`);
+    places += c.size;
+  });
+  need(places === raw.clustered_places, "triage: clustered_places does not match the clusters listed");
+  return raw as unknown as Triage;
+}

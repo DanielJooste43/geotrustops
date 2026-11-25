@@ -141,6 +141,13 @@ code, .mono { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; fo
 .glow-swatch { width: 18px; height: 18px; flex: none; border-radius: 50%;
   background: radial-gradient(circle, #fdf4ff 0 18%, var(--overall) 30%, rgb(232 121 249 / 0) 72%); }
 
+/* Quality flags */
+.quality { margin: 20px 0; }
+.ring-swatch { width: 18px; height: 18px; flex: none; border-radius: 50%; border: 2px solid var(--flag);
+  background: rgb(167 139 250 / 0.15); }
+.badge.flag { color: var(--flag); }
+.ids { margin: 4px 0 0; padding-left: 16px; }
+
 /* MapLibre attribution on dark */
 .maplibregl-ctrl.maplibregl-ctrl-attrib { background: rgb(8 15 25 / 0.8); color: var(--muted); }
 .maplibregl-ctrl-attrib a { color: var(--text); }

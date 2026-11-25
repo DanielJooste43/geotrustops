@@ -11,8 +11,9 @@ import workerUrl from "maplibre-gl/dist/maplibre-gl-worker.mjs?url";
 import "maplibre-gl/dist/maplibre-gl.css";
 import "./styles.css";
 import {
-  CHANGE_TYPES, ContractError, checkSameRun, parseChanges, parseSummary, positions, reconciliationHolds,
-  type ChangeFeature, type ChangeProperties, type ChangeType, type Changes, type Summary,
+  CHANGE_TYPES, ContractError, checkSameRun, parseChanges, parseSummary, parseTriage, positions, reconciliationHolds,
+  type ChangeFeature, type ChangeProperties, type ChangeType, type Changes, type StackCluster, type Summary,
+  type Triage,
 } from "./contract";
 import { drawSymbol, symbolSvg, symbolsFor, type Symbol } from "./symbols";
 
@@ -24,7 +25,8 @@ const BASEMAP_TIMEOUT_MS = 8000;
 const OVERALL = "#e879f9"; // one colour for every changed record in the overall view
 const TYPE_LAYERS = ["changes-halo", "changes"];
 const OVERALL_LAYERS = ["overall-glow", "overall-core"];
-const CLICKABLE = ["changes", "overall-core", "overall-glow"];
+const CHANGE_CLICKABLE = ["changes", "overall-core", "overall-glow"];
+const FLAG = "#a78bfa";
 setWorkerUrl(workerUrl);
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -224,6 +226,31 @@ function renderInspector(p: ChangeProperties, s: Symbol, summary: Summary): void
   body.append(el("p", "note small", "A change to the map record, not proof of a real-world opening, closure or move."));
 }
 
+function renderClusterInspector(c: StackCluster, triage: Triage): void {
+  const body = $("inspector-body");
+  body.replaceChildren();
+  $("inspector-title").textContent = `${c.size} places stacked within ${triage.cluster_rule_m} m`;
+  body.append(el("span", "badge flag", "Quality flag · manual inspection"));
+  const kv = el("dl", "kv");
+  kv.append(el("dt", undefined, "Likely cause"), el("dd", undefined, c.likely_cause));
+  if (c.also_duplicates) kv.append(el("dt", undefined, "Also"), el("dd", undefined, "contains duplicate records"));
+  kv.append(el("dt", undefined, "Release"), el("dd", undefined, triage.release));
+  kv.append(el("dt", undefined, "Position"), el("dd", "mono", `${c.lon.toFixed(6)}, ${c.lat.toFixed(6)}`));
+  body.append(kv);
+  body.append(el("h3", undefined, `Place IDs (${c.size})`));
+  const list = el("ul", "ids mono");
+  for (const id of c.ids.slice(0, 8)) list.append(el("li", undefined, id));
+  if (c.size > 8) list.append(el("li", undefined, `and ${c.size - 8} more (in the downloadable database)`));
+  body.append(list);
+  body.append(el("p", "note small", triage.interpretation));
+  const notice = el("p", "note small");
+  const a = el("a", undefined, "Open Database License (ODbL)");
+  a.href = triage.licence_uri;
+  a.rel = "noopener";
+  notice.append(`Derived from data ${triage.attribution}; made available under the `, a, ".");
+  body.append(notice);
+}
+
 // ---------- map ----------
 
 async function main(): Promise<void> {
@@ -240,6 +267,18 @@ async function main(): Promise<void> {
     $("releases").textContent = "Data could not be loaded.";
     showNotice(why);
     return;
+  }
+
+  // The quality layer is optional: if its file is missing or invalid, the change map still works.
+  let triage: Triage | null = null;
+  try {
+    triage = parseTriage(await loadJson("./data/stack_causes.json"));
+    $("quality-count").textContent =
+      `${fmt.format(triage.cluster_count)} groups · ${fmt.format(triage.clustered_places)} places`;
+  } catch (e) {
+    $<HTMLInputElement>("quality").disabled = true;
+    $("quality-count").textContent = "unavailable";
+    console.warn("quality flags not loaded:", e);
   }
 
   const symbols = symbolsFor(summary.thresholds_m);
@@ -287,6 +326,30 @@ async function main(): Promise<void> {
       },
     });
     map.addLayer({ id: "aoi-line", type: "line", source: "aoi", paint: { "line-color": "#a8b8ca", "line-width": 1, "line-dasharray": [3, 3], "line-opacity": 0.6 } });
+
+    if (triage) {
+      const fc: FeatureCollection = {
+        type: "FeatureCollection",
+        features: triage.clusters.map((c, i) => ({
+          type: "Feature", id: i, properties: { idx: i, size: c.size },
+          geometry: { type: "Point", coordinates: [c.lon, c.lat] },
+        })),
+      };
+      map.addSource("quality", { type: "geojson", data: fc });
+      map.addLayer({
+        id: "quality-ring", type: "circle", source: "quality",
+        paint: {
+          // Area grows with group size (radius ~ sqrt(size)), so large stacks stand out without hiding the map.
+          "circle-radius": ["interpolate", ["linear"], ["zoom"],
+            12, ["*", 2.4, ["sqrt", ["get", "size"]]], 16, ["*", 5, ["sqrt", ["get", "size"]]]],
+          "circle-color": FLAG,
+          "circle-opacity": 0.12,
+          "circle-stroke-color": FLAG,
+          "circle-stroke-width": 1.5,
+          "circle-stroke-opacity": 0.85,
+        },
+      });
+    }
 
     map.addSource("changes", { type: "geojson", data: changes as unknown as FeatureCollection, promoteId: "id" });
     map.addLayer({
@@ -377,17 +440,40 @@ async function main(): Promise<void> {
     };
 
     const byId = new Map(changes.features.map((f) => [f.properties.id, f]));
-    map.on("click", CLICKABLE, (e) => {
-      const hit = e.features?.[0] as MapGeoJSONFeature | undefined;
-      const id = hit?.properties?.id as string | undefined;
-      select(id ? (byId.get(id) ?? null) : null);
-    });
+    const visibleLayers = (ids: string[]) =>
+      ids.filter((l) => map.getLayer(l) && map.getLayoutProperty(l, "visibility") !== "none");
+    const selectCluster = (c: StackCluster, t: Triage) => {
+      select(null);
+      map.getSource<GeoJSONSource>("selection")?.setData({
+        type: "FeatureCollection",
+        features: [{
+          type: "Feature", properties: { which: "curr" }, geometry: { type: "Point", coordinates: [c.lon, c.lat] },
+        }],
+      });
+      renderClusterInspector(c, t);
+      $("inspector").hidden = false;
+    };
+    // One click handler: a change record wins over a quality ring underneath it.
     map.on("click", (e) => {
-      const visible = CLICKABLE.filter((l) => map.getLayoutProperty(l, "visibility") !== "none");
-      if (!map.queryRenderedFeatures(e.point, { layers: visible }).length) select(null);
+      const change = map.queryRenderedFeatures(e.point, { layers: visibleLayers(CHANGE_CLICKABLE) })[0] as
+        MapGeoJSONFeature | undefined;
+      const id = change?.properties?.id as string | undefined;
+      if (id) return select(byId.get(id) ?? null);
+      const ring = triage ? map.queryRenderedFeatures(e.point, { layers: visibleLayers(["quality-ring"]) })[0] : undefined;
+      const c = ring && triage ? triage.clusters[Number(ring.properties?.idx)] : undefined;
+      if (c && triage) return selectCluster(c, triage);
+      select(null);
     });
-    map.on("mouseenter", CLICKABLE, () => { map.getCanvas().style.cursor = "pointer"; });
-    map.on("mouseleave", CLICKABLE, () => { map.getCanvas().style.cursor = ""; });
+    const hoverable = [...CHANGE_CLICKABLE, ...(triage ? ["quality-ring"] : [])];
+    map.on("mouseenter", hoverable, () => { map.getCanvas().style.cursor = "pointer"; });
+    map.on("mouseleave", hoverable, () => { map.getCanvas().style.cursor = ""; });
+
+    $<HTMLInputElement>("quality").addEventListener("change", (e) => {
+      if (map.getLayer("quality-ring")) {
+        const on = (e.target as HTMLInputElement).checked;
+        map.setLayoutProperty("quality-ring", "visibility", on ? "visible" : "none");
+      }
+    });
     $("inspector-close").addEventListener("click", () => select(null));
     document.addEventListener("keydown", (e) => { if (e.key === "Escape") select(null); });
 

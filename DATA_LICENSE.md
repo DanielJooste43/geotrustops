@@ -40,7 +40,7 @@ Each output feature names its sources and licences in `source_datasets` and `sou
 
 Per-source details: [Overture attribution and licensing](https://docs.overturemaps.org/attribution/).
 
-## Context layers used for analysis only (not redistributed)
+## Context layers and the quality-flag file (ODbL)
 
 The stacked-coordinates investigation (`scripts/investigate/`, `docs/investigation_backlog.md` I-1) reads three more
 Overture themes for the extraction area: **divisions** (town and suburb points), **buildings** (footprints) and
@@ -50,12 +50,16 @@ Overture themes for the extraction area: **divisions** (town and suburb points),
 
 | Theme | Licence | How it is used here | Shared? |
 |---|---|---|---|
-| divisions, buildings, transportation | ODbL 1.0 (© OpenStreetMap contributors, Overture Maps Foundation) | downloaded to `data/raw/context/` (git-ignored) by `scripts/investigate/fetch_context_layers.py`; read by `scripts/investigate/stack_causes.py` | no: only counts and summaries appear in this repository |
+| divisions, buildings, transportation | ODbL 1.0 (© OpenStreetMap contributors, Overture Maps Foundation) | downloaded to `data/raw/context/` (git-ignored) by `scripts/investigate/fetch_context_layers.py`; read by `scripts/investigate/stack_causes.py` | the layers themselves: no. Results derived from them: yes, see below |
 
-Licence review (2026-11-24): use for internal analysis, with counts and summaries published with attribution. Data
-derived from these layers for individual places (e.g. a likely cause per place) would be a derivative database under
-ODbL; if it is ever published it will be a separate file under ODbL with this attribution, kept apart from the
-outputs above.
+**`out_triage/stack_causes.json`** is a derivative database of these layers: for each group of places stacked
+within 2 m in release 2026-11-18.0, its centre, size, the likely cause from the pre-registered checks
+(`docs/investigation_backlog.md`, I-1), a manual-inspection flag and the place ids. It is published under the
+[Open Database License 1.0](https://opendatacommons.org/licenses/odbl/1-0/) (text in
+[LICENSES/ODbL-1.0.txt](LICENSES/ODbL-1.0.txt)), with the attribution "© OpenStreetMap contributors, Overture Maps
+Foundation". It is a separate database: it holds no place names or other place attributes and is never merged into
+the change outputs above, which keep their own licences. The method that creates it is
+`scripts/investigate/stack_causes.py --export`; its inputs are listed by SHA-256 inside the file.
 
 ## Attribution
 

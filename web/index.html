@@ -50,6 +50,17 @@
             <legend>Change type</legend>
             <div id="filter-list"></div>
           </fieldset>
+          <fieldset class="quality">
+            <legend>Quality flags</legend>
+            <label class="filter"><input type="checkbox" id="quality" checked />
+              <span class="ring-swatch" aria-hidden="true"></span>
+              <span class="name">Stacked places <span class="n" id="quality-count"></span></span></label>
+            <p class="note small" id="quality-note">Places within 2 m of each other in the current release, with a
+              likely cause from simple checks; each group needs manual inspection. Contains information from Overture
+              Maps context layers (© OpenStreetMap contributors, Overture Maps Foundation), made available here under
+              the <a href="https://opendatacommons.org/licenses/odbl/1-0/" rel="noopener">Open Database License
+              (ODbL)</a>.</p>
+          </fieldset>
           <p class="note" id="interpretation"></p>
           <p class="note small">Counts are for the full study area, from the pipeline's summary. Filters change what
             the map shows, not the counts.</p>
@@ -96,6 +107,13 @@
           CARTO basemaps designed by Stamen and Paul Norman for CartoDB Inc. (CC BY 3.0). Used without changes.</p>
         <p>The basemap is loaded from OpenFreeMap through Cloudflare's network, which receives your IP address and
           browser details as part of each request. This site sets no cookies and has no analytics.</p>
+        <h3>Quality flags</h3>
+        <p>The stacked-places layer is a separate database derived from Overture's buildings, transportation and
+          divisions themes (© OpenStreetMap contributors, Overture Maps Foundation), made available under the
+          <a href="https://opendatacommons.org/licenses/odbl/1-0/" rel="noopener">Open Database License (ODbL)</a>.
+          <a href="./data/stack_causes.json" download>Download the database</a> (JSON); the method is
+          <code>scripts/investigate/stack_causes.py</code> in the
+          <a href="https://github.com/DanielJooste43/geotrustops" rel="noopener">repository</a>.</p>
         <h3>Software</h3>
         <p><a href="https://maplibre.org/" rel="noopener">MapLibre GL JS</a> (BSD-3-Clause,
           <a href="./licenses/maplibre-gl-LICENSE.txt">licence</a>). Fonts and icons in the basemap are served by

@@ -74,6 +74,7 @@ they include business contact fields (phones, emails, websites, social links) th
 | `out/changes.geojson` | one point per changed place with before/after values, distance and flags (RFC 7946) |
 | `out/summary.json` | counts, flags, reconciliation results, changelog cross-check, input hashes |
 | `out/qa_report.md` | the same for a human reviewer: largest moves, renames by kind, exclusions, mismatches |
+| `out_triage/stack_causes.json` | quality triage: places stacked within 2 m, each group with a likely cause from simple checks and a manual-inspection flag (separate ODbL database; see [DATA_LICENSE.md](DATA_LICENSE.md)) |
 
 These are **map-record** changes: `added` ≠ a business opened, `removed` ≠ closed, `moved` ≠ the old position was
 wrong.
@@ -107,7 +108,8 @@ Python 3.12 · DuckDB 1.4.2 (SQL, `spatial`, `httpfs`) · GeoParquet on S3 · py
 
 ## Third-party tools and services
 
-Each was checked against its own licence before use. None is redistributed with this project.
+Each was checked against its own licence before use. Only MapLibre GL JS is shipped to visitors of the web map,
+with its licence.
 
 | Component | Used for | Licence |
 |---|---|---|
@@ -119,7 +121,10 @@ Each was checked against its own licence before use. None is redistributed with 
 | mypy 2.4.1 | static type checking | MIT (some bundled files PSF-2.0) |
 | GitHub Actions: `actions/checkout` v7.0.1, `actions/setup-python` v7.1.0, `actions/upload-artifact` v7.0.2 | CI (pinned to commit SHAs) | MIT |
 | Overture Maps data via AWS Open Data | source data | see [DATA_LICENSE.md](DATA_LICENSE.md) |
-| Overture divisions, buildings and transportation themes | investigation context layers (analysis only, not redistributed) | ODbL 1.0; see [DATA_LICENSE.md](DATA_LICENSE.md) |
+| Overture divisions, buildings and transportation themes | context layers for the quality-triage checks; layers not redistributed, derived results in `out_triage/` | ODbL 1.0; see [DATA_LICENSE.md](DATA_LICENSE.md) |
+| MapLibre GL JS 6.17.0 | web map rendering (shipped) | BSD-3-Clause |
+| TypeScript 7.0.2, Vite 8.3.8, Vitest 5.1.1, Node.js 26 LTS | web map build and tests (not shipped) | Apache-2.0 / MIT / MIT / MIT; Vite's CSS minifier `lightningcss` is MPL-2.0, used at build time only |
+| OpenFreeMap (Dark style, hosted tiles) | basemap | free service, no key; style BSD-3-Clause code and CC BY 4.0 design; map data © OpenStreetMap contributors (ODbL), © OpenMapTiles |
 | GitHub Releases (private repository) | archive of the pinned extracts | GitHub Terms of Service; data licences as above |
 
 ## Data and licence
