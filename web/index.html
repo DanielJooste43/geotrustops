@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>GeoTrustOps — Geospatial Change Intelligence</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Crect width=%2232%22 height=%2232%22 rx=%226%22 fill=%22%23080f19%22/%3E%3Cpath d=%22M3 16h7l3-8 5 16 4-12 2 4h5%22 fill=%22none%22 stroke=%22%232dd4bf%22 stroke-width=%222.5%22 stroke-linejoin=%22round%22/%3E%3C/svg%3E" />
+    <meta name="description" content="What changed between two pinned Overture Maps places releases in central Pretoria, reconciled and checked." />
+  </head>
+  <body>
+    <a class="skip" href="#filters">Skip to filters</a>
+    <header class="top">
+      <div class="brand">
+        <svg class="mark" viewBox="0 0 32 20" aria-hidden="true"><path d="M1 10h7l3-8 5 16 4-12 2 4h9" /></svg>
+        <div>
+          <h1>GeoTrustOps</h1>
+          <p class="sub">Geospatial Change Intelligence</p>
+        </div>
+      </div>
+      <p class="releases" id="releases" aria-live="polite">Loading releases…</p>
+      <nav class="top-actions" aria-label="Panels">
+        <button type="button" data-panel="provenance">Provenance</button>
+        <button type="button" data-panel="credits">Sources &amp; credits</button>
+      </nav>
+    </header>
+
+    <section class="counts" id="counts" aria-label="Change counts for the full study area"></section>
+
+    <main class="layout">
+      <aside class="rail" id="rail" aria-label="Filters and legend">
+        <button type="button" class="sheet-handle" id="sheet-handle" aria-expanded="false" aria-controls="rail-body">
+          Filters &amp; legend
+        </button>
+        <div class="rail-body" id="rail-body">
+          <fieldset id="filters">
+            <legend>Change type</legend>
+            <div id="filter-list"></div>
+          </fieldset>
+          <p class="note" id="interpretation"></p>
+          <p class="note small">Counts are for the full study area, from the pipeline's summary. Filters change what
+            the map shows, not the counts.</p>
+        </div>
+      </aside>
+
+      <div class="map-wrap">
+        <div id="map" role="region" aria-label="Map of changed place records"></div>
+        <div class="notice" id="notice" hidden></div>
+      </div>
+
+      <aside class="inspector" id="inspector" aria-label="Selected record" hidden>
+        <div class="inspector-head">
+          <h2 id="inspector-title">Record</h2>
+          <button type="button" class="close" id="inspector-close" aria-label="Close record details">×</button>
+        </div>
+        <div id="inspector-body"></div>
+      </aside>
+    </main>
+
+    <dialog class="panel" id="panel-provenance" aria-labelledby="provenance-title">
+      <div class="panel-head">
+        <h2 id="provenance-title">Provenance</h2>
+        <button type="button" class="close" data-close aria-label="Close">×</button>
+      </div>
+      <div id="provenance-body"></div>
+    </dialog>
+
+    <dialog class="panel" id="panel-credits" aria-labelledby="credits-title">
+      <div class="panel-head">
+        <h2 id="credits-title">Sources &amp; credits</h2>
+        <button type="button" class="close" data-close aria-label="Close">×</button>
+      </div>
+      <div class="prose">
+        <h3>Data</h3>
+        <p>Place records: <a href="https://overturemaps.org/" rel="noopener">Overture Maps Foundation</a> and its
+          sources, under CDLA-Permissive-2.0, Apache-2.0 and CC0-1.0 (licence per record). See
+          <a href="https://github.com/DanielJooste43/geotrustops/blob/main/DATA_LICENSE.md" rel="noopener">DATA_LICENSE.md</a>.</p>
+        <h3>Basemap</h3>
+        <p>Map data © <a href="https://www.openstreetmap.org/copyright" rel="noopener">OpenStreetMap contributors</a>
+          (ODbL). Tiles and vector schema © <a href="https://openmaptiles.org/" rel="noopener">OpenMapTiles</a>,
+          served by <a href="https://openfreemap.org/" rel="noopener">OpenFreeMap</a>.</p>
+        <p>Dark style by OpenFreeMap (code BSD-3-Clause, design CC BY 4.0), based on OpenMapTiles styles and on
+          CARTO basemaps designed by Stamen and Paul Norman for CartoDB Inc. (CC BY 3.0). Used without changes.</p>
+        <p>The basemap is loaded from OpenFreeMap through Cloudflare's network, which receives your IP address and
+          browser details as part of each request. This site sets no cookies and has no analytics.</p>
+        <h3>Software</h3>
+        <p><a href="https://maplibre.org/" rel="noopener">MapLibre GL JS</a> (BSD-3-Clause,
+          <a href="./licenses/maplibre-gl-LICENSE.txt">licence</a>). Fonts and icons in the basemap are served by
+          OpenFreeMap (Noto Sans, SIL OFL 1.1; Maki icons, CC0).</p>
+        <h3>What this map is not</h3>
+        <p>Changes are changes to map <em>records</em> between two releases. An added record is not a business
+          opening, a removed record is not a closure, and a moved record does not mean the earlier position was
+          wrong.</p>
+      </div>
+    </dialog>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

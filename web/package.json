@@ -1,0 +1,25 @@
+{
+  "name": "geotrustops-web",
+  "private": true,
+  "version": "0.5.0",
+  "description": "Web map for GeoTrustOps: reads the pipeline's exported files only (ADR 0004).",
+  "license": "MIT",
+  "type": "module",
+  "engines": { "node": ">=26" },
+  "scripts": {
+    "data": "node scripts/copy-data.mjs",
+    "dev": "npm run data && vite",
+    "build": "npm run data && tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "licenses": "node scripts/check-licenses.mjs"
+  },
+  "dependencies": {
+    "maplibre-gl": "6.17.0"
+  },
+  "devDependencies": {
+    "typescript": "7.0.2",
+    "vite": "8.3.8",
+    "vitest": "5.1.1"
+  }
+}
