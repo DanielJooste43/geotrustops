@@ -20,15 +20,22 @@ Amended cascade (2026-11-24, recorded before the October run; see the backlog fo
   9 centre within 2 m of a road segment                         -> street-centreline geocode
   otherwise                                                     -> unknown: manual inspection
 
-Usage: python scripts/investigate/stack_causes.py [release]   (default: the configured current release)
+Usage: python scripts/investigate/stack_causes.py [release] [--export]   (default: the configured current release)
+
+--export writes out_triage/stack_causes.json: one entry per cluster (centre, size, likely cause, place ids, manual
+inspection flag) for the web map. The causes are derived from ODbL context layers, so the file is published under
+ODbL 1.0 as a separate database; it holds place ids and positions only (no names), and is never merged into the
+change outputs. Deterministic: clusters sorted by size, then centre; ids sorted; coordinates at 6 dp; no timestamps.
 """
 
 from __future__ import annotations
 
+import json
 import math
 import sys
 from collections import Counter, defaultdict
 from pathlib import Path
+from typing import Any
 
 import duckdb
 
@@ -137,6 +144,8 @@ def likely_cause(
 
 
 def main(argv: list[str]) -> int:
+    export = "--export" in argv
+    argv = [a for a in argv if a != "--export"]
     cfg = load_config(ROOT / "config" / "study_area.json")
     release = argv[0] if argv else cfg.curr_release
     places = release_path(ROOT / "data" / "raw", release)
@@ -206,7 +215,8 @@ def main(argv: list[str]) -> int:
     con.execute(
         """CREATE TABLE k AS SELECT cluster, count(*) AS size, avg(lon) AS clon, avg(lat) AS clat,
          avg(has_unit::INT) AS unit_share, avg(postal::INT) AS postal_share, avg(town_only::INT) AS town_share,
-         bool_or(corner) AS corner, list(lon) AS lons, list(lat) AS lats, list(name ORDER BY name)[1:5] AS names
+         bool_or(corner) AS corner, list(lon) AS lons, list(lat) AS lats, list(name ORDER BY name)[1:5] AS names,
+         list(id ORDER BY id) AS ids
          FROM f GROUP BY cluster"""
     )
 
@@ -262,7 +272,7 @@ def main(argv: list[str]) -> int:
     ks = con.execute(
         """SELECT k.cluster, k.size, k.clon, k.clat, k.unit_share, k.postal_share, k.town_share, k.corner,
                   k.lons, k.lats, k.names, coalesce(b.modal_n, 0) / k.size AS base_share,
-                  coalesce(bx.box_n, 0) / k.size AS box_share, d.dup_share, d.any_dup
+                  coalesce(bx.box_n, 0) / k.size AS box_share, d.dup_share, d.any_dup, k.ids
            FROM k LEFT JOIN b USING (cluster) LEFT JOIN bx USING (cluster) LEFT JOIN d USING (cluster)
            ORDER BY k.size DESC, k.cluster"""
     ).fetchall()
@@ -286,6 +296,7 @@ def main(argv: list[str]) -> int:
         box_s,
         dup_s,
         any_dup,
+        ids,
     ) in ks:
         rounded = sum(
             decimals(x) <= 4 and decimals(y) <= 4 for x, y in zip(lons, lats, strict=True)
@@ -308,7 +319,16 @@ def main(argv: list[str]) -> int:
         if cause in ("large building (mall-like)", "one compact building"):
             floors_unknown += bld[cl][1] is None
         results.append(
-            (cl, size, clon, clat, cause, bool(any_dup) and cause != "duplicate records", names)
+            (
+                cl,
+                size,
+                clon,
+                clat,
+                cause,
+                bool(any_dup) and cause != "duplicate records",
+                names,
+                ids,
+            )
         )
 
     clusters_by = Counter(r[4] for r in results)
@@ -331,12 +351,72 @@ def main(argv: list[str]) -> int:
     )
     print(f"building matches with unknown floors: {floors_unknown} of {n_bld}")
     print("10 largest clusters:")
-    for _cl, size, clon, clat, cause, dup, names in results[:10]:
+    for _cl, size, clon, clat, cause, dup, names, _ids in results[:10]:
         flag = " +duplicates" if dup else ""
         print(
             f"  {size:>3} at ({clon:.6f}, {clat:.6f}): {cause}{flag}; e.g. {' | '.join(n or '' for n in names[:3])}"
         )
+    if export:
+        path = write_export(release, places, ctx, len(rows), results)
+        print(f"exported {len(results)} clusters to {path.relative_to(ROOT).as_posix()}")
     return 0
+
+
+def write_export(
+    release: str, places: Path, ctx: Path, n_places: int, results: list[tuple[Any, ...]]
+) -> Path:
+    """Writes the per-cluster triage file (ODbL, separate from the change outputs); deterministic bytes."""
+
+    def manifest_sha(data_file: Path) -> str:
+        m = json.loads((data_file.parent / "manifest.json").read_text(encoding="utf-8"))
+        return str(m["sha256"])
+
+    clusters_out = sorted(
+        (
+            {
+                "size": size,
+                "lon": round(clon, 6),
+                "lat": round(clat, 6),
+                "likely_cause": cause,
+                "also_duplicates": dup,
+                "manual_inspection": True,
+                "ids": sorted(ids),
+            }
+            for _cl, size, clon, clat, cause, dup, _names, ids in results
+        ),
+        key=lambda c: (-c["size"], c["lon"], c["lat"]),
+    )
+    doc = {
+        "schema_version": 1,
+        "release": release,
+        "method": "docs/investigation_backlog.md, I-1 stage C (pre-registered cascade, first match wins)",
+        "cluster_rule_m": NEAR_M,
+        "places_in_aoi": n_places,
+        "cluster_count": len(clusters_out),
+        "clustered_places": sum(c["size"] for c in clusters_out),
+        "inputs_sha256": {
+            "places": manifest_sha(places),
+            **{
+                t: manifest_sha(ctx / t / "data.parquet")
+                for t in ("building", "connector", "division", "segment")
+            },
+        },
+        "licence": "ODbL-1.0",
+        "licence_uri": "https://opendatacommons.org/licenses/odbl/1-0/",
+        "attribution": "© OpenStreetMap contributors, Overture Maps Foundation",
+        "interpretation": (
+            "A likely cause from simple checks, not a verified defect; every cluster needs manual inspection."
+        ),
+        "clusters": clusters_out,
+    }
+    out = ROOT / "out_triage" / "stack_causes.json"
+    out.parent.mkdir(exist_ok=True)
+    tmp = out.with_suffix(".tmp")
+    tmp.write_text(
+        json.dumps(doc, ensure_ascii=False, indent=1) + "\n", encoding="utf-8", newline="\n"
+    )
+    tmp.replace(out)
+    return out
 
 
 if __name__ == "__main__":

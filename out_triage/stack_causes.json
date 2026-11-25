@@ -1,0 +1,7003 @@
+{
+ "schema_version": 1,
+ "release": "2026-11-18.0",
+ "method": "docs/investigation_backlog.md, I-1 stage C (pre-registered cascade, first match wins)",
+ "cluster_rule_m": 2.0,
+ "places_in_aoi": 5736,
+ "cluster_count": 503,
+ "clustered_places": 1951,
+ "inputs_sha256": {
+  "places": "ea1a5c837dde146147db6540c60c617c68b6b2d0817a02953646f43e7055358e",
+  "building": "2e2d1b726134989905cf11b9cdd47dde7f209cbf8bb544d407498ffdbe43ae1b",
+  "connector": "da805bcb3b4c85e2d4532f8efb98c4e85f1d2b14c824317a4c0a62b338ec84ff",
+  "division": "73a98798f1df7ceff85ed75d06a3b26c9b974fe9edf6b3778b05564f2f33bfa0",
+  "segment": "99bcecdd4ccbd8b05a202546af3ce76cf8bc554ebf96a7a6fa05a1e332d4f7cf"
+ },
+ "licence": "ODbL-1.0",
+ "licence_uri": "https://opendatacommons.org/licenses/odbl/1-0/",
+ "attribution": "© OpenStreetMap contributors, Overture Maps Foundation",
+ "interpretation": "A likely cause from simple checks, not a verified defect; every cluster needs manual inspection.",
+ "clusters": [
+  {
+   "size": 143,
+   "lon": 28.187636,
+   "lat": -25.745873,
+   "likely_cause": "near a town point (likely town-level geocode)",
+   "also_duplicates": true,
+   "manual_inspection": true,
+   "ids": [
+    "00bea4b6-fca2-42c4-9450-f3704960d199",
+    "00d9d34b-3d63-4a17-a48c-74dd6048f809",
+    "011478ec-75fa-4630-b639-e42f1caea05b",
+    "07fe34a9-d663-4af5-9277-42680f6447d9",
+    "0fac7629-d7ee-4d57-bc5b-1968021f3124",
+    "109a1692-8b3e-4f10-9721-ab0a0b9db95f",
+    "130579ea-baee-49a9-beef-127fb79e708e",
+    "13179a34-a1f1-4cf5-9b8e-c6527eb1302b",
+    "183e3e60-2ac2-4f28-8c64-279a546c776c",
+    "1d5f72a2-12e2-4311-b33a-8e2bbd0a070b",
+    "1d72334d-da71-4541-8c1d-af48ce326307",
+    "22856177-832c-48ad-923e-823bcd5bf2e4",
+    "22b53be2-4732-4588-849b-61b0ef0fb194",
+    "260ec5f2-a2ba-46cc-8a0e-567548f3abcd",
+    "27352bf6-3336-4f71-bc2e-9ec42357531c",
+    "288a36c9-eeef-471f-8c5e-228394c3cbb0",
+    "2b0b2eeb-3155-4b1b-9885-0f5602070c88",
+    "2e20ac06-182f-4e32-a0a9-b648342d4ccc",
+    "3136f432-82ac-491e-88f1-6f3ca89f2479",
+    "31fc8833-e0d7-4d04-9fae-7fc845d3e0b2",
+    "32747227-cfed-43cc-bf17-23ef16ef4522",
+    "349b12d8-2323-4a6e-847e-06142db2f471",
+    "34dcab6b-d694-429e-8d6f-d6c16903b6c2",
+    "35576455-8ef6-40d9-9dfc-4c3c90ac9414",
+    "364865ac-f0ae-49a6-94c0-e83bcbe2f2fb",
+    "371c0ce0-9b06-4495-944d-2122d76c9878",
+    "375c13fc-f499-4164-a85c-3255226bfec4",
+    "382d4313-3f53-4620-9a24-ecd2e262c35d",
+    "3cd48ca9-49c5-47b9-9595-ac185ad22323",
+    "41308043-1d64-4d08-b2bd-e7c06cacd479",
+    "469847dd-148a-42a3-8c28-91bea7c48e8e",
+    "47f0b257-af01-4910-a287-7073f2c6070e",
+    "53130a78-969b-40af-bfef-84de881b955e",
+    "54d4ee58-319b-47e3-9fd2-db63bf5545dd",
+    "55d8313d-b8c3-411e-9eab-9a0fbd6c1752",
+    "5735d5e6-159a-40bd-8bd4-dcb3e25544ad",
+    "58704a20-6e7a-4468-b49a-dc2181c1f41c",
+    "59b7ccc0-4d45-401b-93fd-94d6de90f134",
+    "5a78cea6-7e56-4298-a4e3-3182405b7f70",
+    "5b51b6b2-ffca-4c94-bcae-14d0d7e906be",
+    "5c4a2ca3-b7a9-44ea-bc2d-94bcbf70391f",
+    "5cacad8f-453b-43f9-9cce-186dbfa26bb1",
+    "6090fa63-484d-4444-8f7f-0d2d949e688e",
+    "61f4e64f-03bc-407e-a23e-4392c05c09cf",
+    "627c3cdd-5372-44e7-b154-1c0a762309f5",
+    "66412117-11c7-4c35-b371-1acc7e534489",
+    "67745811-a6f3-44ca-b977-a1304d1f6538",
+    "68f34562-ef8f-4918-867a-409faf9e4c32",
+    "6b484a85-3010-401c-a60a-0c011353e0e0",
+    "6e44e5ae-66c5-4b3d-852a-f8bbd36cd69d",
+    "70dc6020-ec35-4bbc-b55c-a25ad172eb32",
+    "72f8cb8a-3db7-4ab5-ab16-2cf166ff4571",
+    "736be736-bbca-49ed-ad45-3f747d543e5a",
+    "77e7fab9-bef4-4e62-8244-bff960e7bf86",
+    "785ca647-6ddd-4839-b535-8b674e900c58",
+    "78946977-4260-4551-bc96-1d675ba305f9",
+    "78cf5673-e966-4872-bcef-f860c0db04b6",
+    "81f33c8e-c409-4c95-a131-a5d421481854",
+    "83c90e92-11bc-481c-8642-24310dab30dd",
+    "83d8d0ce-7816-4cfa-b09a-48955894ae17",
+    "84892a3e-5e4f-41ac-9779-dd1f23194175",
+    "87de241c-76a7-4e4e-92ac-5699a410e039",
+    "8cbd6958-39d0-444f-b563-e2a9af662b81",
+    "8dce4d28-d951-4e35-ad37-3085b08df175",
+    "8ef7e3fe-15cb-479c-8596-84a32e7d7d78",
+    "94535bfc-eece-4636-9c44-ebf095a157f2",
+    "962d61cf-34ac-42e7-9d19-a7f56b5d73f8",
+    "971c7ba8-dfa1-4cb3-ad6c-47de4c8ab6c3",
+    "99f0abdd-15a0-4999-8483-745b88cf4d22",
+    "9c27e9fc-0242-429c-ad7c-4d7502d7a213",
+    "9c3025c6-8d39-4447-b13a-0fca75863668",
+    "9f99a8d9-06d9-4cdb-a006-5c3fab472d9c",
+    "a097ed03-4a19-45e9-8d42-d8ab9fb0058b",
+    "a947a610-7e6b-4340-999f-fc6d1405ea51",
+    "aa68e87c-28ed-419c-9eec-0798cc55139f",
+    "aaa8defd-df35-4d3f-9450-cb3acd53dae9",
+    "aabb1225-842c-4d91-9357-87431dcbb738",
+    "ab15c799-7b7c-415c-93c3-f38b8e16aee1",
+    "acdaf06a-214e-480d-be7a-0b6517ee9d3c",
+    "acdc1239-00de-4dd0-9d0e-dafa35b5e3ad",
+    "ad5746d7-d108-4982-a9fc-9e83b7c8759e",
+    "ad618916-d8b6-4b9b-bfe3-a7b3e4f055a5",
+    "b5f2993c-0ef7-462d-b4d9-21ed666ea904",
+    "b6d6865e-2175-4edf-9cad-f516e725e427",
+    "b8a1fead-f9a7-4c44-acc8-a6e62fb68eef",
+    "b91f79bd-7b41-40ed-8377-2eb852fe3685",
+    "bb3f85ac-100a-47ba-ad7e-f293facbd274",
+    "bf2e6de4-f0ee-4c13-90ba-cc0908e1b3f7",
+    "bfaa5f41-26be-4b93-91a2-50688b9a741b",
+    "c0b8911f-0472-408d-a75c-661011f2b1bb",
+    "c231b232-1213-457c-aef3-4f38fa037388",
+    "c2c03f14-c79b-400c-a611-358af7c92c2c",
+    "c3aa4b5a-d2b7-4ab1-9aa0-2c94007a30e5",
+    "c3b88df3-91d1-4730-b9e1-7cfd632c41a4",
+    "c40fcbe9-1d79-4f4e-aee9-3aabf6f6d273",
+    "c480e592-b07c-4e62-a991-92e6d05ff7d1",
+    "c4f128c2-f53a-4c9b-877b-e28aa16decd1",
+    "c5001a4b-30c5-4bd9-8908-84a5389f4347",
+    "c5c38bc4-8625-4b4e-9bff-5657e0fb4931",
+    "c862efcc-d39e-4502-9fbf-429b785d1675",
+    "ca2800e5-ca13-4e96-a2f6-ec58b1a2e632",
+    "d1b5b4c4-9910-41fb-9c3a-42b147664b3e",
+    "d21c7593-c6c4-4b3f-8b5e-ee9444cfa423",
+    "d4222830-1ae7-4809-a27d-8f23833c6aa6",
+    "d43bd284-ad8a-4c46-b51d-47c74abd23af",
+    "d512e5c5-1ea8-465f-90aa-97244ef7e5ce",
+    "d5cb3555-4ef7-446b-ac5d-d608ea26acfb",
+    "d70d1c96-0fa6-48b1-9597-c73166775336",
+    "d857e8e6-8a66-4a90-8bf0-23bd269b2399",
+    "d8e13fb0-5e0b-4b48-8a23-efa6d8ef94e6",
+    "d9c16276-cbf7-4459-b915-d59be51c065d",
+    "db55201b-4a44-4aee-b17e-1834863fce7a",
+    "dc9178d4-cdb7-4650-b3eb-c5096d876dec",
+    "dcdf75bb-1678-42b2-858d-03d4df78e412",
+    "dd730654-18cf-4b5f-ab7c-f25d1b649737",
+    "e22ea828-f12b-4a45-a391-215262dcbb0f",
+    "e2fc588f-8722-4d25-9a4d-e8b1bd1d7d10",
+    "e410e9f7-3103-48a3-b5c6-937e0217f9fb",
+    "e43e68f7-9a3f-465d-b007-7a09ea043e44",
+    "e4ab2686-57d9-4ba1-8379-1bd3f0fd4d98",
+    "e5befbfe-682d-4cb6-8a79-a7674ef3662a",
+    "e67850cc-a43e-4445-b76d-b9eccbb329b9",
+    "e6e89a0e-ac2e-4722-b47f-a1115ac0c14c",
+    "e8981376-aae3-4517-83f0-ae3e46bb9b80",
+    "e99c7f4d-ae9c-4167-bc7a-5c7ca3db8766",
+    "e9c8c949-a3d6-4741-9fd8-ad261bb4cef7",
+    "ea6ce87b-b672-4d46-b8c2-b5257eeb8726",
+    "eca1d8ab-b4ec-42ab-92ba-725051dfbe1c",
+    "ee714c7f-ba34-4daa-ae48-9fb005046bf9",
+    "efa03c13-bd38-4464-b688-2b0a8ac0544d",
+    "efcda9ba-cbd9-44a9-ab97-1d231fc54d9a",
+    "f13dff8a-a441-4a33-8dbe-62391ddf2335",
+    "f31d55fd-b571-4022-8255-b82bee627d07",
+    "f3ce8c1a-e9a9-4063-a1b1-25372c4e498e",
+    "f4e27a8d-de23-42ce-96bf-2e6c347b894d",
+    "f54d87e8-5a5c-4a39-ad02-55f27e79a23f",
+    "fc341381-43c2-4d21-93a8-100f68c70b5f",
+    "fc51d0d7-03f7-4181-8a27-faabb3410416",
+    "fc848a40-3d71-46ff-b666-39c7df1a053b",
+    "fd8e2734-5c09-4f6c-a091-c0e3a8011bfc",
+    "fe20b041-44a9-4e3a-989d-625ec6f5bf99",
+    "fe363f7f-25b0-49d3-9a56-bcb4545665a9",
+    "ffe9766d-30b1-4253-95f8-a60b53aac27a"
+   ]
+  },
+  {
+   "size": 106,
+   "lon": 28.188321,
+   "lat": -25.745789,
+   "likely_cause": "near a town point (likely town-level geocode)",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "038678c6-b983-4967-a9b0-7e4c3a5ae18e",
+    "04c9b758-1a9a-499b-95b9-4bd9a4c90f44",
+    "068efaec-9776-4bc3-9c0b-6f2067a8bfc2",
+    "0739fce6-e0cb-491f-8cde-e484c290321d",
+    "0871ca0d-42ee-4901-93ae-380794407f8d",
+    "098247a8-ab74-44bd-95ad-9e25fb7a26ec",
+    "09d56f3b-18b7-4e3e-9c64-0675b3a52e40",
+    "0d559368-1d46-4f79-a579-9487398c195d",
+    "0dc85976-ed55-47e3-9188-df4ee20d8c7c",
+    "0df841eb-f690-4e82-8d90-797880edc0ce",
+    "0ef28fe1-d12e-48ac-9bb3-a988c3a687db",
+    "0f0c135f-a7c0-4eba-afd0-4b7bd43442d0",
+    "1026fc6a-9856-4d49-92d1-67321e7056c1",
+    "12ac81c5-6f40-4522-b612-02a917349e20",
+    "1485b988-ffb4-4058-8453-48e49b5c8668",
+    "1e8c4a72-c32f-45c6-b80d-1d741dbc1df9",
+    "1f1c7045-2ae8-46d4-b7d0-eaae58b7a83a",
+    "20cc5967-67ee-4360-b1df-8f151bd081b7",
+    "21bb6de6-d6e8-49b2-b279-507f1566abff",
+    "241a2a0b-0741-425c-96ac-c47a596cc881",
+    "2513335b-5ecd-469b-85e1-9f7ee7258aaa",
+    "2880b976-fb20-4c9d-8d4c-8dec315b125c",
+    "2e1b1d35-d66a-4d3d-a814-9d8ab0a111ff",
+    "34b3901b-ca7d-4caf-9330-b9d73a96686c",
+    "3543e1b7-c3c6-40c7-ad66-eb8f3b782f0d",
+    "373c7355-cb18-404e-92a2-754f4ebda4bb",
+    "3c788c10-02e6-424b-ad38-4d7a5794325a",
+    "3ce815f0-1328-4770-969f-8515d17644c5",
+    "3f5f7428-ac6f-4873-9626-8e0b6cd6b496",
+    "40bbcca0-6011-4a23-a62e-c2fdc4eee7f6",
+    "414e02d0-381b-4283-9010-ab06260c4a86",
+    "46b25b4a-f786-4be2-9363-e0033adafb33",
+    "4702ea93-0ec7-4b0c-ba86-3851e301c055",
+    "49c62a1c-73e6-4297-9ff8-7904a3153775",
+    "4b004861-37ed-4f7b-99b5-cc5ed9c06db0",
+    "4c530be6-be22-4320-a3d6-811741e3b00a",
+    "4da29798-6d82-4052-a49c-7bbbc6d3b062",
+    "535d04fe-d9c5-44fc-85ff-2df9d8e781b5",
+    "5683b344-d394-46ea-a05e-6f577d9d128c",
+    "5eb4dcb9-af9b-4ee3-9630-8ca0f552bc11",
+    "5edb8c79-3776-4354-bc4e-34f8951d4433",
+    "619c849f-ed2f-438e-9665-2822885688d9",
+    "6210892d-8ef5-4dd9-8d80-616dbe4fb822",
+    "63ae5714-3287-4f01-bb50-8974d40ead68",
+    "691ca774-9e37-4394-96a4-4832007dbbb3",
+    "6e2c5a76-bb26-4f5d-b2c8-64f5775273a4",
+    "7034a3e8-332a-40b8-b8bf-9721f2044a0f",
+    "72717f37-e4b8-4ca6-8786-40322d6305fb",
+    "72bdda81-a7d2-4273-b21f-4bbfe2aa8a33",
+    "73e523fd-2201-487b-b9a8-3e37c50e3702",
+    "75e14803-abd4-441e-9eab-7a07986d2de8",
+    "77e2bac1-228d-40e0-afdd-4e58e0ca2e7f",
+    "791c4bf2-b5dd-4460-ac99-f1cd3018376a",
+    "7939817a-9cad-491d-b213-d052ff2863da",
+    "7af648f8-7049-4736-84d8-b7c8a5104467",
+    "80b37f1d-1124-4887-967e-c6a81ccbb5ae",
+    "814a108a-fb0b-4374-9c6f-6a26f0cb8e95",
+    "8177becb-abbd-4649-a6a7-e865c06800ce",
+    "818a0218-04be-472c-99d5-2c8e8e21edeb",
+    "906a61d7-3edf-4a77-ab8b-3055a98aaf15",
+    "9093cd0e-6d09-433b-9c59-bf6c33af268e",
+    "93dc0fb3-1fe0-4216-9a62-feb8f4ebf098",
+    "946af262-959e-4e5b-b6a8-c40c58a9c0d7",
+    "99d35311-3de2-4c25-aa21-6dd1b2c8b842",
+    "9bce6ac3-c76a-43bd-8465-b443f5fa580b",
+    "9e69bc47-6c1a-493e-b8bb-128911d55420",
+    "a0fbadb5-558a-46cf-bdd1-662cff8ad8c7",
+    "a4ad56b1-2dd1-4d1a-9880-407564348e73",
+    "ac9d10f0-249d-4537-a006-cde1cd9d2aad",
+    "ae9b0524-6ef5-4834-b70b-6d7e646e2779",
+    "afa80475-e978-43cc-925c-bd83f03b83d8",
+    "b28f75b7-a0e3-490f-88aa-5431e3cf7fab",
+    "b2a33412-f832-46f8-a7fe-8740baf80cc4",
+    "b51e65c7-0b86-4b9f-8c29-5f2a52154680",
+    "b59cbeb0-f326-4bd6-be6e-23a64a861a35",
+    "b7496cd9-5eba-40e9-99d9-50c45579aea4",
+    "b908b69c-eaca-42b6-8e9a-78242b8be2b7",
+    "bc64735e-83ca-4119-a21b-22abab0c471c",
+    "c5adfa2d-0326-410f-8239-a614fc448137",
+    "c8d8980c-0f21-4009-ae83-4cce4e42d0e7",
+    "ca8673b5-871d-4fc9-9279-5c29b7aef0ce",
+    "cd1cba40-7831-43a1-850d-df9892b13a07",
+    "cfd0d16a-0fb2-4c94-bddb-5c9d560b58f6",
+    "d10171ed-1f3a-4dc5-ae3a-cf401359ca08",
+    "d38b27ce-2318-4e8f-9282-59f42e8691af",
+    "d3997963-11d7-47b6-8a72-3f5e5a5b132f",
+    "d3f8d90d-5470-4378-b2d1-d3a5b0f8c6dc",
+    "d6265590-93db-4221-b634-70661ebeeafc",
+    "d6f83578-5bda-4e7e-b641-29b863daa9ff",
+    "d7fe712e-6fdf-4ce7-a4dd-cad255c21c3a",
+    "d93f4522-c9b0-4b50-8558-d9cbcbd89f88",
+    "d9a77af1-75c5-486c-a05c-0c6a16b04f8b",
+    "debc3600-8ea9-479b-94e9-48fa644db53d",
+    "e2793b0e-6d21-4bf1-9239-c7f9aabac9e2",
+    "e4e323c5-67be-42dd-ba32-bef803fb7731",
+    "e4ff20d5-7a1e-4625-938e-36bb4fbbe645",
+    "e8517dbf-5c3d-4864-bdf9-43e41cff08c4",
+    "ea50a068-3916-4550-b3e5-4923bb2f5534",
+    "ece0ffde-a34f-4b79-8f00-cb151d25140c",
+    "ed651c39-414f-4345-ab0f-6f7ce433487c",
+    "ef70bae2-9a60-4f7f-98f2-b1ceba15a644",
+    "f2099f4a-3117-4367-89f3-81a57c573ab5",
+    "f2370854-68f8-4924-be15-488e0350f881",
+    "f70d7c0b-a934-4738-a7bc-fa26e83b22ca",
+    "fb3c2726-63b3-47df-941d-c7a6cbfd798d",
+    "fd40b549-e2f3-4e96-8fde-518d92969452"
+   ]
+  },
+  {
+   "size": 105,
+   "lon": 28.1869,
+   "lat": -25.7533,
+   "likely_cause": "rounded coordinates",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "025dafff-772f-44d6-a037-13fd112cd8eb",
+    "028a40cc-c7de-4dc6-869e-2d104320a32d",
+    "030de38a-3967-4d42-a2df-702a6ae54d9d",
+    "0c2a86cb-817e-4428-9346-1d22aaf84a40",
+    "1072602f-51a7-43f1-88f8-58401934f62d",
+    "15a91760-af84-4d57-be05-11c1bc6a310c",
+    "17da756c-6164-494f-8c61-756226f6c8c0",
+    "18d2a467-68bd-4fb0-8952-6af5688425ae",
+    "1c2560c6-e168-4d57-9b56-f44132c7f660",
+    "1d218856-c7ac-4d30-964b-0b3513063fee",
+    "1d977b1f-c4fe-462f-87ed-552ae0c0e48c",
+    "1e0b614d-a0fe-4db4-bfff-20c6fb1ce8f6",
+    "1e64f355-125b-47f7-a4bd-b5c49c1bb54a",
+    "1f1d277f-d118-4aab-9421-7398ec521959",
+    "230226ed-9672-47d7-88ad-f69506fc7a1c",
+    "2739515e-1c2e-4aa9-8304-f2da0a5e315a",
+    "2a94c84e-4880-43a4-93e3-34c7dd30101c",
+    "2bf2ae69-d0f1-437b-9b4b-0c2f55c6fe6a",
+    "2ee8ae78-e24b-4abf-9ea7-bfc0d8f7a230",
+    "2f09ed92-0689-43e2-8454-b74d6868723f",
+    "2fb7335c-d7d1-49d5-ae3b-529d126872b8",
+    "309d1515-1d59-44bf-a554-89f403af9068",
+    "335baa3c-4c7f-429f-a59d-30e1c2a44b48",
+    "39364cd3-39d6-416e-9be8-10ac1fb523ff",
+    "3ecb970c-70a4-4bf3-949c-5e3242968720",
+    "403b61e7-9fab-41fd-909e-9e9c3917fe43",
+    "410b539c-f83f-417e-b838-bc91f727ad25",
+    "41c7cffe-009c-417d-b8ba-97035e9f2ae3",
+    "46fd1352-b293-4409-8be7-114ff5a341dd",
+    "4a1666a3-d8cf-4441-b034-ddb458459afe",
+    "4b7b4f92-8986-4e33-9f6b-c5fba421c439",
+    "4c0ae060-ed3d-4bbc-b744-5a5454d206da",
+    "4c828116-0536-43e7-a7e9-3045e5f07afc",
+    "4de0fde5-bf15-44a5-917d-3dbe87ef15e3",
+    "4e67fbe6-9d03-40fb-90e6-eb9dbd61ddb7",
+    "5336e378-f2e3-4fc0-8448-5bb2b0b7027e",
+    "54f9c592-8886-401c-bddc-4d7af952dcf0",
+    "57fb4a51-d2c5-48f3-a363-63d68a7e21eb",
+    "58baa8a8-99c2-4efd-83af-5c11f2f1fd88",
+    "5acc3334-0b2e-42e9-b49d-c4a826dada20",
+    "62107ec4-0906-4d78-88f4-79c1f0e43edc",
+    "629c786d-f222-4c64-aa51-ec5bde05b362",
+    "66f76786-0a5e-4f42-aafe-f1aca583dff3",
+    "67d35f66-fcff-476f-8b49-b47581776d31",
+    "68482d80-c9af-4b5e-a9d8-cbc61a390fc1",
+    "6ecd0d97-69f2-4cc0-a67d-1e446f4d65f0",
+    "6f7c99b0-05c8-401f-a2c3-4475e78a6c0d",
+    "7e4468a3-a85f-4785-9384-f161a3c9ec5c",
+    "7e5eb9ec-668c-450f-bc0c-71fb87f0ff98",
+    "7f0c7624-f5bd-4977-bc6e-b765d916aaef",
+    "80483759-0b9e-4fea-b249-a76318ac36d3",
+    "811a4516-ab7f-46cd-862d-830f64f79f17",
+    "836072ee-7cec-4496-a86f-716ba1b8fcc2",
+    "837a86f3-c120-478c-98da-ceede1ae92d9",
+    "84728f67-804e-4f9c-a179-e6733680713b",
+    "8bc66d50-6f99-4ade-aac9-50b6e9698e4f",
+    "8cf44a1d-ba47-494b-8bd5-1ca2f5d30437",
+    "92e41aa0-48b3-469e-870b-64815ecdf30b",
+    "9790bb0e-f047-4c5c-8407-2fbb57c07a95",
+    "9905b5c3-5e53-4d39-966f-79688af18e75",
+    "9f3ae3cc-a86e-429d-a01a-8284e969ac91",
+    "a0c7cb69-0c6f-46f2-a181-50cc487112b5",
+    "a2e78273-04c0-478e-9cd7-75b25a5cf9e8",
+    "a3f0e9a7-931a-4e69-b317-b54fab915b97",
+    "a6e0a50f-1a28-4df3-9efb-ac67400ae0f1",
+    "a7514894-124d-4b48-b69d-0c77a2057954",
+    "a82d29ae-ee68-4495-97bd-6bd2ecfd2f4c",
+    "a96d9f31-3b95-421a-9768-36850e2adb2c",
+    "abb807da-f422-4ddd-ac2f-88e6b40f5c67",
+    "afc86a7b-f187-4a47-8ad9-ff860cce70e0",
+    "b103608f-c323-4a2c-be05-f974f4ad1860",
+    "b1962077-6c53-4834-9dad-41a4d0f9fca0",
+    "b70646e3-e967-4cb7-a2be-8846b61fb1ea",
+    "b8005e9c-4111-4d75-b30c-9961b6301770",
+    "b87e07ae-71d3-455e-ba53-99da117cf264",
+    "b910fbfd-9d7c-4dea-9efb-ee2e3dd46f5f",
+    "bb108e3c-ba1d-441b-92fe-140b2419465c",
+    "beedffb0-a427-401a-86a6-8c7a44a04e88",
+    "c2c58c09-180a-48be-a178-ceba45c5fcce",
+    "c31394eb-58fe-4a1b-b468-ce97a8d20042",
+    "c591d065-a53c-4b10-885a-8d56ba60065d",
+    "c66b0e89-3415-4e0a-a3ec-7e98f6e94cf5",
+    "c807c57a-466a-4b42-9142-e87c71ebba04",
+    "c9a6b101-af9b-40aa-b3b9-7febba9cb899",
+    "ca4eb897-d267-49ef-8b6b-cd1eb51af802",
+    "ca7e767f-776d-470d-add6-899e873f230e",
+    "cd29e5d8-4e26-4580-aa80-e2010edc044c",
+    "cfd95f3f-6c46-469e-9c34-e3c2c6ea4740",
+    "d7244547-cc7f-437d-aae9-fe36563cf467",
+    "de2bd781-5fd7-46af-b805-1b3a7fad9ed1",
+    "de589654-692e-4392-806a-34eac68d3f81",
+    "e4be2b8e-0ea9-473b-9035-4e10c4e2022c",
+    "e63087d6-c42d-4406-b4f7-801ed7eb4fcd",
+    "e6dfb231-3193-4fde-baa4-ed1bf498855b",
+    "ed85ba00-0d19-404d-91a5-87c63abf12de",
+    "ede9ef19-09e2-4a5a-b1f4-21f9c3891296",
+    "ef12e6f5-d916-45e7-9d1a-9e9368f2b2ed",
+    "f33d2cf3-0b2d-47b2-9851-60cec613ab47",
+    "f4d00e17-5562-4c33-8ff1-6d2b39c16e5d",
+    "f6d62de4-60e4-4e8d-8d66-e289c5e381b4",
+    "fb8e9bf7-1304-4476-b020-54afc9d42cf1",
+    "fc76efab-fe37-4e6e-b031-5a29ebdf12e5",
+    "fd4cdb86-5e74-4436-b2d4-796c7ef444f5",
+    "fe9712a3-47c8-422c-950f-2a6694f1be35",
+    "fee757a2-4aa0-4c88-ad88-95223d53739b"
+   ]
+  },
+  {
+   "size": 52,
+   "lon": 28.185404,
+   "lat": -25.748945,
+   "likely_cause": "postal address, no street",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "23f3a202-3e9c-42cc-b50c-e76aa463c78a",
+    "24ee9893-e395-4326-a314-4d977c34871f",
+    "2f22b644-c1e9-4596-94ee-f2ba27c879e3",
+    "3a33c5a6-ff96-4005-9527-01b9b9888120",
+    "49f123da-98d8-477f-a816-fac8b31a26ef",
+    "4ed25424-79ed-4609-a65a-b0c3795f772a",
+    "512f9b60-d2f9-4f41-939f-450ae2400f31",
+    "52a27ee4-93bd-4868-a32e-9416fb5fb53a",
+    "5481ec84-3577-49ea-b6c4-cf69a816e0e5",
+    "5cc39866-4a2a-4043-88c9-e58975a5ee69",
+    "628b27c0-9ee9-4c96-b1e7-1249b488c44a",
+    "67568d21-bf0a-4776-acc8-05d5a954fdf3",
+    "6d7c0dfd-e443-44a2-8c2b-1d6f30d1aa30",
+    "70237a2e-5a09-447f-a7d7-fec6785af539",
+    "711beff4-0d9c-48ff-8f91-08076a677446",
+    "7231c7ba-7269-4e1e-a5c7-1dcbb69c1a86",
+    "73d25a4e-80f4-4006-8dd0-968a55c6c2e3",
+    "76e5b41d-8122-47d6-aacf-6365d9d8a6ac",
+    "7777b004-b582-4d33-a2ca-21f475f3fc99",
+    "7d2c2e40-907d-45d2-8ac5-c6b9bf9bfe02",
+    "848e9e3d-756b-4e42-b129-88e76c14b5ba",
+    "869b200c-eaf9-42fc-85bf-da04234e75a0",
+    "8f73050d-d4a1-474d-b991-bad6738c1a18",
+    "99b43d4d-f9e6-44fb-9881-09ac013b012c",
+    "99f546a0-2f91-416c-af94-cbe1b55f75e4",
+    "9d326499-b662-4bfc-9676-8f041a05d712",
+    "a0a5a6fe-cc89-42b8-85ca-4e2039018095",
+    "a221776c-4209-4926-899f-9c6b87beae10",
+    "a714bce3-a460-4dd9-b263-99fc616bdf1c",
+    "a9fa90ca-ab17-458a-8fa1-fe72e7c4a851",
+    "b062bedd-4469-49f2-aaf5-326239941a98",
+    "b18a53dd-c7f9-42d8-8595-31f664a8e40a",
+    "bf0ffd42-f799-4a6b-ab46-4d93ec714f66",
+    "c18f2c9c-68cf-4f7a-9372-03306ffdb61e",
+    "c5b90b97-eb14-49b6-afec-a418d6d4c537",
+    "c76d95e1-e480-443c-b0a2-b0b14fe746f8",
+    "c7ebdc24-1c5b-4803-a33d-0d09f08fba34",
+    "cc4dbf51-46d9-419f-b226-92e888d07a35",
+    "d0ff667d-53bf-4bdd-abe8-c37f1843c57c",
+    "d95c0c9b-bc96-4965-8a9b-dca803244fc9",
+    "da67cd23-9227-4547-84e2-6d2659df97d3",
+    "db405890-913c-48fb-bd45-663c81c5dcbc",
+    "e2e70f78-952e-43ff-8937-f038a49bc456",
+    "e6962216-3a3d-4e33-bd03-3e2e751e7756",
+    "e6c51869-b706-4e87-84ae-a93a4669c8e0",
+    "ed33bea3-c64b-4ced-bdaf-f59d34fab81e",
+    "edbec09c-36cb-43c4-b52c-117632c27c64",
+    "edec670d-c3d5-4e88-a12b-2213698d5256",
+    "f1fb730d-f9a0-49c6-8a09-568caa8f50c7",
+    "f8b5a111-b5a2-4576-b75a-2d9eb4b36a8b",
+    "fa9db666-c6e0-4ef8-886b-e3e223515139",
+    "fba7b287-b4c9-43aa-9116-0dfd9c0bb16b"
+   ]
+  },
+  {
+   "size": 36,
+   "lon": 28.188039,
+   "lat": -25.746112,
+   "likely_cause": "near a town point (likely town-level geocode)",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "09b6682e-3cea-46de-ab57-da852b9d63cf",
+    "1979fe45-3480-45f3-ba26-436c3f3b8664",
+    "1c8d8d51-3710-457c-ae65-36570389d56a",
+    "2703e868-5179-4b39-ba58-194dbb7427b1",
+    "2f59c55a-4f04-4c08-9eea-5f0d665cbbcd",
+    "3dec023e-af82-408a-a7c1-1668e379b961",
+    "497eb393-b690-465c-a47b-ca914d3f9bcf",
+    "4c8f8f7e-2d13-4098-80ac-f78346e0ef7d",
+    "4cc2c8d4-5104-4bd8-a08d-62f61a23d18f",
+    "58f710ac-ef4b-4b3f-ab5a-58e2f3b591db",
+    "5aefbf17-5613-4bf5-9538-5758bc5cf609",
+    "642443d9-cbbf-4f04-b8d5-0d734fe367f2",
+    "6eaa3ca8-f9ca-41cd-86fe-2cbd353ddc06",
+    "7ea59dfa-c2af-4393-8fb2-f01cc3494821",
+    "8061ba65-49ad-465a-8111-b8f75a283062",
+    "845aa276-bcb8-4936-a6fb-98e3516c43ff",
+    "8561f8fb-98c3-48ed-97ed-03dd9e3f50c2",
+    "8eaff361-038d-476b-b130-cec4dbf24220",
+    "8eda13b6-9bcc-4227-bddb-71ac8c479859",
+    "9cea1775-eb55-411c-981d-5e317cbd2836",
+    "a10d8b1b-8d69-49b8-84f6-4916937bf1cb",
+    "ade0b26d-601c-4916-8faf-beb0a1fed8c2",
+    "b01f55d0-02a0-4e21-886c-2fe61dc23b1e",
+    "b1e87a32-6df9-4d4c-982e-ca177f587cc1",
+    "babc9082-bd0e-4a48-b64e-c4c9e521fcd5",
+    "bcdd3778-f10b-40c2-9530-0afa09fad83a",
+    "bf602995-62ec-4c96-93c9-18d9895fe39e",
+    "bf696a64-a5bd-490f-aae3-9d6a5213f3ed",
+    "c2a3cfc1-4ed4-4de1-85d1-0f3e1d184a27",
+    "c93a4914-61df-49c0-b7d3-64c7a6b5e969",
+    "cfebace5-7952-42d0-b5e4-213291cced8d",
+    "d28d441a-a12e-4d82-af15-a2a1c82ece0c",
+    "dc03b044-c9b7-40fa-8e5d-830593648f32",
+    "f20d6148-3787-486b-b682-64332f298fb0",
+    "fb38558d-18d2-4d67-aa99-146153801e56",
+    "fc4028cf-88c7-4fb6-97be-86f44d54980c"
+   ]
+  },
+  {
+   "size": 24,
+   "lon": 28.19254,
+   "lat": -25.74493,
+   "likely_cause": "shared address point",
+   "also_duplicates": true,
+   "manual_inspection": true,
+   "ids": [
+    "179e6191-aacd-4f64-9686-0cdcde77d6d4",
+    "1e0eebab-b121-4b3c-835b-f63d796da073",
+    "211c2a6b-dd91-45d7-a0a4-7f59c4b5bcec",
+    "243d1fd1-0d6d-4180-8419-c20d03f772a8",
+    "24439ae1-e26b-436a-8c9e-e8146093ed3a",
+    "27d5ca33-f286-4ffb-828f-9754c405b213",
+    "2a9d3157-c1c6-431f-aeec-c553871a32dd",
+    "2ade6303-b8d6-4922-a530-0228315a749a",
+    "2da636d9-79d9-4b78-963f-53dce99b955c",
+    "32d9d071-4c29-4482-b98f-ec22390bb684",
+    "49b14a59-aa0f-4394-817a-db7f14fb5554",
+    "6f2b7fe2-d3a4-49b8-9506-a0f1ab65cb38",
+    "7213d58f-b827-492e-9260-862893babb5e",
+    "7b6db45a-1440-4168-9710-3811844904cc",
+    "9f2cdce4-8649-4123-b4af-d42d1566ae9d",
+    "b7b90ffe-dece-4449-b990-1c61a4a10f5b",
+    "bd1532fc-0a14-4f8f-9b2a-a454902d00ce",
+    "c1d024dd-fcc9-4a23-9c6d-a235840ec4c8",
+    "cc7d8707-0c8c-4870-a330-8ba45eea0cb7",
+    "db1d0d6c-3a99-4983-9d65-b0d3ac5a3c8f",
+    "e476ea4c-6312-4c53-b00f-cdc24852c3f6",
+    "ed2ab1c5-f369-46c1-af35-6dd84df8fca5",
+    "f06108d7-a638-47c7-98bc-ff3758cd1233",
+    "f7ec6d98-e347-406f-9d7f-6333708f586c"
+   ]
+  },
+  {
+   "size": 21,
+   "lon": 28.192003,
+   "lat": -25.747235,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "039286ad-f620-4d65-a916-a2f4429fd266",
+    "0860860f-67d1-4860-b00e-7e745ae0f326",
+    "0eef3bfa-6102-4c49-9f4a-409e9e518192",
+    "111f3c95-a32d-4958-96e4-e22dcb3a8182",
+    "17e9d15c-c190-4cef-aa69-deb4751c4127",
+    "197f4a0e-5ad8-4f05-9e70-f746446e57d9",
+    "31fa8518-685d-45fe-8e3c-297d6393ff8a",
+    "3939b9c3-b421-46b2-98d8-fcfad22b6b80",
+    "536ebb03-3785-4f39-8c80-faf28395b306",
+    "65a88302-476b-46fc-b08c-a9986823e084",
+    "7094bb3a-7e93-49b4-9db9-7d8228e82e89",
+    "7a7a54e9-dc41-4b63-a749-4512c16d7686",
+    "7c3adb57-7a31-478a-9830-937886128cb8",
+    "80623e3a-e132-4923-aabb-d5899d000eea",
+    "88b05957-8a13-4e1b-a860-0723d18c9fb8",
+    "919f4eb8-8bc7-4dea-a380-3547888ca115",
+    "a93172bc-1603-44af-ad60-95f36237c426",
+    "c7ee23d4-390d-44c3-87ce-b8a25873d4ab",
+    "e0c0a995-824a-44b8-8dae-ed1065cb2b0b",
+    "e0f24e2d-c303-4ae1-b66b-9a846d28092d",
+    "ec5374de-e417-46c9-8b41-3939271bd2e8"
+   ]
+  },
+  {
+   "size": 19,
+   "lon": 28.19531,
+   "lat": -25.74858,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "2b5747f3-9e7b-4bd7-bc7b-f51ab3c914f6",
+    "3dad9d74-f2f5-404e-b196-e7cd507e62de",
+    "417119c3-e881-4fd0-945e-7db2ac755025",
+    "5864cda3-7b3f-4233-81d2-71268614d1a2",
+    "6431d378-6917-4bde-ae81-4c3587eb1539",
+    "6a247bad-faf0-4fea-b47a-b0f4a0c5047e",
+    "789e2373-1058-4255-bdee-64e4cc696f09",
+    "861c2a0b-0986-4daf-b7a8-20f7afa63749",
+    "898c6f64-fff3-481f-a19c-d444d8a290da",
+    "a4ec8439-ca79-4da6-872f-9a7b0c2d6125",
+    "b097fc5c-e849-4b16-aab3-617b52b00454",
+    "b10e1116-79c6-4f81-b5e6-2a8d1f98f865",
+    "b41055ee-478b-49b0-a698-aa1bc574d4ae",
+    "bdcdd32f-f0e2-4089-bb6a-a5909a4f5fc2",
+    "c9676397-8fdd-4812-85e7-b7550346d381",
+    "e7b9e8bf-5454-40af-b62f-b2620c2086d8",
+    "eefb2153-807f-41cd-a805-3bea44efc9fe",
+    "f0b42dc8-5211-4873-b4a5-79c90f236d24",
+    "fa9864ac-c0c1-4f56-af3a-ad56a5e19b62"
+   ]
+  },
+  {
+   "size": 17,
+   "lon": 28.192355,
+   "lat": -25.747378,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "0595676c-7d30-458c-b838-bf2fc7431462",
+    "088e7c19-00e2-4601-a244-068adb21476b",
+    "0c168b5a-a15a-48ac-8f94-3b5da1472ee3",
+    "10221fa4-37da-41f2-adfa-0483d9769250",
+    "13ecd2d4-f26a-4633-927d-a9fbe84b8885",
+    "26d9c2aa-4c7f-4e35-a6e0-72af41d549d7",
+    "298d4735-d39e-4392-b433-58fbb004b7bb",
+    "42bd078c-fc0e-4ae5-81bd-ecdcb3156bd7",
+    "6aa145eb-7ddc-4a72-ad7a-17f6122aea97",
+    "78ff4b3c-58fc-4dcd-b3c6-dacd237c4fa3",
+    "89b92956-1f5b-48d2-b415-458a8c1a75ad",
+    "9ca3e0f9-6539-4159-8093-1b78a0caef00",
+    "a219dfe3-a4b5-4d3e-81ce-580614247516",
+    "aa15988d-336c-47e8-8521-af219ed59bdd",
+    "bcb4c257-c77b-436f-8bb0-38c5e4309d11",
+    "c78bfe65-319a-436b-80ea-bae247e33140",
+    "e7ff54b2-d692-44cf-9633-825c418e7453"
+   ]
+  },
+  {
+   "size": 16,
+   "lon": 28.188863,
+   "lat": -25.748408,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "074611fd-ca51-4be2-b328-0ba60fe2dc8d",
+    "1566d973-f62d-4806-a093-62bb4fca582f",
+    "21549ac8-2913-4c94-95d0-9f6911de78ab",
+    "21e402fa-c1c5-4390-a40b-17c86b6d9f69",
+    "34156c4a-cb56-4654-8054-1e2ffa72c3f2",
+    "5bc6a06b-4df8-442f-9dfa-881660d250a0",
+    "5fc2f148-0ff6-4363-8995-a121e52c5496",
+    "79ca9924-35b2-49df-bea5-71c9876f7757",
+    "92f032e5-a8d1-432f-b9b9-3e4de8f57e6f",
+    "a4e65c8a-3cd8-4658-b3f0-cd48c26afaec",
+    "b08c9101-3970-44ce-9219-24b8c2461135",
+    "c5a9d676-1ea5-4aec-bd61-77d0c785ef5a",
+    "cf59bf63-820c-40a8-8c5e-5dada060ec44",
+    "de5a9a6c-91bb-40cc-80f9-9074b97249c4",
+    "f74b0a7d-eaa0-48ad-a822-a447ce83eb02",
+    "fb114e56-e4e2-46c2-8adb-bb332c7f1c1f"
+   ]
+  },
+  {
+   "size": 14,
+   "lon": 28.188487,
+   "lat": -25.747308,
+   "likely_cause": "unknown: manual inspection",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "028407a2-9942-433a-9ab6-7849ae5b4e9a",
+    "1b90164a-eef8-424f-84e4-090389187e17",
+    "1ce46662-e2f8-4db7-a97d-b76d124adfab",
+    "23609533-44f2-4868-8eec-2a1073aebdd6",
+    "2f0c0fb5-0caf-4e43-b0de-24b254c8d56f",
+    "359f5e2a-b421-43a0-b2cf-778d9e5b9214",
+    "43840d48-ff29-4b27-83dc-3428993d7848",
+    "7193c012-50e9-4336-8552-75bb693ef7b6",
+    "77913b63-a774-423f-ad85-4837639a3ea2",
+    "9f45d7e5-efbf-428f-8f1c-564dd7f1d19b",
+    "aebb6127-29f0-471c-af8a-65b21dfa62c1",
+    "cd46238f-59e0-4620-b26c-6c3e3c7d2c41",
+    "ea013ae7-c4f9-4a81-baff-657eaa9b054e",
+    "f3e91a1d-f573-43cf-9a8c-269c110db745"
+   ]
+  },
+  {
+   "size": 12,
+   "lon": 28.187616,
+   "lat": -25.743855,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "0aa7f715-1ae6-4ff3-b375-d564a347099f",
+    "0b80760f-6c00-448a-9a89-057cfe341d59",
+    "0f177e04-f2b9-4790-98be-5c59147a840a",
+    "19cc9349-597e-4069-acc0-ac9461753c28",
+    "332b48fb-6963-404b-870f-97f574e7b40b",
+    "401f51d6-3014-4f54-8d4e-dc46d86ed9f9",
+    "621c6ae5-9d73-40d6-851c-5b10c532dff8",
+    "67faf7da-7833-46a1-973e-d6a1b907b6af",
+    "7cfff3dc-76fe-40be-9db6-0120ef63bada",
+    "90c3c0f3-c471-431a-b110-f9bd4e6dfd6b",
+    "9282a1df-a8db-4b6a-9960-9f8052987694",
+    "ad138f89-3e5b-4ba7-95a1-75b7fc01e566"
+   ]
+  },
+  {
+   "size": 11,
+   "lon": 28.191314,
+   "lat": -25.747925,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "05e59419-1478-4986-af86-dbf42ab3531e",
+    "410d3760-59ae-4f0f-ad0d-822e73c243e4",
+    "53844b62-3d3e-4cc4-9774-d5b0e8b2448e",
+    "9a7e2d46-bda1-459f-99d3-f8117707717e",
+    "b63d8236-71ea-4f69-af95-db78dced66e6",
+    "ba523602-bf2e-4f69-8844-daa11befbe06",
+    "c1539439-6c62-47c1-9ea0-a715cb142231",
+    "e9745903-401a-47c4-8f35-cdccc131497c",
+    "f2a49fcc-dd6a-4d54-9a35-d1162783885f",
+    "f58b284f-1b98-4eea-90b9-82ae6037869a",
+    "ff8fb552-efdf-4dc5-9107-5205aaacf550"
+   ]
+  },
+  {
+   "size": 11,
+   "lon": 28.20462,
+   "lat": -25.75381,
+   "likely_cause": "unknown: manual inspection",
+   "also_duplicates": true,
+   "manual_inspection": true,
+   "ids": [
+    "00d3cf91-42b8-4a72-82a1-21fd372df46c",
+    "0dc713e4-73fe-43b6-8962-de8fcd8abf3c",
+    "20ad0fb4-6e29-453d-b987-40a31dd27821",
+    "2f5bffc1-e47d-4cca-8c98-7c62ddfb82a0",
+    "3a2f2eb5-2de5-42f0-88d1-f23ef3746494",
+    "41fd7c13-b818-45df-80c9-3459729a845e",
+    "449e88a5-1bdd-4ffc-a45e-ee37663e4dd2",
+    "473ab0f9-ffd6-466f-8d07-e40768d2fb7f",
+    "8247cc51-fc09-4998-9187-0c346ff6bd7a",
+    "8f6720c3-39c9-424f-b281-66d03910ee39",
+    "ce49d4ee-493a-4573-97fb-575edcd06499"
+   ]
+  },
+  {
+   "size": 10,
+   "lon": 28.189348,
+   "lat": -25.747045,
+   "likely_cause": "one compact building",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "232a2888-0878-4138-affe-83f8f05657cf",
+    "242c5679-43e8-4104-a525-2d24a2f9287a",
+    "3405712c-335e-4365-b5da-f697a75922dd",
+    "3e38de89-572c-4fad-9e66-0c3ab74dc2b3",
+    "7878b14a-463a-4cdb-ac97-2d2393ec5721",
+    "8da73b60-e5f3-487e-872b-152b091af5b0",
+    "9a958edb-dd68-4014-80fa-e0323ffb1ece",
+    "cde25d36-703c-42a9-9b82-0e37b52eb5bc",
+    "ef1de092-3de3-4c82-8a41-88e08b3e9247",
+    "f6eb04d4-3178-4ab5-a596-cdd3f5cd9053"
+   ]
+  },
+  {
+   "size": 9,
+   "lon": 28.192131,
+   "lat": -25.747241,
+   "likely_cause": "one compact building",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "0aa1a98f-3abe-428a-b7f0-82e01739c3cb",
+    "25110c54-0d43-42e2-9afa-e35d20356fa6",
+    "67933b09-d245-4d02-bde3-febe7361caa8",
+    "7b25807c-7031-4fdf-8a98-a095cdffd476",
+    "a6aed8c6-731b-436b-b5f6-00962143de7c",
+    "b275ca3f-ba80-4fbc-9772-0ba058a55d04",
+    "d8c4ef4f-a21f-4ad8-9b8b-3c1d919d2340",
+    "e64ff232-e914-4900-a95e-68bbe5bdc02e",
+    "ecfd54f9-06d0-439b-acbb-035b7b47f861"
+   ]
+  },
+  {
+   "size": 8,
+   "lon": 28.18757,
+   "lat": -25.74546,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "0d48fe2d-1c8c-4dc9-b149-7e6a8c06dfbd",
+    "0e256fa6-420d-4480-8c04-0c3b4d2b7187",
+    "2bbe19fc-57f8-43cb-af0a-2b676201c509",
+    "3ecd74ac-b18e-4397-8b70-20587385c6b9",
+    "7170bc62-0806-4677-8c00-0e811d5e4a53",
+    "88b1f482-86ca-49bd-8f64-39c18b6d307b",
+    "b766a476-471f-4a5d-9718-be2b3199eca9",
+    "ff004450-a83c-4a12-a9ad-96af3f7bb0c8"
+   ]
+  },
+  {
+   "size": 8,
+   "lon": 28.1889,
+   "lat": -25.7481,
+   "likely_cause": "shared address point",
+   "also_duplicates": true,
+   "manual_inspection": true,
+   "ids": [
+    "378316ff-8413-4668-8759-4aeeb77fa708",
+    "48293c65-d1b9-404b-80e9-737887b3f2ac",
+    "4c5f3e07-62e7-48a0-aa8c-13dce7cc0d97",
+    "4d5f7540-cf16-46a2-82e1-14739a8f0ade",
+    "7a93d4d5-4067-47e7-a23c-5b848caae4bd",
+    "a21e9765-7c06-4578-af75-498064a87898",
+    "a3005e41-80de-43c3-b8f3-f99bd76efeef",
+    "ff37e49b-0b82-43a4-8452-ca3e4bfaf3f0"
+   ]
+  },
+  {
+   "size": 8,
+   "lon": 28.190272,
+   "lat": -25.747706,
+   "likely_cause": "unknown: manual inspection",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "1f242d99-9663-43e0-893f-35147ef450f7",
+    "887cec12-b2f3-4f7e-b6db-292e82768888",
+    "88e852d9-24ed-456f-8128-67e9c30c7794",
+    "923bb6c7-8923-4219-900b-b62bc522d5ba",
+    "9b9ba874-9fa4-4def-b3af-85ca411cf7b0",
+    "9d71caee-4eb4-4f8e-b325-0a18603efb7b",
+    "cc0d426c-e0d7-41fe-a6be-c32282c4f311",
+    "d405953f-307d-4e6a-b7cc-74989cc4fe64"
+   ]
+  },
+  {
+   "size": 8,
+   "lon": 28.190274,
+   "lat": -25.747605,
+   "likely_cause": "shared address point",
+   "also_duplicates": true,
+   "manual_inspection": true,
+   "ids": [
+    "0157fc8f-5289-47f5-af5e-18da4e7d9d03",
+    "2d219b22-856d-44ce-8e88-56a104848ba9",
+    "4a59b9ad-dea6-4e9a-a461-524e3614cf27",
+    "7b5c2a74-f5bb-4d39-883b-05e7737065c7",
+    "88a2da3b-0a7a-412d-82ff-71ccb47b10b4",
+    "a3a7e710-83eb-49a3-9167-474e0143e0bd",
+    "c10c6b48-f278-4909-855f-a1bb15d9f67a",
+    "eccb7d43-971a-4d4a-bd6b-d0459f1cb703"
+   ]
+  },
+  {
+   "size": 7,
+   "lon": 28.186366,
+   "lat": -25.74963,
+   "likely_cause": "unknown: manual inspection",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "05351587-f418-4b58-aebd-d2f718d5d9f1",
+    "42969bb8-6f2c-4a58-a517-1a2eda84b4b8",
+    "52eecfae-1fa8-40b5-b3ae-3317c50c336d",
+    "8efc7add-a4eb-4bab-898d-aad32c9e0ac1",
+    "9ae0e6f3-6509-4c2a-b163-46173a0b7075",
+    "bb5b69e6-bb9c-44f7-b01a-fe50477a06e9",
+    "e7027af3-1526-4fd3-860d-e8748bbbc22c"
+   ]
+  },
+  {
+   "size": 7,
+   "lon": 28.188839,
+   "lat": -25.747971,
+   "likely_cause": "unknown: manual inspection",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "1c5b163f-e5b6-4a73-b9e8-de68a8184b29",
+    "2d0c87ad-7665-4a39-8aa7-48ebc709dd88",
+    "6a3c33ff-af2e-47f8-ba08-eea0498d83ac",
+    "73d2b9bc-0f05-465d-96c0-79397de8cb7e",
+    "d4da3118-cbd7-4201-940f-a3c5b7caa9b0",
+    "f2901cc0-d896-4697-924e-fd3577ba34d3",
+    "fee8f0f5-4240-4b0e-95e2-0f96389a7b29"
+   ]
+  },
+  {
+   "size": 7,
+   "lon": 28.19284,
+   "lat": -25.74463,
+   "likely_cause": "street-centreline geocode",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "07d7411e-03f1-4679-a829-045a47107bb8",
+    "0ec61ba9-eded-4825-947f-41870031876b",
+    "587de2af-c7aa-49d3-aa66-b41cad686d14",
+    "79b304e9-d475-42c6-8690-0d3f7bbfaa7d",
+    "832c02bf-29f7-461f-9337-8f0142152698",
+    "f93f7023-0ba2-4412-a6a2-cf78564799f8",
+    "fc718cf1-176c-447b-9187-d32ae57a6acc"
+   ]
+  },
+  {
+   "size": 7,
+   "lon": 28.19787,
+   "lat": -25.74796,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "0026dd7f-cfae-4c40-9b85-922c609a8b3e",
+    "19aeb241-8c43-4c1b-950e-7caf4c638941",
+    "3ec0b5da-b6de-43b7-a06b-f7da173028d0",
+    "6e1c60b5-0140-4f86-a1d8-5d5b0d594c23",
+    "6f70d6a4-b419-48c6-bfa9-3a87f558b3f9",
+    "73c5cc74-6ef4-4cb6-bf77-d0ad973710e8",
+    "84b9e4fd-9f59-4719-8e1c-b40864bb2ccc"
+   ]
+  },
+  {
+   "size": 7,
+   "lon": 28.204815,
+   "lat": -25.751746,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "0ce110a2-6844-4006-918e-9678047e10ac",
+    "30837c3c-cea9-49fc-ad44-42d4d7df0ec4",
+    "64022bcd-c0b8-4e65-b956-338d5827336e",
+    "a9b7fe97-f93d-4877-a4a8-9bdcd1e358ff",
+    "c9ccea1b-95e0-46a5-a40d-6761a8fc1b55",
+    "f554f4bb-13b0-4dc9-9c1d-265a0735dad2",
+    "fcfc0cf7-07b9-4b5c-bd9e-a52883f7853f"
+   ]
+  },
+  {
+   "size": 6,
+   "lon": 28.176521,
+   "lat": -25.739298,
+   "likely_cause": "unknown: manual inspection",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "1b3fc57d-0a07-4e1c-b90d-65f5d49e8842",
+    "58d545e5-0761-482f-9eb3-7d06d5321c0c",
+    "99ca84fe-5f04-468a-ab18-ec65e8a14390",
+    "ab1a8d3f-538c-45e2-bc1c-afaf472e7b87",
+    "c4e3ea72-3041-45c7-a8c2-7813303b2e9a",
+    "d47091a9-ad21-43ac-ac78-649684a6b396"
+   ]
+  },
+  {
+   "size": 6,
+   "lon": 28.179345,
+   "lat": -25.741774,
+   "likely_cause": "unknown: manual inspection",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "193bf573-183d-4500-bb47-863b01e501b0",
+    "6fc59648-500d-4ae6-9fe0-80af8e476780",
+    "8949f2db-d1a4-490c-8296-dada1923a6c4",
+    "ac4c7cb9-022e-45fd-a2b3-f4093b6e5a07",
+    "c13db316-d94b-489b-8d4f-d229b3141c6b",
+    "dabe5d4b-e591-4490-8cd7-a13edafb3689"
+   ]
+  },
+  {
+   "size": 6,
+   "lon": 28.185379,
+   "lat": -25.748941,
+   "likely_cause": "one compact building",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "49f333f2-1e2a-4862-8285-0d22163e9f4c",
+    "6baf4696-ac01-4297-be92-539f6b36320b",
+    "895b7dab-a1ae-45de-9a0b-b8da25289ad0",
+    "9a09ead8-1070-4d1f-9b53-d8e364cbc5c7",
+    "ff4a1bfd-2b18-4c0a-abf8-40c3ca1e66b5",
+    "ff8175d2-94c2-426a-8747-e4eb8a6c1b10"
+   ]
+  },
+  {
+   "size": 6,
+   "lon": 28.18759,
+   "lat": -25.7458,
+   "likely_cause": "unknown: manual inspection",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "6b9809d9-53fb-4a4d-9c6b-42b3f5211a57",
+    "a448ba2a-2f30-41bb-9d2e-63535f5a5d53",
+    "c3aaac3c-11e6-4fba-85ab-0f5030d8153c",
+    "ce7a5581-2b8a-486c-b98e-ad3ac30954eb",
+    "e3598b3c-c6c6-4d1b-9fe3-6e72b68891df",
+    "ff03dc47-3885-4345-bd2e-00cb856c13ff"
+   ]
+  },
+  {
+   "size": 6,
+   "lon": 28.187905,
+   "lat": -25.745754,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "660762c0-57c9-4875-8a7f-e5daff71a01c",
+    "7946b21a-506b-46bc-b895-c2f6673f457b",
+    "82881ae3-5df2-498b-8c74-a6be351213b4",
+    "87a25e73-7378-4f5e-b9d8-5f5cb7092d5b",
+    "af49d620-6390-4599-8659-4329af979293",
+    "c005e385-cf2e-4224-b867-d4d382609da5"
+   ]
+  },
+  {
+   "size": 6,
+   "lon": 28.188176,
+   "lat": -25.747927,
+   "likely_cause": "town-only address",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "127dc350-1ddc-48ec-94bc-c57efecc3e7c",
+    "144d13bb-dd94-4f5a-8ee8-d87ac512448a",
+    "6d091d2c-dd10-4deb-8b45-169ee73d0aca",
+    "9b91ee8e-f26e-4378-bc0b-db125a96dda6",
+    "b613777d-2efa-44af-956d-ef6ff0d3d6fc",
+    "cac65638-1d35-4105-a282-5b21ee2c7c2a"
+   ]
+  },
+  {
+   "size": 6,
+   "lon": 28.188932,
+   "lat": -25.748082,
+   "likely_cause": "one compact building",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "0ffa1438-4ee7-4075-9702-316cf8136f23",
+    "2092b959-f354-40bf-ac7f-d80c86d5cdb6",
+    "30b60578-efef-4ea7-9ee5-291ff64afb2d",
+    "b242bdab-c5f5-47ed-8820-f52f86649674",
+    "c658dcf4-5715-441d-a20f-b4c443130f35",
+    "f40db5b9-a409-4a42-bd62-940074e40d9d"
+   ]
+  },
+  {
+   "size": 6,
+   "lon": 28.189295,
+   "lat": -25.739435,
+   "likely_cause": "town-only address",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "c3323479-e772-46ce-bba4-e25fbae0d8b8",
+    "c9545d97-0d2f-46c8-a2f6-270cc003965f",
+    "d1632c8b-5497-40e1-a4ed-eef27cfbb42e",
+    "da252c1b-b8f0-49c5-8aa6-c166328f0082",
+    "dbdb1b5b-e6cb-44e3-b850-1ed15d530323",
+    "f95d899e-9a04-4dc7-bc32-505cbd2795e6"
+   ]
+  },
+  {
+   "size": 6,
+   "lon": 28.190754,
+   "lat": -25.745925,
+   "likely_cause": "one compact building",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "1ae03424-f148-4707-adad-722e8eda872d",
+    "4068ab08-fa5f-4d26-ae17-132e8c30cf7f",
+    "8c0ca5e9-47aa-4310-93fe-d8df78e317b6",
+    "aebfc2da-6d83-45e4-90ec-b6dc29911f05",
+    "f1dfbe3d-831b-4459-a45b-f348012f7069",
+    "f7cb2d55-6ba5-4ce6-b9e1-f4dea94f9707"
+   ]
+  },
+  {
+   "size": 6,
+   "lon": 28.192035,
+   "lat": -25.748276,
+   "likely_cause": "one compact building",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "28d1c2d4-6120-4b2b-a298-adad47117130",
+    "458a07a2-b4a5-4492-a5db-aa86c3de0412",
+    "53c8a907-61ff-4e9d-ad74-0e166635bc2f",
+    "5bc20ff6-aca3-469d-b4e7-e4a2eb6a3d82",
+    "fc89241c-dbdd-4041-82f2-d1ed18798947",
+    "fe4ae498-d802-4547-93a3-07e0026a0d69"
+   ]
+  },
+  {
+   "size": 6,
+   "lon": 28.192438,
+   "lat": -25.747277,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "353c7126-fb8e-4005-bc67-e3f4259f2bc1",
+    "5d831b58-1d62-4c88-86ec-551dd59b86e4",
+    "6bf08146-ca69-4806-8143-2726e7982456",
+    "6e1438f1-280e-40ce-ba5a-2c598cc98edf",
+    "b540f9e9-b5d1-44fc-8e90-cf452c2e31da",
+    "c864238a-05f8-4922-b4a4-ba52d26d2df2"
+   ]
+  },
+  {
+   "size": 6,
+   "lon": 28.192605,
+   "lat": -25.744845,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "4cee104e-75c6-47de-8459-b267a0c10524",
+    "66a49d65-b5b9-453a-a724-b95d840d65ff",
+    "685c957a-4674-49c4-be99-ba5268467a99",
+    "8d1c1228-ef05-4941-bca2-7f7b84483bb6",
+    "a622057f-aff1-452e-9837-7e2acd625906",
+    "e4b8bb9a-f2af-472b-a445-01a20b41ff34"
+   ]
+  },
+  {
+   "size": 6,
+   "lon": 28.192644,
+   "lat": -25.744847,
+   "likely_cause": "one compact building",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "06e77db0-a0d1-4de0-b371-cdb41f1acbc6",
+    "54cf17be-affa-44f6-92e6-ae85b3883599",
+    "7539f67c-dcd8-410b-af11-254931614ffd",
+    "c01aa68f-b223-409f-ab22-bb05282310b0",
+    "dd6ce9eb-006b-42d9-8065-f0eec45b301f",
+    "ef6d65ef-ecfb-435f-9170-21e478ea8b73"
+   ]
+  },
+  {
+   "size": 6,
+   "lon": 28.19268,
+   "lat": -25.7452,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "0676a5be-d87e-4ef6-9937-e20b968c53fb",
+    "085a4ef7-b17c-4861-b3d0-d461f162d1bf",
+    "56721abb-06f1-4574-b090-012b30d8b479",
+    "9511ecc8-2aad-493a-8969-f3e9d31c3376",
+    "a8122182-99c0-4eed-8878-b44755997eac",
+    "e2f21ce7-3633-4b21-8a22-c733e5571d34"
+   ]
+  },
+  {
+   "size": 6,
+   "lon": 28.192785,
+   "lat": -25.747413,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "372c2daf-256f-47fa-a32f-9d82ab434edf",
+    "4a7be474-070a-4258-aa7b-6c55fce56b21",
+    "5e4a1cac-11a0-46e5-ae09-21be421f10e4",
+    "79e6a799-20ac-4e30-b499-055b3e81b795",
+    "987cc2d1-1dfd-43ca-a082-447bc4ffe21a",
+    "bb13e470-1bd0-4b6b-b145-581b63003b8a"
+   ]
+  },
+  {
+   "size": 6,
+   "lon": 28.19279,
+   "lat": -25.74737,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "01bc0a19-32fd-40b4-a6a3-3ebd198c642a",
+    "1a71ce0d-9938-4c2f-ab58-595733bef8ff",
+    "4a5fa48c-c20b-42f7-93db-88cf377f6208",
+    "69e5461a-0d35-4c58-975c-9c83daf1d3a2",
+    "bb88f875-e1c7-4593-9c84-c9dc92f84de7",
+    "c1e18dd3-2a8b-4d9a-b7f1-0154a2acbcc1"
+   ]
+  },
+  {
+   "size": 6,
+   "lon": 28.193085,
+   "lat": -25.74761,
+   "likely_cause": "intersection geocode (address says corner)",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "08d67657-1dce-4f9c-a02d-45e2a4d1ba3a",
+    "2415d464-d65d-4d45-9fc2-7c26581d5222",
+    "64c42840-f339-4886-9490-9ab819f86101",
+    "78c42469-c60f-4fae-b51b-7059ea16f5f5",
+    "9133c7bf-0fd9-4286-bc10-04a90869b14d",
+    "a99fa8b9-1011-4d0a-bdf3-f3030f38b3c9"
+   ]
+  },
+  {
+   "size": 6,
+   "lon": 28.195125,
+   "lat": -25.748794,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "16d7c204-cbbc-4aca-b174-3f8cf972c962",
+    "2ece6b24-b44e-4e62-a226-7a4d7bbe1627",
+    "38385f7a-0eec-4836-87dd-fe25e6ec330b",
+    "697ff0ae-da97-4c88-a16a-8d63fbb860a4",
+    "8edec3e2-f001-42f5-9450-467efe157d00",
+    "e166bd50-b1d4-46d3-a82e-7c88f6053e10"
+   ]
+  },
+  {
+   "size": 6,
+   "lon": 28.196023,
+   "lat": -25.748734,
+   "likely_cause": "one compact building",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "13e38b5c-1548-4097-bf41-73af2bb5fcc0",
+    "38cfbe2a-5bab-4b9b-bb8e-d91ce6fcf85e",
+    "b7f4d103-753f-40b3-bc56-6871e52f58cf",
+    "dd792f22-e2ff-4e6f-be33-639af11b8f60",
+    "e5b25b3a-0fd7-4b30-8048-0ad4adbe2a65",
+    "f43958ca-6ac6-454e-a6cd-720b5ebc827a"
+   ]
+  },
+  {
+   "size": 6,
+   "lon": 28.197576,
+   "lat": -25.746358,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "0e6cda32-8462-4a65-af92-90e968008f89",
+    "1a282a27-09fa-4c57-9178-f619bfc2ec57",
+    "563b335b-e0a0-4d34-97af-77c6ad3fbb13",
+    "7933051c-55cb-411c-82cc-51dc726662fb",
+    "91895e58-7105-4139-9f68-ca786f934f32",
+    "c0b97e67-dd94-42e9-a7f8-47e5f11f8149"
+   ]
+  },
+  {
+   "size": 6,
+   "lon": 28.198548,
+   "lat": -25.747637,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "1dbed330-e1dc-4c00-8ba3-61da461ede0b",
+    "392469ab-3c97-455e-8754-7c14040fbb80",
+    "3b113c02-f83a-47a4-ba7b-df8ad5772a9d",
+    "44d1ebaa-e258-4a02-8161-aa6a4c059d0c",
+    "5066366c-38cd-4f40-90f5-44d6662a1e73",
+    "5b171e16-ca4c-4f88-9834-ba1d702500e3"
+   ]
+  },
+  {
+   "size": 5,
+   "lon": 28.17985,
+   "lat": -25.74182,
+   "likely_cause": "unknown: manual inspection",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "264e1650-f3f4-4a47-a7d8-4a0f150d7a89",
+    "27a69504-7767-42f0-a385-64bff8614bcb",
+    "4095ca1b-cc8d-4e43-a268-bef9cda20129",
+    "b78fc09e-ec7e-43ba-8f16-0baf14354d7a",
+    "ea37a067-c832-4739-b02f-abbfbe51f2ba"
+   ]
+  },
+  {
+   "size": 5,
+   "lon": 28.18349,
+   "lat": -25.75694,
+   "likely_cause": "town-only address",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "4babe90b-af23-48e3-a4fa-6dbffb4770c9",
+    "530f19d7-5970-48b6-ab86-1499b36e5234",
+    "93f0d382-bfc3-4f3c-bfd5-cfe27061c6ea",
+    "95b171ff-a6de-4730-8a7e-ad1ade320a80",
+    "f4949740-d327-4212-b403-3c9021e0e9b6"
+   ]
+  },
+  {
+   "size": 5,
+   "lon": 28.18359,
+   "lat": -25.750061,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "a3980d9e-2ed1-48c2-95e6-6c269eabd354",
+    "bc91411b-a942-43e6-bd61-1d7b2f7fb777",
+    "de93f39f-44ee-47ff-88aa-1d513b359263",
+    "e1691e50-3cb8-47a9-beb8-6198d6095d72",
+    "fec0eb47-780a-4584-b012-c3fb577d8f37"
+   ]
+  },
+  {
+   "size": 5,
+   "lon": 28.18745,
+   "lat": -25.74381,
+   "likely_cause": "one compact building",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "043902e1-c62e-43ab-a6e5-c54e3a3d8c5d",
+    "64127f54-ccd8-4dd0-9cae-cdca9ffc73e0",
+    "76905b2a-86d4-4103-be02-1195ef9f409b",
+    "d5bd8af2-22fd-441b-9956-a15f9c01a1c4",
+    "feb02931-ae9d-4f07-b7ab-d62453cb481f"
+   ]
+  },
+  {
+   "size": 5,
+   "lon": 28.18817,
+   "lat": -25.74795,
+   "likely_cause": "street-centreline geocode",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "34010f5a-0464-42b6-9c98-bdcb4f0deb7e",
+    "3cf59858-87a5-4937-a4e3-b596f2e641c1",
+    "84b41f33-5218-4bc7-a7df-acda58e92e0e",
+    "958ebef5-3950-4d52-a29d-8cce805bb227",
+    "e6fd7ef5-659f-41f3-89c9-65df0f477208"
+   ]
+  },
+  {
+   "size": 5,
+   "lon": 28.188328,
+   "lat": -25.747742,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "03c8603a-89a5-4853-b309-af3b1e18cf90",
+    "67c8585a-10a3-4f1a-a216-db1192db9ed2",
+    "ae382a2f-caaf-4d47-ba88-187f8bb6d1bf",
+    "b8c9cd81-2e52-4c7a-ae3a-2f3549487c12",
+    "e70bf7c5-9ac2-4871-8e37-06b42494654e"
+   ]
+  },
+  {
+   "size": 5,
+   "lon": 28.188617,
+   "lat": -25.748051,
+   "likely_cause": "one compact building",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "1975ae51-2472-477b-b326-f5e77d8a04f9",
+    "34c1e77e-ad05-4c77-91d9-669ae1c89571",
+    "aca18db0-848f-4ca6-bf44-757a4ee19051",
+    "cbe8c220-de0d-4cb8-9c55-94450862ec72",
+    "d3b8ebe2-f3da-4770-9987-7936c41669de"
+   ]
+  },
+  {
+   "size": 5,
+   "lon": 28.189078,
+   "lat": -25.75483,
+   "likely_cause": "shared address point",
+   "also_duplicates": true,
+   "manual_inspection": true,
+   "ids": [
+    "5136a43c-b158-4585-9f1a-d51272c67662",
+    "a4a27dce-d110-40a6-beba-7dfd0f20452b",
+    "aff8b059-cbe2-42af-a5a1-28ada2ca2ff7",
+    "dde5f684-13c1-401f-b015-e3c8fb466e2a",
+    "ebe44ed8-4f01-4de2-bc09-2b72cbd9f9f7"
+   ]
+  },
+  {
+   "size": 5,
+   "lon": 28.190596,
+   "lat": -25.748876,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "27df574c-8b7c-4313-a524-cf6c08604de6",
+    "6da6fcea-065b-4c04-b7e1-ac91c0042aca",
+    "c18d18e0-08f8-4d0d-b586-dc04a9aceef4",
+    "cdf23faa-a30c-4f1f-aa8c-cf199903e254",
+    "f9bf5f3e-3dcb-48f4-a819-ef66d64c7175"
+   ]
+  },
+  {
+   "size": 5,
+   "lon": 28.190633,
+   "lat": -25.745952,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "9cf3597f-349d-4e3d-84ae-0e02d5d74fbe",
+    "cb29cd69-f2de-4710-96be-5e2a27128cc9",
+    "cd91a94a-9aea-44fc-b820-1ccaccbc30da",
+    "d4ebe049-0747-47b2-84f8-9c8c3af0f835",
+    "d6083964-7d60-4b27-a19a-7dc73878619f"
+   ]
+  },
+  {
+   "size": 5,
+   "lon": 28.190634,
+   "lat": -25.745983,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "02a96a57-905e-4eef-808a-b8fc1ed7a7ae",
+    "15ec7536-7ea0-479d-bc74-bb917e308023",
+    "422c9a18-175e-4a4a-99a4-836730837b1e",
+    "59caf9e6-5873-43c4-b38c-808eb1a39e2b",
+    "5e4b6802-59cb-4435-9065-91d84c7ba07f"
+   ]
+  },
+  {
+   "size": 5,
+   "lon": 28.190744,
+   "lat": -25.746574,
+   "likely_cause": "one compact building",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "5f0a22c1-083e-4d00-b517-b830923fa434",
+    "7a50e1e7-abdb-436c-8051-a13edba5380a",
+    "860b4146-50f6-4cba-956e-72d56b49c9d1",
+    "a877f9b8-207c-4705-9cc1-19df49b57104",
+    "aea5100a-96c0-4862-bb64-c4e579bb8a23"
+   ]
+  },
+  {
+   "size": 5,
+   "lon": 28.19079,
+   "lat": -25.74594,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "0c5aa6be-2486-45d7-b975-4793f3e6c274",
+    "a65870ce-54fd-49ec-af2c-462abcd5b34c",
+    "bcfb1829-a054-4b35-b04a-c38e2411b07d",
+    "d8918196-7eb1-4ab6-8548-1ab03743610b",
+    "fe582a21-489e-4337-8814-f082ec472cec"
+   ]
+  },
+  {
+   "size": 5,
+   "lon": 28.191383,
+   "lat": -25.756572,
+   "likely_cause": "intersection geocode (address says corner)",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "4c9a6e1c-edab-4908-b4de-955d977e6b8d",
+    "55c76dd2-6194-42c7-b702-0d532d624858",
+    "8e516bd2-2176-41ff-968f-4f8516012ac8",
+    "96d6e286-f35d-44c5-90df-22d307e29b5e",
+    "f315f339-0690-475e-8f04-4ddc6456eb1f"
+   ]
+  },
+  {
+   "size": 5,
+   "lon": 28.19224,
+   "lat": -25.74692,
+   "likely_cause": "town-only address",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "5160d5e4-44ec-4dcf-a215-ada7033d97ef",
+    "6d07fa1a-ed58-41bc-952c-3af24188344c",
+    "8bfd7cff-95a2-465f-8e10-c5b0d28799e4",
+    "9dc42b24-f1ed-4311-8144-0f6cd01915bb",
+    "d9a3cb08-ed07-4071-8d10-ba5ce12545ea"
+   ]
+  },
+  {
+   "size": 5,
+   "lon": 28.192407,
+   "lat": -25.746951,
+   "likely_cause": "one compact building",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "26f14976-12e0-464d-842a-32f04756bbd2",
+    "2ab3fe7e-397a-4f10-9557-3db62d3dadb8",
+    "4b31a771-40d7-4b8e-9b8c-332042494f5d",
+    "5f95b926-8650-4ee2-a522-91e42f48ed2a",
+    "6fe0c090-2179-4cdf-a909-5f6867ae049f"
+   ]
+  },
+  {
+   "size": 5,
+   "lon": 28.192442,
+   "lat": -25.747325,
+   "likely_cause": "one compact building",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "3283a731-749c-4952-af95-8d38cf16dbe3",
+    "57ea34da-7bb6-49c0-af54-5da84311b1d4",
+    "6ee776bc-d222-488f-8587-94afc6e87a02",
+    "aac8d039-a7fd-479e-8586-8e0cbb973147",
+    "b636c949-adb6-4520-99bc-f1bd70d70100"
+   ]
+  },
+  {
+   "size": 5,
+   "lon": 28.192945,
+   "lat": -25.748936,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "7a956a57-d76f-470b-8787-f456c00a108e",
+    "96ca4d00-fdf6-42f2-97e2-0f5530f66d2a",
+    "bab44029-e1f2-444c-bad2-623fe0e6a0d4",
+    "e5a94d34-f179-4894-a111-2c4a4c0aeb5c",
+    "fbb73bb6-50c2-4340-9d34-3999b2b37bbd"
+   ]
+  },
+  {
+   "size": 5,
+   "lon": 28.192953,
+   "lat": -25.748997,
+   "likely_cause": "unknown: manual inspection",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "4be58b3e-a5cf-435d-a660-21e8617eed42",
+    "666c5c19-40b4-468a-91d4-061364b570e1",
+    "72904328-a6e7-4edb-b9ce-6b01adbef75d",
+    "8da37bf3-447a-4bc0-bfd7-8f9aa09a9371",
+    "df633a7e-a65c-4d43-8ef9-43032b58e89f"
+   ]
+  },
+  {
+   "size": 5,
+   "lon": 28.19296,
+   "lat": -25.74876,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "3b9b5db4-47f4-4380-aa1b-2ef610fcc130",
+    "55484a9d-ceb1-4c70-a0da-b0dfe402d171",
+    "57180364-8208-4f7a-9a2f-a944ddb4fc87",
+    "73a82661-75d5-4a18-a01d-dd66a61eb2d2",
+    "ec742efc-12ad-480c-b12f-a47fed2f9a68"
+   ]
+  },
+  {
+   "size": 5,
+   "lon": 28.19303,
+   "lat": -25.748914,
+   "likely_cause": "one compact building",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "70e12005-5bbf-403d-91f3-7c727db07c36",
+    "7d0507e2-6fec-4456-8ed6-f36331bc7aad",
+    "9dfe79da-e130-48ea-bfd2-e21610f3e8ce",
+    "d2abaa3a-4ca7-4e26-8cbb-91cdd7ed8d7b",
+    "f8e144fc-2d77-4896-a985-8f1fbece98cc"
+   ]
+  },
+  {
+   "size": 5,
+   "lon": 28.195266,
+   "lat": -25.748646,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "24ebdbec-ba72-45b4-87d4-16ff22658db4",
+    "8fbc856a-8d77-4b85-a27b-5b82ad3f325e",
+    "a11d3921-bd2a-4090-97a6-f638974cdfbb",
+    "a36e9a85-6923-41bf-832b-dea1fb8189a1",
+    "ce066273-0fb0-46c7-ba23-9687803986e1"
+   ]
+  },
+  {
+   "size": 5,
+   "lon": 28.196006,
+   "lat": -25.748613,
+   "likely_cause": "one compact building",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "48038267-3758-4203-8277-9ecc29ad3147",
+    "6b83fd23-1b5f-43d9-a23f-40dc1ff6deff",
+    "86acec54-ec52-4a98-8a59-4433ca29f3dc",
+    "ab0dd432-e768-4847-a0a4-9306b3f0d42f",
+    "b8dc7040-2425-407b-a4c9-29022518c6da"
+   ]
+  },
+  {
+   "size": 5,
+   "lon": 28.197412,
+   "lat": -25.744967,
+   "likely_cause": "unknown: manual inspection",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "03d8d153-9cdf-4319-808e-9dedbdf1454d",
+    "1350331b-71d3-42e1-8df0-52f5d5559dd2",
+    "850735cd-7351-4a32-8c00-15410021f6e0",
+    "86c194d4-c540-41b3-9ee3-c43a2906aa5b",
+    "bfb47460-c400-4178-bf8a-efe5aec838f8"
+   ]
+  },
+  {
+   "size": 5,
+   "lon": 28.203858,
+   "lat": -25.751958,
+   "likely_cause": "one compact building",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "0cad691c-ba36-44be-b05b-c2a3f753939b",
+    "4754fda9-72f7-40f3-9c19-8a9c243e5c9d",
+    "7633ac93-31ed-4dd4-8163-6d5c696ec3ce",
+    "848e087b-3a75-43f0-a773-13ccce2a41fb",
+    "8b9a1204-bfc3-4c8e-83fa-60a276af5075"
+   ]
+  },
+  {
+   "size": 4,
+   "lon": 28.181271,
+   "lat": -25.746781,
+   "likely_cause": "unknown: manual inspection",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "4f64c5be-5d5f-4b14-b31e-56e9b3686a5f",
+    "ec0212c9-d12e-4c45-88e2-faf0d5d16ae0",
+    "efe6b873-3ef7-4218-8041-88a1b263d054",
+    "feabe8c4-9bb7-41ff-bd2f-3281c8c1c448"
+   ]
+  },
+  {
+   "size": 4,
+   "lon": 28.182914,
+   "lat": -25.748087,
+   "likely_cause": "shared address point (unit numbers recorded)",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "9d21d92c-d73d-4408-8e2b-c149845e2ef8",
+    "e78aac74-a134-48ae-95a9-8579b5642fc0",
+    "f1b4a162-fef1-4aba-8a34-4d661ed1057f",
+    "fce1f98b-759b-4679-bf20-6d8df8b0aa8d"
+   ]
+  },
+  {
+   "size": 4,
+   "lon": 28.183976,
+   "lat": -25.747125,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "3cbcdf24-6c4c-4d42-8dc0-85de06d6192f",
+    "ba3e862c-eef9-487b-b72c-551c3f02a16b",
+    "c88dfdd9-c68f-4861-9779-1cc80596a004",
+    "ef1a3d6a-22d2-4a1a-98cb-342a10b62524"
+   ]
+  },
+  {
+   "size": 4,
+   "lon": 28.185446,
+   "lat": -25.746096,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "4859c9dd-7d64-44a7-8206-7449a405d0af",
+    "5fd48dce-417c-4623-a946-dd8c2fa64ada",
+    "986f4d90-e44d-4773-b440-ceebad9be3b1",
+    "ce40392d-1b4f-443e-b26b-3883c2f305b3"
+   ]
+  },
+  {
+   "size": 4,
+   "lon": 28.18702,
+   "lat": -25.74599,
+   "likely_cause": "town-only address",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "0bbbbb9c-942f-49b8-942d-4adef6a102ba",
+    "3defefd9-41a9-447b-85df-7d9dcd954a9d",
+    "862c589a-618c-4c43-af9d-69a3d975e885",
+    "b726aa1e-8db2-4019-9db2-8768f7c189d0"
+   ]
+  },
+  {
+   "size": 4,
+   "lon": 28.188264,
+   "lat": -25.751005,
+   "likely_cause": "one compact building",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "33523f40-097b-46a5-b266-f91497f85b5c",
+    "5066809e-e3ae-4688-8053-21c4a8fe054f",
+    "630492a1-ae7c-4a9f-8f41-ad2467b2996e",
+    "e50c3375-b91c-4b69-a05c-7456984891f7"
+   ]
+  },
+  {
+   "size": 4,
+   "lon": 28.188883,
+   "lat": -25.748545,
+   "likely_cause": "shared address point (unit numbers recorded)",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "473629a8-4090-4e4c-91cd-1ca05d9e4ef3",
+    "507a1a16-324f-4788-bb45-980e5c668378",
+    "a1beec1f-c813-43b5-a186-80e9e5122f87",
+    "b125682c-ab66-4653-ae52-978174b1fe24"
+   ]
+  },
+  {
+   "size": 4,
+   "lon": 28.189055,
+   "lat": -25.746867,
+   "likely_cause": "one compact building",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "7faf2291-65dc-4097-9ea2-6b388a73d6b3",
+    "bcb71417-8373-411c-9281-8cb8e3fe4f04",
+    "db4bf1c0-1033-4360-a2b9-1e540151921c",
+    "dcd37218-da75-40aa-8731-7575b7db0159"
+   ]
+  },
+  {
+   "size": 4,
+   "lon": 28.189155,
+   "lat": -25.748907,
+   "likely_cause": "shared address point (unit numbers recorded)",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "35d8f4b8-a980-4641-9024-81ca0fe3490c",
+    "587bb3b8-4da8-4339-929e-3f9243dbc87f",
+    "6c8f4694-225a-41b2-8c6c-9f008b5b23ed",
+    "f3b3d2da-5eb9-423a-980a-7b3cf080fb32"
+   ]
+  },
+  {
+   "size": 4,
+   "lon": 28.189167,
+   "lat": -25.738443,
+   "likely_cause": "one compact building",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "09225115-010c-4e92-88cf-5ff104a430ea",
+    "2e63ff7e-22f4-444c-8d52-dbefe56f70a7",
+    "9b013f99-4788-4dc4-ba40-7b11320e92c4",
+    "db887223-d6f8-461e-9404-d8aced94c9ee"
+   ]
+  },
+  {
+   "size": 4,
+   "lon": 28.189303,
+   "lat": -25.739318,
+   "likely_cause": "town-only address",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "0c187c15-e9b1-47e2-af6a-26fb9a384709",
+    "473bb41f-fbd6-41c6-9279-2f8db4b2c351",
+    "61168143-4ee1-48b4-893b-5a4a29b9cb31",
+    "b02809bb-dc0c-48fd-a956-300b48b8dcaf"
+   ]
+  },
+  {
+   "size": 4,
+   "lon": 28.189345,
+   "lat": -25.747134,
+   "likely_cause": "unknown: manual inspection",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "0b42cdbd-a331-4052-a3df-879f1ec7399b",
+    "bd12ea9b-ffc3-4f20-9428-5b26096d5431",
+    "c459356f-ef42-4e04-bb50-eb52cfe84148",
+    "fbae0cc3-0f26-45fb-81fd-eaa3bdb6a88b"
+   ]
+  },
+  {
+   "size": 4,
+   "lon": 28.191297,
+   "lat": -25.747825,
+   "likely_cause": "one compact building",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "2a3e08e9-0b38-479e-bcbc-0f7d12c621e9",
+    "62a9de2f-e1bb-4167-a55c-a5f51f4c2443",
+    "7cb7e7ac-afe9-44e1-910b-9cec23b4d0b4",
+    "d193c187-b9be-4ab8-a0ff-6406d0438d5a"
+   ]
+  },
+  {
+   "size": 4,
+   "lon": 28.191301,
+   "lat": -25.747768,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "8b6d86a5-91b4-49bf-81c9-95d06c9bb504",
+    "8f211350-89cf-4c39-9b2b-b7d0d95a033b",
+    "a0e04e9c-462a-48f0-b52a-d75068f8d5d5",
+    "c8052c35-d5b6-4a11-823d-cca3a135b083"
+   ]
+  },
+  {
+   "size": 4,
+   "lon": 28.191645,
+   "lat": -25.746026,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "33b21cb4-95ef-4046-bd62-9c6aa972aa45",
+    "353bf143-395b-40fd-8871-b20818522027",
+    "42104be3-ae56-4e6c-95f7-2f46322c9fba",
+    "85907314-0921-48c0-b444-b7cadc697c17"
+   ]
+  },
+  {
+   "size": 4,
+   "lon": 28.191706,
+   "lat": -25.747845,
+   "likely_cause": "shared address point (unit numbers recorded)",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "8428f249-7eb8-4a70-8224-8b20ebbc42b7",
+    "c578a4d3-6154-4b8a-8b9f-89d151c5f5c0",
+    "c58e4ab4-f741-4c7f-9665-91b0531ac842",
+    "f3ff810f-34e4-4088-ae4d-b162f6390c8e"
+   ]
+  },
+  {
+   "size": 4,
+   "lon": 28.19197,
+   "lat": -25.74798,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "20773b3c-b70e-42e7-a487-6ba4dce0ba47",
+    "6ca5bd1d-6221-4aa7-890c-5f8df835b909",
+    "8386f910-3ca5-436c-8869-3317238d57c9",
+    "c4f9b99e-b54a-49cd-bdeb-0c2f804536b7"
+   ]
+  },
+  {
+   "size": 4,
+   "lon": 28.192277,
+   "lat": -25.748948,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "06e90668-9107-428b-845e-d5beac776fae",
+    "89aca925-0b7c-42d6-beed-cedc965f1a7e",
+    "b8273f97-c799-40db-bcbb-c08ebf65ee30",
+    "f5090c02-1415-41ac-980a-7505c8c07ed8"
+   ]
+  },
+  {
+   "size": 4,
+   "lon": 28.1925,
+   "lat": -25.74788,
+   "likely_cause": "duplicate records",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "2a0672a1-bdcc-4e3e-88a4-151763acd340",
+    "662b8aa1-d53c-4802-88cf-b4bbc8273454",
+    "a904f55d-5ebf-43cb-9749-ce478d35179c",
+    "eb9953bd-132d-497e-bfd1-87f0da414e9d"
+   ]
+  },
+  {
+   "size": 4,
+   "lon": 28.192616,
+   "lat": -25.744755,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "10d4b109-2b43-480e-b2b3-09c6be35fbbb",
+    "55b8a099-4952-4136-aadf-7f4c176021c6",
+    "a0843820-4e81-4947-bdfb-19c273789eb9",
+    "a671d2d2-dbf2-43c3-ac35-956e537bdc67"
+   ]
+  },
+  {
+   "size": 4,
+   "lon": 28.195308,
+   "lat": -25.749045,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "3991684b-8d8e-4d64-aa01-9a4035da9163",
+    "5233f740-22ef-49c7-84db-752757e953b7",
+    "70216541-ccb0-41bd-af62-9868640fb2d2",
+    "c99b81b8-a7ca-455c-962b-ec2f5fac104f"
+   ]
+  },
+  {
+   "size": 4,
+   "lon": 28.196039,
+   "lat": -25.751955,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "26886d04-0353-4e4e-a607-ede1f79a98e3",
+    "6f82d73b-85a5-4f7a-b508-42068bdb3c73",
+    "7e56241e-cdfa-47b9-9cbe-58a2981de0aa",
+    "be12db3b-3634-49dd-9e56-337a35c8fe9b"
+   ]
+  },
+  {
+   "size": 4,
+   "lon": 28.196646,
+   "lat": -25.743029,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "77368969-ec35-4dbe-babf-03b6ac2e34ac",
+    "826af491-1719-49f8-adf3-f3205590cd4f",
+    "ab884cf1-6d57-4dcc-9434-91711d932a58",
+    "cab2241f-0a90-4181-b248-a91ae9e59710"
+   ]
+  },
+  {
+   "size": 4,
+   "lon": 28.196679,
+   "lat": -25.751857,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "3572242a-914c-4eef-ac95-e873ee064f49",
+    "41161f75-0fb7-4496-b2e0-668fb91b7efb",
+    "86736ea4-fabe-4568-9c0a-7e5ff5187e95",
+    "9ab62342-8dbf-4da2-a1e9-bbd8db9a50e0"
+   ]
+  },
+  {
+   "size": 4,
+   "lon": 28.198153,
+   "lat": -25.746187,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "708134f2-d19b-4442-b606-acd318c4b4a7",
+    "c53018de-077a-4058-8050-c41e5437ffa5",
+    "d39f53e4-22d3-4f17-ac97-e27a6adca5b7",
+    "d7907e7b-e42d-4245-a1bb-6bab5291432d"
+   ]
+  },
+  {
+   "size": 4,
+   "lon": 28.198605,
+   "lat": -25.748414,
+   "likely_cause": "one compact building",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "1d7ae035-5abd-4b61-b94d-3fc31c53bb54",
+    "27818e0c-d23d-41f9-b8bb-0b3b7fe6f97f",
+    "88a616ba-5719-4dd0-866c-04267329afe5",
+    "aaffadcc-7d24-4c11-8e0b-d5f0a2a968c3"
+   ]
+  },
+  {
+   "size": 4,
+   "lon": 28.19895,
+   "lat": -25.74621,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "3131742d-17bd-4e60-b3ca-6b8aa9ea68c7",
+    "5b5a379f-f526-44f3-aabd-cce95ae6f957",
+    "952dd99f-c88c-4928-ab9a-11c8dea34cd9",
+    "f1e6e25c-b5c4-4acd-96d6-72c390e759b4"
+   ]
+  },
+  {
+   "size": 4,
+   "lon": 28.199858,
+   "lat": -25.747619,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "7678881d-cf0a-4fbb-a074-bee9a9cd6916",
+    "915b387a-d5e9-42d4-a912-f3607ea6fec5",
+    "97d62f5d-0b3e-4f88-b465-eb445bd6f2af",
+    "bebe4aee-74ae-49f2-8b74-bfc18154e66a"
+   ]
+  },
+  {
+   "size": 4,
+   "lon": 28.203017,
+   "lat": -25.742058,
+   "likely_cause": "duplicate records",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "3f366e4e-cb9d-42eb-b9d9-d08475f46e34",
+    "856801ab-8342-43e3-a9a4-2fa269af2140",
+    "95b3fe59-477d-4e6f-a2c4-ff51f2ce6b1e",
+    "c73d32ce-62a5-467d-a066-b6e68a0161ba"
+   ]
+  },
+  {
+   "size": 4,
+   "lon": 28.203118,
+   "lat": -25.751922,
+   "likely_cause": "duplicate records",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "3cd34435-9009-4616-b18d-d3291075aa83",
+    "3fe83b7e-f0f6-429b-b90b-a73499a02c19",
+    "c212a540-e28c-4ccc-86c8-e7cef8836684",
+    "da17dea7-fb01-4bd5-9eb4-fc23bb720c4d"
+   ]
+  },
+  {
+   "size": 4,
+   "lon": 28.20379,
+   "lat": -25.75201,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "88584ec9-d6c3-4b82-9126-77094543a84d",
+    "bd64a0a7-851e-4e62-9fa1-81b2668041a3",
+    "c0e1ae5c-ab20-452c-bfdd-2b978c97ead7",
+    "f89bed22-c8b0-4b64-9752-d5cefc4fa2e5"
+   ]
+  },
+  {
+   "size": 4,
+   "lon": 28.204674,
+   "lat": -25.751925,
+   "likely_cause": "one compact building",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "1c86cc74-6752-44dc-bc03-71931f87cbea",
+    "6a74e9d8-ab9d-42df-a89d-17e3d49a5a0c",
+    "745b1500-aa0c-402b-9d24-ccf8a5a4de9b",
+    "e4db28d0-474d-4e36-8b45-5ea5235c152c"
+   ]
+  },
+  {
+   "size": 4,
+   "lon": 28.204772,
+   "lat": -25.751732,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "4d7cf3fc-2643-4626-92c6-fb625e9369fd",
+    "53f2c2d0-5392-4c6e-9804-f93e7fd7dbc6",
+    "9f5beb4c-b9aa-4f67-9b15-ae1e69f04871",
+    "ca382088-9653-46b3-856a-88e038ad7eb1"
+   ]
+  },
+  {
+   "size": 4,
+   "lon": 28.204933,
+   "lat": -25.745539,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "42dd2537-f3f4-49b6-a2ab-a1f2c336b845",
+    "60a5a790-48f2-4339-9dc2-c10c277c7c5f",
+    "e505899d-e7ac-43a3-b835-6fef46883bb0",
+    "f6877238-5b88-4659-a0a2-3ad1ca100c7f"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.170027,
+   "lat": -25.753882,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "54326200-313e-4be5-852a-223fe13c972c",
+    "a419364a-7870-45e0-8892-74f0e268c521",
+    "d7dde95e-e094-4888-91e6-c3538065e931"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.17175,
+   "lat": -25.74412,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "1c6117e1-95cc-46dd-9ffa-6e684bbe801a",
+    "83f10374-7b25-4afd-bb68-23e28b32873d",
+    "9026ecd9-6ef5-4993-989e-6e3f7ca6eea7"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.172448,
+   "lat": -25.753544,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "4370590e-cb9a-4282-b615-2822ea783d44",
+    "6ec72f04-603c-498a-b1d1-7fcd4bcebd99",
+    "9f6e2db4-ed54-4907-b2e3-5a4789191f43"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.17254,
+   "lat": -25.7473,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "af14756e-039b-46e8-bdba-d5cbea5c67e0",
+    "ceb0e045-88df-441e-9386-7c50a95df95e",
+    "d1f013c1-b41e-4074-b63a-355b1838fe9c"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.172948,
+   "lat": -25.737765,
+   "likely_cause": "street-centreline geocode",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "181900c0-7066-497f-91be-8ad2de734536",
+    "4e077f4b-5aee-449f-8c23-e86e0a6b0419",
+    "52bb47c8-77f9-483f-ab4a-346561afd38d"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.179642,
+   "lat": -25.741789,
+   "likely_cause": "unknown: manual inspection",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "052cd1ab-76ad-471a-a217-31c3ceceb098",
+    "850f04cf-afe2-4a86-922c-fb28e900457d",
+    "d0efb5ad-a01d-4a80-86ae-a9e714037efa"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.18215,
+   "lat": -25.7479,
+   "likely_cause": "unknown: manual inspection",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "9c9c89aa-fc68-4a45-bf6b-428781d6a581",
+    "bd915e44-3fae-4f92-86f4-6cba34c9cb7f",
+    "f737ea77-ce40-4d42-9b88-aff8865aa4c6"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.18221,
+   "lat": -25.742484,
+   "likely_cause": "unknown: manual inspection",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "00650c74-c499-4d43-a341-04951e22979b",
+    "4b4000f2-ef19-4b43-8d11-cad48cf79877",
+    "d27b4bbf-3e15-4e71-8271-79ac3ec37346"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.182456,
+   "lat": -25.745015,
+   "likely_cause": "large building (mall-like)",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "2ef53667-a412-4e02-8919-90415d60d7cc",
+    "8c2d89e1-2fce-435c-8478-e8e66082ce13",
+    "c00ff053-62aa-4997-9f40-c0046eb94a49"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.182583,
+   "lat": -25.746886,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "02e3869a-e50b-4375-b41f-68e0e32c97db",
+    "70d9ea38-359d-41f3-a7df-76a56b4857c9",
+    "995a41c0-7450-47db-9a59-e8c85cd6b7c4"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.183706,
+   "lat": -25.741009,
+   "likely_cause": "one compact building",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "4107ed6b-3b57-4d48-830f-fc9ba67af8e6",
+    "c8b09210-c7f0-4fa0-8049-6e378fe2d336",
+    "ddbf8aef-1245-4d6c-849f-24dd5a6fe9dd"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.183937,
+   "lat": -25.749839,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "1e279c43-9548-4f34-9cd5-41085da541b8",
+    "2a354afb-bd86-404b-8c9d-9555277382fc",
+    "3befb451-c4fe-4dde-ab14-6ae57debed57"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.18412,
+   "lat": -25.7455,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "34e9aed6-908d-45ee-a498-fd148a578190",
+    "9c75ecce-2da6-41b9-bafb-f5de11a298fa",
+    "b3dfd383-dac4-4cb4-91fd-4a294da259a8"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.184196,
+   "lat": -25.746604,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "194f0a85-b70d-4a75-b60f-ee541b23943f",
+    "218a304d-bc16-47b0-9824-cad15d6a3222",
+    "2238a093-a6a3-4f5b-b160-704620255dfc"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.18553,
+   "lat": -25.7536,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "5087c2c3-9fc3-4cb8-bf68-e6ca88dc9212",
+    "72bb4330-fe52-4026-995c-98102a700aad",
+    "b4ff4b11-4801-436a-bc7b-2819ce3a7e33"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.18598,
+   "lat": -25.75032,
+   "likely_cause": "unknown: manual inspection",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "19f65b68-be7d-4d94-944d-d7a3d1eac7ce",
+    "769e1751-2141-4148-abc3-64e8d17600d3",
+    "93abadf1-00d2-47da-b150-852e3a909a24"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.186522,
+   "lat": -25.755565,
+   "likely_cause": "town-only address",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "5e738921-653e-472b-9972-0d414df4a5f8",
+    "709404c5-da31-423a-aacd-5312d7b59d15",
+    "a3a3f215-ec66-4488-9ecc-25aafcf401b9"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.1867,
+   "lat": -25.7522,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "21138192-47b8-48e1-9ec8-8ebeeb5c2600",
+    "72c1c9ae-1919-46da-99e3-2aff46a1a8a5",
+    "bec0e1a4-7e13-49e3-a77a-8f4207c12f71"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.187446,
+   "lat": -25.749356,
+   "likely_cause": "unknown: manual inspection",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "13ba6065-d79d-4740-acde-c09c4910126b",
+    "37fb7b74-dbf1-4db2-8d51-106bc32cac22",
+    "84bb08b2-c4e8-446c-9bd2-6028405a1348"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.187553,
+   "lat": -25.743869,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "4fec23d4-d49d-4b5c-888a-a3cc71d7ef73",
+    "7cb940ec-e27b-4070-a8da-26d2010c6333",
+    "a51b8ee4-0270-4dfe-a0f1-80356032ba64"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.187795,
+   "lat": -25.749297,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "130fdab5-66e9-4580-9b4c-c9fbda2d580e",
+    "699ec101-a75b-41fd-9182-d79c4dfc0061",
+    "acd991ce-1c17-4c4c-b68d-5c9a59e82d77"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.188071,
+   "lat": -25.746164,
+   "likely_cause": "town-only address",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "47b6fdc7-a204-4fdf-8b14-f0f2c2d0efe8",
+    "788b5a19-7083-425a-86ce-064c7db6a312",
+    "d328085e-957f-47d9-9e1d-56fe81300cb9"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.188341,
+   "lat": -25.750996,
+   "likely_cause": "unknown: manual inspection",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "7bfe735b-1863-4080-9da5-5e5aca7c3a21",
+    "7e4f8dab-84c3-4b4f-8de4-059764d4bace",
+    "e6473297-d25b-498c-93d1-b57df04675a9"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.18836,
+   "lat": -25.74407,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "3c0c4c19-7348-481f-9c89-d59af8daff4c",
+    "444a7f23-f49e-4edb-9ac9-2a9f281b447a",
+    "526a866e-1f84-4898-9fcd-9be36628f20f"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.188467,
+   "lat": -25.747647,
+   "likely_cause": "one compact building",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "60483032-d1f6-4aa2-9814-b4d218e02900",
+    "a1ff870f-a246-46b5-bd66-7252f7bba2f6",
+    "dd38fa5d-e1a2-4d94-af6d-86f765fca4ea"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.188475,
+   "lat": -25.747984,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "4170dd02-1ddb-4167-b179-0e49ecdd7143",
+    "510fe70b-7537-4acc-b0a9-0bb2d4c695d7",
+    "85c7932b-ed33-4b20-9051-8dd53f94ec90"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.18851,
+   "lat": -25.7555,
+   "likely_cause": "duplicate records",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "516b7fa6-a24a-44e8-92c3-8a721418ed6a",
+    "9333c7be-744d-4da2-b0de-ccb395cf6ca1",
+    "c177d85a-355b-45bc-a8c1-56a8ff2efa8e"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.188538,
+   "lat": -25.748417,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "0e2c6f0a-7c11-4240-a35c-9a61ed9857f9",
+    "593b0fdb-858a-4fcb-b1df-7b590ddd97a7",
+    "e39cff5d-9868-4af9-9bb9-3a9dfec2b758"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.18859,
+   "lat": -25.756348,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "ab0f66a1-ce7c-4333-9d05-458e03b97868",
+    "e0ff002d-3113-4143-874e-ec950c9a2077",
+    "e245ea7a-cabd-46da-9cfe-740b0d60da98"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.188678,
+   "lat": -25.746957,
+   "likely_cause": "one compact building",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "60ca393e-f34e-4118-91b6-860a84bb9333",
+    "98761a77-0e37-4adb-82a4-6c957c9a11e6",
+    "e8eb517d-d0df-462b-a14d-0fd95dc89e05"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.188725,
+   "lat": -25.746927,
+   "likely_cause": "shared address point (unit numbers recorded)",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "da1c96bb-c826-48dd-943c-eb71754de2ad",
+    "e23c0ec0-8840-443c-86fc-839c1e7a6ddb",
+    "f3e73a2a-2883-4f37-a6ed-2de265dd4106"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.188953,
+   "lat": -25.739364,
+   "likely_cause": "one compact building",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "0a1be3ef-135f-4c0d-8fa3-87f1d1cd7791",
+    "80569db9-55a3-4135-a097-230ca7e43db0",
+    "ef456375-07e7-40b2-a8a1-4e970b8e3769"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.189076,
+   "lat": -25.756086,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "c417cef1-3e1d-4e75-8014-860d2a43e1c3",
+    "ecc1658f-3a1c-4edc-92fe-a7335130593a",
+    "ee28d8e8-cccc-45ce-bcfd-caa160dca73a"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.189124,
+   "lat": -25.74691,
+   "likely_cause": "shared address point (unit numbers recorded)",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "40084ad0-3aa1-46ba-8a2f-f058e6e8c3cc",
+    "84688fe4-81eb-4d99-ad65-78a2292d952b",
+    "a6c347ff-db85-4b61-a599-146ab1fb7746"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.18914,
+   "lat": -25.74683,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "2bd9f027-dc6c-4ba9-8d88-ddcd82b19846",
+    "47c29120-b149-41c2-9ac2-0477fedabd4f",
+    "77231e5d-515c-47b7-b4f5-fc6881a1b1c0"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.189288,
+   "lat": -25.746986,
+   "likely_cause": "street-centreline geocode",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "2bdc8045-8771-48af-b6f2-2d148ce64aa1",
+    "50079bde-ec42-4c7d-9321-9067592ad5b2",
+    "f2e1f60a-a904-43c7-9f9a-4018bdeb35e7"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.18938,
+   "lat": -25.74763,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "6e7970b6-d7d7-407e-abca-37791aaaf561",
+    "969350d2-f24a-40c8-80e7-bf639ea47974",
+    "b52903b7-8bb8-4754-99b8-a0038feb4e92"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.189533,
+   "lat": -25.744921,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "ac269fb0-70c5-45d4-b45c-eb1d1fb39668",
+    "bf50ece2-b898-47cf-9274-f92de3e57663",
+    "e2c3d41e-06ea-4517-8a39-7e365bd28180"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.189857,
+   "lat": -25.74647,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "62b1573c-c99e-4250-a093-6bce22f9f286",
+    "bb28eedf-e139-415a-a966-1ee4cc5b2d01",
+    "ead844c1-d19b-4af9-9acc-21bb9cfd3afe"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.190186,
+   "lat": -25.755275,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "7443c681-fc3a-4e9c-8218-0f38ddc9717c",
+    "9e28d9b1-1663-4602-b54d-4cfeb4d82aa7",
+    "fdbd227b-3f04-4157-932e-d438c37af6b1"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.190503,
+   "lat": -25.746307,
+   "likely_cause": "street-centreline geocode",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "00ba6f04-da0a-44f8-ad0d-6b597afde577",
+    "6b83336d-2eea-4e5c-a839-95d450033866",
+    "a5d4e83a-9616-4685-81b2-59722946666b"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.190605,
+   "lat": -25.747781,
+   "likely_cause": "unknown: manual inspection",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "1bbf5718-67f2-42e7-a747-91bf0b50a59e",
+    "a91297b7-901b-494a-9faf-fd9ca0f81a1f",
+    "ff1258e3-c5e5-40e6-98cb-45ef3a942dc3"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.190652,
+   "lat": -25.748883,
+   "likely_cause": "shared address point (unit numbers recorded)",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "02ecde53-d8fa-4f78-9db0-3db620df1833",
+    "2da7692d-062a-4849-955f-f2464247cc65",
+    "e8f03298-07e4-40d1-9fd0-0c322276fbe6"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.190659,
+   "lat": -25.749008,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "08279800-9650-4d91-998d-2eb94b4d203c",
+    "2b34a7ef-37c0-4bc2-a5e5-9c56a06a5a37",
+    "3d276bf7-27c4-4ef3-a280-5fc869873a0d"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.191054,
+   "lat": -25.744709,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "69f57b34-19d4-434f-8f23-c03b7dcf73f9",
+    "95b458df-c70e-4ced-b7e1-6251d2886a62",
+    "e3a05953-71ac-449e-bdb8-4a1f4d8f14c4"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.191155,
+   "lat": -25.747555,
+   "likely_cause": "one compact building",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "527d10d0-b11f-4ea8-95c0-868afd19ef89",
+    "62c76c51-36fa-4a4e-a329-19e8c52c5536",
+    "c0cddaf8-3159-4f3a-859f-255ecb63e194"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.191187,
+   "lat": -25.747873,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "2b2f14d2-6bb4-4583-ac0c-fd68410cbedb",
+    "5aad4e43-06b8-496e-8a97-d6ed4c030a09",
+    "dcbcbb97-cc7b-44af-8cce-49b5943f953f"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.191455,
+   "lat": -25.744604,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "16b25e89-d8fd-4f8d-91ef-a25897baca8e",
+    "7d9f3ad8-d38d-4892-81e5-f9536454750c",
+    "8fac3de4-6bbb-4728-a70e-596961f16506"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.191556,
+   "lat": -25.748445,
+   "likely_cause": "unknown: manual inspection",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "c52f3cec-17b2-4563-9323-351a5fc5b89a",
+    "e6d79c42-e501-4c96-aaea-b1d3f8884bb8",
+    "ffca39b8-4cef-4e4b-8724-4413fba9a571"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.191645,
+   "lat": -25.743516,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "85de16cb-647d-4075-a291-7f2e4452f031",
+    "a8dcf231-5a74-4e57-b3a7-3d30b69f5a4a",
+    "c42f8ce0-3bb8-413a-a052-222191c6bfad"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.191665,
+   "lat": -25.748033,
+   "likely_cause": "one compact building",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "91be5863-a031-4256-8b73-f840c11d6fc1",
+    "a0dfbf52-ea35-44b6-9c38-557a9edb5106",
+    "eb93e7ff-edc1-4349-a695-3958b6eb2c48"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.191707,
+   "lat": -25.748112,
+   "likely_cause": "one compact building",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "603c1d8a-0707-4109-8edf-5593359f992d",
+    "7c292927-d820-473f-8067-6307f6ac1cdc",
+    "a0c69dc6-3718-47b4-af07-115df63cd1ce"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.19214,
+   "lat": -25.74887,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "126b82e5-92b9-4b9b-90f1-c0c99b854a76",
+    "bb18d752-8b90-4c82-97aa-98a133e9c7e9",
+    "c70ddadc-1223-40fa-a180-08613d4c844d"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.192196,
+   "lat": -25.747243,
+   "likely_cause": "unknown: manual inspection",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "150a0eaf-c54f-41a4-b24d-4b83496839b1",
+    "b311cac0-0160-4500-89b3-2087fdf9339c",
+    "db9d0925-d7d2-4363-8c9e-476726c6aa90"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.192214,
+   "lat": -25.740992,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "562ca605-b0f5-4896-8ac2-7f0063e50df1",
+    "6b164f5c-84be-498d-9b96-41e713acaf06",
+    "852b9a53-e2f3-440d-99b9-bb144865842c"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.19225,
+   "lat": -25.7472,
+   "likely_cause": "street-centreline geocode",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "d04e370d-e811-4158-9e94-baf6b5296779",
+    "d4f76dbf-a376-4099-a3b7-346313ca7586",
+    "fcdad771-1781-480b-a330-74b4edc26348"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.192447,
+   "lat": -25.746914,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "2c78550d-14b6-4f1a-a038-da5823a625a6",
+    "ba719b04-8017-40b3-b1ef-fc19e46367ae",
+    "d2f54605-d4fc-4168-961a-065fd5bd5f62"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.192453,
+   "lat": -25.747502,
+   "likely_cause": "one compact building",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "52a4c543-ea08-4ac3-9cb6-dee747374015",
+    "5a058bf4-07e1-47da-8ffb-499b6326c664",
+    "c7e8e326-349e-41d6-9837-e5cb2113f5c2"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.192671,
+   "lat": -25.747507,
+   "likely_cause": "one compact building",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "49819684-9f73-40e7-872f-2f9473894837",
+    "79730a1e-a44d-4877-bc8e-004ea51cd396",
+    "9f06b283-a757-4f2e-9f0a-257d769f79c3"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.192683,
+   "lat": -25.746258,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "683beb25-4eb1-408b-97f0-69d1ed695507",
+    "90a032a6-270b-499b-a53e-d45075ae6e3a",
+    "c7f369da-2c1e-4ec9-9474-494db7000ddd"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.192706,
+   "lat": -25.747382,
+   "likely_cause": "one compact building",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "6f61401b-7889-47d0-9333-65d982d69281",
+    "702cf5cd-c1d0-4ef6-b079-7157a77049dd",
+    "c7a75ee5-0e09-4809-b571-f48a8ce95de7"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.192847,
+   "lat": -25.744658,
+   "likely_cause": "town-only address",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "262a236e-5f1e-4577-8be6-e4946bd6f46e",
+    "6a518550-fcef-4e6d-85b0-3ef77ce3d45e",
+    "85536156-a8c4-42c3-a343-dcbb34c7bd14"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.193067,
+   "lat": -25.752746,
+   "likely_cause": "one compact building",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "25dc629f-4dba-456a-9274-f890a93b0488",
+    "63214a02-be72-43e4-a20a-ea95e48a2a9f",
+    "6a671218-0f4c-4d2c-b873-e7f346485d7d"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.193123,
+   "lat": -25.745964,
+   "likely_cause": "large building (mall-like)",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "2f58cc06-57a3-41aa-99c5-997bb0b30b22",
+    "4393a4fe-f2bc-4ef5-9d3a-aa2111b06615",
+    "670c3aff-d620-401c-93d0-6a6dbe62d33c"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.19406,
+   "lat": -25.74488,
+   "likely_cause": "one compact building",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "9c7e251e-5f81-47f6-8376-5a11fde73a2c",
+    "ad4ce16a-9b18-4169-be39-b4bfb954f6a3",
+    "b94ca840-2ff0-4b6e-936c-0ef4abcae6eb"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.194432,
+   "lat": -25.747136,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "d68dfcc0-51a0-400d-b854-d2844dbdec65",
+    "eb89bd67-036c-4943-9fdd-ff5d6d442fe2",
+    "f8f4e219-bfc4-451e-8de8-d98a4f90525d"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.195365,
+   "lat": -25.742855,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "29399d4c-21ad-4f1c-a80c-2aedcc91e6ff",
+    "65efcddf-9a2b-4d45-b365-8bf3fa373779",
+    "e8076ce7-e423-4a53-8b52-9eae9521098a"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.195586,
+   "lat": -25.749867,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "29c16072-b6f7-4a78-a459-ccff5eefdc64",
+    "6b34e2bf-b096-42c2-a132-0a9489caeece",
+    "dbf4478c-f648-425c-9024-0fc3ab22b31c"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.196164,
+   "lat": -25.746204,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "50c0f43c-5387-422e-a32b-ddd85374b3e3",
+    "85720d19-afdf-40a0-b87b-808a78f519a7",
+    "8ea2655e-e51a-4274-85dd-9dfffbfc8e2a"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.196347,
+   "lat": -25.748597,
+   "likely_cause": "one compact building",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "8cd3792d-8261-4ea8-965f-a2c079745555",
+    "de50e511-df0a-4997-871c-6285ba430126",
+    "fb824488-c6ac-4a2b-b7be-54932d10b10e"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.196401,
+   "lat": -25.748593,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "d62a8722-79e3-4af1-84e9-e7f91d99a996",
+    "daa6bd3f-e016-4178-a34f-662b93cd9cbf",
+    "ede914ba-925f-4cdb-ba6e-34759c4444de"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.196402,
+   "lat": -25.748346,
+   "likely_cause": "one compact building",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "48c5634d-1960-408f-94f9-fbc185ec9103",
+    "80c950fd-e713-4333-a4f1-df6fca0a9f74",
+    "f144f8c6-2e51-4874-9902-88d71421ae38"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.19646,
+   "lat": -25.74865,
+   "likely_cause": "one compact building",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "170684b4-6394-43dc-ba34-4e33883ac7a3",
+    "39d80285-616d-41c8-b9de-1a90b9ff381c",
+    "ef0b8da3-195b-4971-a8ea-c7e72a16d056"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.196845,
+   "lat": -25.748596,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "3b0cab93-9b35-4526-b798-160c21a75f96",
+    "79d74599-c93d-4258-a3c2-528df461fa03",
+    "b6c1cf48-49b6-4b87-a1c6-74e586ab346e"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.197347,
+   "lat": -25.743593,
+   "likely_cause": "one compact building",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "14266237-c647-4de3-91ca-c87f4daf5424",
+    "9691f634-de2d-4ac7-aaa3-57c823ab933a",
+    "ecfdee91-6011-43d5-9b0a-a99d1b02ae3f"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.19772,
+   "lat": -25.75074,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "7f68b312-12f1-41de-8ca4-a07e9e29dcc7",
+    "b39c8600-5d4c-4fa5-8d2c-2d480955a1df",
+    "d026a4f3-06ee-41e6-9ea8-95268cd7d4b3"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.19794,
+   "lat": -25.747888,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "0aaaed90-e3e4-4aef-a43b-450a47d7707b",
+    "3f728704-82cb-4b48-992a-de3c2e7423b8",
+    "edb8e775-6933-4d79-9cb6-1db4ce50dd53"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.197978,
+   "lat": -25.746854,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "528990ba-fc73-4f1c-ad30-4b3db00644bd",
+    "bd9c391c-eb78-4688-a1bf-c91426aada41",
+    "c4437426-4cc9-47cc-a7e6-6698444a777a"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.198017,
+   "lat": -25.746206,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "572fb0d3-785a-499f-8c30-dae0d67cee6c",
+    "7c887ba8-8f27-4415-9832-e3f48185e635",
+    "cc3214f2-05b5-4852-a6e3-e9a95cd6b85e"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.198446,
+   "lat": -25.745756,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "17210e27-28c2-48e4-8007-65b1d7be877a",
+    "b662772b-7fdf-4b30-9ad7-5e1790a5bd2b",
+    "daadd588-418b-47a9-9952-0ec7ed219c32"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.198581,
+   "lat": -25.753532,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "7a211947-9763-4e24-abc6-bd07e76b7782",
+    "810c8fbf-d431-4252-bafa-1d75daa18835",
+    "ae642ace-738e-4263-80f1-0ef11fdc4000"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.198985,
+   "lat": -25.745761,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "158a7173-8cea-49f4-beef-202d7189d25d",
+    "6ef6bdc1-b7b6-4635-b6f5-0b49e4413b5c",
+    "e50a99f3-21d1-48dc-b77d-e3fae454ddbe"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.200913,
+   "lat": -25.743668,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "3f8df6b3-fef5-4e36-ba26-eb90ebb693cd",
+    "aa86cd09-5beb-4c02-a8f1-69fda27185d0",
+    "e2a7cfa0-c816-45d8-9dd7-6acc2ff2ecce"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.201608,
+   "lat": -25.755605,
+   "likely_cause": "town-only address",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "64c018f8-bd74-4245-be65-f61d6184477b",
+    "854f0bf4-513b-4765-9df4-cd9529950858",
+    "e07bdca6-48de-4aed-a555-f81228ac95a7"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.202225,
+   "lat": -25.73545,
+   "likely_cause": "unknown: manual inspection",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "23f87504-7aa2-4954-97f9-3fddcc9f1f25",
+    "d2b63a4a-b0e6-48c3-94e1-88bf3d7ecb03",
+    "fef5c38f-c100-496c-ba24-70ef070121f7"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.202375,
+   "lat": -25.745287,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "2e87a02d-5130-4863-a8eb-c71c8f5345db",
+    "40424ebd-80f4-4ce0-a581-504c2e71ca88",
+    "651ca21f-383f-4ddd-8665-c782a47c8262"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.203019,
+   "lat": -25.75222,
+   "likely_cause": "one compact building",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "6e3c1dfe-ec0e-44fa-bcbd-34486b8742b0",
+    "f429c308-8b4d-4765-8cee-514f7209ec3c",
+    "f5ae14d8-9806-4232-aa27-1fe690940bf0"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.203298,
+   "lat": -25.744669,
+   "likely_cause": "unknown: manual inspection",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "08a9a3ef-db6c-40e4-b976-6dfa03e55843",
+    "57b64cec-973a-4322-afe4-aad05ff1cd03",
+    "9413e887-4fbe-4359-bfbc-7ae7388bdcfd"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.20344,
+   "lat": -25.74738,
+   "likely_cause": "one compact building",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "70d7d271-feb1-4bc7-bb02-344de2d7f814",
+    "7cc8f6ee-214a-4716-b011-6005e6f48278",
+    "8b4b0c2b-8568-441e-9514-48631d93ab47"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.203487,
+   "lat": -25.751953,
+   "likely_cause": "one compact building",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "4d3b729f-2480-48b7-a403-4cbc891563ec",
+    "f1a44e99-97e1-43ad-8182-145fed82926e",
+    "f961899c-bf2c-465d-9f4f-012532ce9218"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.203565,
+   "lat": -25.744906,
+   "likely_cause": "one compact building",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "44667632-b124-4f93-a30e-9605bea8f91d",
+    "58107740-e735-4b5d-91a5-a48a7529e66b",
+    "8c011fc9-2bd5-4c1e-8b48-2e5b177324c2"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.203583,
+   "lat": -25.743787,
+   "likely_cause": "unknown: manual inspection",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "5d441914-58fb-43e6-8544-08489bd0f632",
+    "87105cd3-c7e6-4972-a653-99ca94cdd04b",
+    "dd2987e2-9106-46ce-8f18-d3e3fde65141"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.204088,
+   "lat": -25.752028,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "0b781741-fcce-4862-9adc-5259da4deebc",
+    "bc2a713f-886d-498a-b22a-e0f71d6a5ac4",
+    "ef797168-ffdb-45a3-8fe0-b42ddfc33c6f"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.204727,
+   "lat": -25.753773,
+   "likely_cause": "unknown: manual inspection",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "3ee58f32-37df-4466-ba34-f0007e4de2d6",
+    "ed283f4d-7eda-4c04-8c11-f79ae150b6bc",
+    "fcfcfaeb-566d-4ccf-a5d4-4230f0cabd6c"
+   ]
+  },
+  {
+   "size": 3,
+   "lon": 28.20498,
+   "lat": -25.74477,
+   "likely_cause": "large building (mall-like)",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "3aaf0fbb-4576-4142-aaf0-0319aa8a897e",
+    "886860a5-d2b6-4008-8def-76b31aeccbd3",
+    "a90c2a13-01d6-459d-a478-04d635820ea0"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.16844,
+   "lat": -25.74507,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "ac4c473d-beb2-407a-be41-31b4d2936d65",
+    "c1ccc22b-6d2c-491d-a539-604be2450afd"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.16894,
+   "lat": -25.74269,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "a1a5729a-2e3e-4fce-b58a-0c7b9c59cedd",
+    "f7887ec0-014a-4cc2-8eb9-30e992d23265"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.169474,
+   "lat": -25.752785,
+   "likely_cause": "shared address point (unit numbers recorded)",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "a9cd59a4-d2f7-42b6-be95-8c51a130edab",
+    "d5e4739f-f73a-4ff3-bb1f-f9d1278a586a"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.169546,
+   "lat": -25.753164,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "3a53580d-612a-4f27-aad7-d50461ad6ede",
+    "e1beefdd-cc4f-4f43-9746-2e31784ca678"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.171354,
+   "lat": -25.752799,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "2975c42f-9577-4294-8e92-0dd6e1c82dc2",
+    "3d4f484d-6218-4946-ae94-a0727cf0c2e3"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.17157,
+   "lat": -25.74233,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "a83e2bcc-693f-412e-933d-b9f13dc7f912",
+    "c999ff0f-af8f-4679-8b4b-902aae9e7aca"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.171954,
+   "lat": -25.753411,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "694dbc7a-199f-49a4-8cb2-6a7ecc1cf419",
+    "8cb860ff-7efa-401c-86a2-c1493202dcac"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.17226,
+   "lat": -25.75363,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "3775e90f-04f0-49db-bbf8-a35dbb4ff7d2",
+    "f1ff799c-cac4-4cf7-b9c3-8bd22623597a"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.17231,
+   "lat": -25.75505,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "3b227f8f-e7ec-4d8a-814c-422b6811ff12",
+    "de6be46d-758a-456f-b9b9-155a313e945c"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.172455,
+   "lat": -25.753729,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "c896ea51-3a94-4978-90cf-bea5daffae35",
+    "e7083008-23e7-438a-83d3-dbe995a5c053"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.17252,
+   "lat": -25.75345,
+   "likely_cause": "duplicate records",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "39c0333b-9ffa-487f-a92e-0f83e94264b6",
+    "ab025a91-d0e8-4b01-86ce-88af72bc4e4f"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.17355,
+   "lat": -25.75324,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "5c52befe-f3fd-4c70-82d9-883ed502a375",
+    "85e5f9f5-7555-48ea-99d9-ee659e59e966"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.175564,
+   "lat": -25.740716,
+   "likely_cause": "shared address point (unit numbers recorded)",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "32f390fe-6d02-417c-8639-91b009ac8ac2",
+    "bbd3fd6f-712b-486a-844a-3b01c51b5973"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.17588,
+   "lat": -25.75345,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "aa15d9aa-493d-41cf-986d-e423818b19b6",
+    "e985f934-23e2-47b2-8c0d-69480f7afcd5"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.176748,
+   "lat": -25.739317,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "269efcc4-a44f-4606-985a-9d39245d4506",
+    "d804ad61-30ab-44ff-a56b-c8b7861d7fca"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.1768,
+   "lat": -25.747,
+   "likely_cause": "shared address point (unit numbers recorded)",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "03a9eccd-abc8-4223-8c53-51abfe255725",
+    "dae69079-09e0-4805-a8cb-5b81d7b4b6ab"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.177337,
+   "lat": -25.739697,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "071b620f-c6d7-41f4-8b7b-25361cbf276b",
+    "18317c94-7598-454e-8490-e56ef898c0b8"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.178513,
+   "lat": -25.747763,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "77e63fea-a22d-47cc-80ad-e3b5d2c64543",
+    "fd731d11-8c92-45b7-b4b4-36f7206606de"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.178612,
+   "lat": -25.748477,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "076d5246-3bc8-4468-b94d-d52d74dfc06a",
+    "8daac124-dd48-455e-a730-527054c35ae2"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.1787,
+   "lat": -25.74832,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "52f46a25-759a-4a58-a41f-1b3e09ad9f67",
+    "7b8d5325-4639-43fb-b9b1-40928649d0a2"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.178793,
+   "lat": -25.749935,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "40d00d76-ef5a-4a4b-8899-0d6cd337d5cf",
+    "88d245ac-4fd2-4b77-b31a-5c036b77aa68"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.178886,
+   "lat": -25.746531,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "608e19b4-7b1c-4bc8-ade9-d5ba73149bd4",
+    "936e5a48-1176-41e7-abe5-5b350f2713dc"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.179045,
+   "lat": -25.749895,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "76e3f94b-6d3d-4a6a-a2bd-ac7a43ae28be",
+    "87bd2413-c988-46a8-82c1-396607c4394e"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.179085,
+   "lat": -25.749956,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "a03272f2-05ea-4dd5-a93a-b998e85a95a6",
+    "a0877751-0e5e-430f-82e1-6ae90fb90fca"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.17914,
+   "lat": -25.741537,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "9be2e8b9-f0f7-44be-97f8-2ffdcd4b4f00",
+    "b6c2099c-fb0c-4bb1-b978-84ec3558b0c7"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.179403,
+   "lat": -25.741856,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "a54e5f07-fec3-47dd-8cc0-4db42cede424",
+    "b3f2c578-8e04-426f-90a5-fea39d23d9a3"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.179686,
+   "lat": -25.743808,
+   "likely_cause": "shared address point (unit numbers recorded)",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "3645f2f7-a91c-474e-9714-0d746dac973f",
+    "8135a8ed-c5b4-4bb5-ad0e-cf91fe207c73"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.180287,
+   "lat": -25.739037,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "5b711209-2ac5-4af0-8618-e6fc70f48d03",
+    "764c7174-a69a-4067-8743-2710788241a8"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.180377,
+   "lat": -25.745726,
+   "likely_cause": "duplicate records",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "4b0cbe3f-3e9e-48f9-a3ad-a61b99fe6c2d",
+    "58bbf8a2-bd71-4b1c-a434-74ef4a1ae32d"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.180446,
+   "lat": -25.747106,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "81244884-7b99-4d7b-b007-79a3d58b11c6",
+    "ec9aedee-a88b-432d-8a1f-8245d94ea117"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.18069,
+   "lat": -25.74931,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "8d51051d-9b28-4616-b613-aa6427b43886",
+    "c64aa9bc-9d50-40ba-8c37-76b179b6838a"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.180739,
+   "lat": -25.748542,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "931fb652-c21a-4616-87af-8ef4127aaaa6",
+    "d64f65ba-7c3f-4546-ae20-7a2b5564ae40"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.18089,
+   "lat": -25.74082,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "1a9939a0-87ac-4cad-baf8-05dbfef18c67",
+    "d348a9c1-7503-437d-8601-ba813849b756"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.181365,
+   "lat": -25.742462,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "370d790f-fd04-4475-8617-be9aabfec4d7",
+    "e3b87129-d433-40bb-a593-21ae878acd48"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.181434,
+   "lat": -25.746708,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "a57b08ed-dd3f-4fae-9066-1da56aa74237",
+    "d2376296-56d9-468f-9922-934bf6c12801"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.181583,
+   "lat": -25.752629,
+   "likely_cause": "town-only address",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "e8eb1cd4-6b1f-4ce0-b783-68af24492647",
+    "fb35ac44-e894-418a-a577-6fae6aa4f65d"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.182022,
+   "lat": -25.742215,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "ceccc8b7-093f-445c-a1c4-2095936b8ac8",
+    "e3761079-a330-4bf5-9a87-6064a22c0ae7"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.182098,
+   "lat": -25.752384,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "519af1b4-3faa-42f1-a988-c45fc13bbe78",
+    "d1f5d7f3-f130-4b6f-861d-5d85928e21b3"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.18211,
+   "lat": -25.75251,
+   "likely_cause": "duplicate records",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "68b80ccd-81d6-4185-9e43-f68b953ccfc5",
+    "6b61ea5a-538f-4431-8a1b-32150d1d3db4"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.18246,
+   "lat": -25.752682,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "2e5d1a07-a188-432b-acfa-c23cdc31bb76",
+    "d8139f05-3651-4b4c-b400-c76095fa19d5"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.183069,
+   "lat": -25.747989,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "716c33fc-3b15-444c-abcf-26db68fe8ad1",
+    "dc025067-42d6-4da3-9aa9-385d7ae12423"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.183132,
+   "lat": -25.743339,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "6799a87d-1c5e-4f62-b0af-03356b730d32",
+    "94c937e5-409f-43a5-b4c3-7ff654e06b02"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.183267,
+   "lat": -25.754008,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "df010950-b428-4843-984e-511f2198e0ad",
+    "e78b40df-24dd-4c00-981f-a2f5b911fe6c"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.183414,
+   "lat": -25.746897,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "25c4b310-57da-4987-ba38-8f5744eb8007",
+    "ca355aa2-1a61-4e89-a5f1-95ce71cb5048"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.183454,
+   "lat": -25.739455,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "da19c727-32dc-4e09-8701-19ec11c7f7ec",
+    "e96e1e03-f510-4f91-96ad-14f2d85f4593"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.18361,
+   "lat": -25.74498,
+   "likely_cause": "duplicate records",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "2e2dca1e-9a86-4d84-9f83-e9b43b4e1d22",
+    "75fd3698-a62e-45db-8cdc-d6b52878377c"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.18371,
+   "lat": -25.74349,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "3a349e00-e3d1-403e-9018-5b5b08b6d97a",
+    "86a4bc35-70d0-4e59-b6ca-d421e62a3938"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.184281,
+   "lat": -25.741933,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "75c5fb62-551a-4158-9d94-02441cb8b426",
+    "88492f2a-36f2-4ed5-aa71-5d286950584e"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.184798,
+   "lat": -25.747926,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "6a290713-7fea-4eb8-b915-cb9dbddd828e",
+    "8248ccc6-8f65-475c-ba56-9c109b7f9381"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.185027,
+   "lat": -25.746527,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "90f9ad02-c2b6-4e35-bf29-6cbe546271bc",
+    "cc7dcdeb-bd46-41de-bcb4-4bf94ca70137"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.185077,
+   "lat": -25.755861,
+   "likely_cause": "shared address point (unit numbers recorded)",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "716744b6-3698-478e-bb73-3a36580a8263",
+    "e9627d4f-d324-4239-b657-894ec05259d9"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.185087,
+   "lat": -25.741185,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "34d63de2-d1e4-4540-90eb-45756f01caf3",
+    "ae5ea7bd-cf53-498f-bb47-09ea8730ad63"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.185123,
+   "lat": -25.740731,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "174dd6f3-2164-474a-bc5c-fe7c4736fb9f",
+    "bc48e426-0cb2-4c2e-97d2-5abfe5fb48ff"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.185286,
+   "lat": -25.745834,
+   "likely_cause": "shared address point (unit numbers recorded)",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "d1e047d8-7194-4ea5-9543-55e60c013e7e",
+    "ea17c8ff-70d2-4cb2-b24f-96d9b54c83b2"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.185439,
+   "lat": -25.745943,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "88261231-f4e7-418a-87c5-b2f95f37cd5d",
+    "93000515-9e39-4446-9ccd-53c8131bb645"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.185501,
+   "lat": -25.746436,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "9cee81bf-604f-4176-8cad-f14d2f56955c",
+    "9fd7a69f-b137-4dba-ab68-9626b7d5a6ac"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.18573,
+   "lat": -25.74812,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "7d7fa5dd-e849-466b-a06f-d26d7f9cb485",
+    "f7acbab1-e7d2-49d9-b5a0-be2b626d4e55"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.185775,
+   "lat": -25.753107,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "32c4c3b4-a86c-4549-a963-d98dfea9eab0",
+    "e902e68c-87ba-43fa-a079-8ffa151f2445"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.185883,
+   "lat": -25.755933,
+   "likely_cause": "town-only address",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "ba275a95-2f9b-4e85-b0c5-5c2be2065164",
+    "ed8da80c-e879-4d8f-b058-9a81304b7ee9"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.185912,
+   "lat": -25.752394,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "87542fb3-8970-4feb-ad4c-fcc83a365223",
+    "9f1539f9-c9d3-4ca0-b087-1cba4f321b22"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.185966,
+   "lat": -25.749409,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "9ab414da-b9ca-4667-961b-8dfd10b97855",
+    "9b0b14cd-8442-4b67-9228-021a6a7e6afb"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.186019,
+   "lat": -25.753885,
+   "likely_cause": "shared address point (unit numbers recorded)",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "10438f20-a54a-402c-bf2f-eaa54112de0d",
+    "5a66cfd8-eeb6-4e7a-8532-20f924c3f87e"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.186019,
+   "lat": -25.753854,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "a2489e83-8004-4708-b05c-403e11fa0083",
+    "b99e7a65-0aa2-4ac7-a494-fd936a86dc00"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.18602,
+   "lat": -25.753783,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "27ae8425-5f70-46d1-8a37-7e271eb6b4cb",
+    "29766a27-5992-4595-817c-ebc7defd70dc"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.18607,
+   "lat": -25.74836,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "9dacf27f-c307-4018-b46a-6a1c133f1b5a",
+    "eda533a0-3cb8-4c17-92d9-058d1182572a"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.186193,
+   "lat": -25.755903,
+   "likely_cause": "shared address point (unit numbers recorded)",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "b671524d-2c4c-4473-8862-2328430854bb",
+    "fd90b24c-2b95-4bcf-928e-88f6092d3d1c"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.186239,
+   "lat": -25.751856,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "39a67399-9965-4fa1-b99f-a8932a6900db",
+    "7ff4a4b1-3744-4dd3-b404-53e5fc5fdb11"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.186406,
+   "lat": -25.749575,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "1e4aab31-ed05-4cb7-8edf-df22239d88c7",
+    "3a4717a2-cf95-4a92-8cc3-b4251b7a4f6f"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.186509,
+   "lat": -25.755793,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "11fc77c1-09b9-4767-b6f1-d5cc6ed3690a",
+    "944114ad-f92b-4930-b159-42a8cfdab6ae"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.186656,
+   "lat": -25.752337,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "32db9662-c3c7-450c-a55a-ee0e83664d21",
+    "5f5c35f4-3577-4976-b018-5736c41526d5"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.186668,
+   "lat": -25.746657,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "16a17e85-99c4-4874-b1ee-0ddfa2199bf1",
+    "a9e18527-b03a-4811-8577-44e600cfc17b"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.186682,
+   "lat": -25.755621,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "340b675a-7bb5-451e-9b32-51e7d2293ab1",
+    "6c60ef05-e219-430d-b162-abfe62ac55e6"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.186695,
+   "lat": -25.744936,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "2a2c0d4d-15e2-41bf-bfff-77bdaeb899d7",
+    "35e24cc9-9855-4513-bc21-93ab893485b2"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.1867,
+   "lat": -25.75579,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "20a1b2c8-ce0a-4b8c-aa7a-f14c757f569d",
+    "f81c656d-8b3d-40b4-a81c-b50e9dad20ef"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.186765,
+   "lat": -25.751405,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "ba8a38f0-8612-4a28-9c69-ba8582521179",
+    "f7117e9e-d9ff-4e60-84df-2d7edc62905a"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.186864,
+   "lat": -25.753317,
+   "likely_cause": "town-only address",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "1d269b1a-80f8-449f-b6f5-3942231339a5",
+    "62953926-16ed-4a2d-b83c-102a039a5927"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.186967,
+   "lat": -25.73921,
+   "likely_cause": "duplicate records",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "544035cd-49a6-4839-99af-26075c938075",
+    "fda6d5c2-fa3a-462d-9af5-f86212dcb29b"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.187228,
+   "lat": -25.751124,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "30e4f418-f3d4-41d8-b51f-4d2bfb994583",
+    "ff0338d5-6814-496b-85d3-1da85b35cac5"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.187399,
+   "lat": -25.748155,
+   "likely_cause": "town-only address",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "58d9565e-38e5-4664-831f-4556b1b43732",
+    "bdde9a44-7db6-4ca4-bbe3-86774c57a508"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.1874,
+   "lat": -25.74988,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "00415b6d-d5a7-40e9-bf48-d5a84ee2fd3d",
+    "6cfffa9a-5987-4e02-9e31-54be75b0bc3e"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.187462,
+   "lat": -25.750088,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "ba869cf8-34c1-4ea7-9797-63957ad60963",
+    "d6bac5f5-0b0e-4a28-8cab-37515286e1f1"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.187466,
+   "lat": -25.749753,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "1bfb7047-0aca-47d8-a96b-5874f4f6ca46",
+    "2124039b-9e9d-4efa-bf64-5cffe0ccf6bc"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.187476,
+   "lat": -25.743116,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "2197642b-5f6e-41bc-9de7-368e5c36ad43",
+    "afa0d78e-6322-4fc7-b65b-4f98eb0e6a6a"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.187727,
+   "lat": -25.745573,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "006a3fbc-6857-49a4-9b73-ef69b512a8b6",
+    "f3e92e32-3051-4145-b407-4e88ba2cf83b"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.18783,
+   "lat": -25.74486,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "f91c1442-0eb3-4f91-8b68-e26ba772a9d2",
+    "fd27716b-1c05-414c-93a9-86a2b65993a1"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.18787,
+   "lat": -25.744595,
+   "likely_cause": "town-only address",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "e2252978-1f9e-46c7-b385-b1cb9a583146",
+    "f0cc9df0-7e4b-4061-922f-db9fbd26d795"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.187905,
+   "lat": -25.740772,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "5550d512-0110-4ca2-ab60-d701654dd518",
+    "90121ce1-5293-4aeb-b517-9ba4bc6e30a0"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.188015,
+   "lat": -25.747546,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "63cd2755-016d-494a-921c-95c07bbc5bf1",
+    "70c6264a-8571-495d-933d-0d3d944302a4"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.188072,
+   "lat": -25.746423,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "e7f335d2-9cd5-431c-814a-3a76a3baa7f1",
+    "f65a20aa-549b-4d67-a93f-976b69e30eb0"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.188218,
+   "lat": -25.756374,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "760e6f71-6709-42fe-87f9-129ccc08336e",
+    "cbe8f724-811c-447f-bb08-6289ee160c9d"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.18823,
+   "lat": -25.756584,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "31f23e82-6968-4ac5-9d45-69245af3fa6e",
+    "adc72e1a-192f-465a-937b-86844f9319a8"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.18829,
+   "lat": -25.74938,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "85f01049-36ba-4f2f-9db2-70b378b52cb6",
+    "955c9ced-53aa-4e1b-b54d-638623f140b1"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.188307,
+   "lat": -25.749365,
+   "likely_cause": "town-only address",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "2a3b3829-cee3-4273-8c13-137c1d283280",
+    "4668722d-0d6b-42d1-9c1c-d146469178d1"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.188499,
+   "lat": -25.7477,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "27037c15-bd34-4e93-a5c5-3ce049b41fae",
+    "a68a0489-212f-40c1-a685-94a8ff5ec501"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.1885,
+   "lat": -25.7402,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "11ee82de-e3e8-4823-ba55-89e556c2dc2f",
+    "ccca3a51-0931-422f-97d5-9f9b35f564a7"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.18851,
+   "lat": -25.74811,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "20170e3a-7cf9-477a-958e-bd8804af614b",
+    "44ecf57e-87c8-4d89-a64f-b5cd40d6c0e6"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.188558,
+   "lat": -25.751148,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "7a465351-90ae-457f-9349-566afaceb4f3",
+    "88fa0386-98cd-4550-be7b-03478060d1cd"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.188604,
+   "lat": -25.749197,
+   "likely_cause": "shared address point (unit numbers recorded)",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "2283a75c-3c29-4197-ba32-22946a21fdf8",
+    "ffed618a-7039-468c-b72f-b4aafd30bdd1"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.188777,
+   "lat": -25.755364,
+   "likely_cause": "town-only address",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "817307ba-6e87-4a15-9a3a-c6836e33f237",
+    "aa891d8a-8273-402b-8575-147c77e250ad"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.188856,
+   "lat": -25.747775,
+   "likely_cause": "shared address point (unit numbers recorded)",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "3d569c58-b795-4730-b613-ab6df6dc0a37",
+    "a4ebfc9f-6842-43ca-ba88-d417be6174a0"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.188864,
+   "lat": -25.747914,
+   "likely_cause": "shared address point (unit numbers recorded)",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "1b1a8080-c414-4e1f-9f2a-609dbfdd0487",
+    "4384af69-d8e0-482b-956f-3e2791d0457e"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.188891,
+   "lat": -25.747998,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "891b1e3e-89db-4c3b-9090-2d5dacdb4abc",
+    "e095fbea-18b5-44b2-83b3-fccc1e3e589c"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.188896,
+   "lat": -25.738485,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "a24e73a3-4a4b-4a1d-85b0-18ba719ba590",
+    "c09527da-687c-4737-8deb-2806fad68edc"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.18892,
+   "lat": -25.74892,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "265d94ff-088e-4bd7-9fb2-ff285153684e",
+    "eccca972-9a88-4045-bfff-a0cb291c58e5"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.188946,
+   "lat": -25.746275,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "115e61ee-16c8-4420-a5de-d2387ea0a89a",
+    "ec65ec93-fce4-4485-8e1a-c31e5f40f78e"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.189053,
+   "lat": -25.756621,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "9ee54c0e-457c-411a-a072-bb6fbd4ea4cc",
+    "f3e98a56-8d83-41f3-8055-eb67a3aa26af"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.189072,
+   "lat": -25.748021,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "09ffb5f7-21e4-4820-94de-4e7f9a22450b",
+    "7768e501-447a-4a2c-ba60-0f46a01df542"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.189144,
+   "lat": -25.747703,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "72f5f22f-acb7-4002-b070-e7fe8370a5da",
+    "e00e76c7-be2a-4540-bf6b-46810dcada48"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.189166,
+   "lat": -25.747024,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "a641230d-568b-4534-be99-6bf7c266a6a5",
+    "c4b94f53-d054-40da-94b7-e642bb6d2a27"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.189167,
+   "lat": -25.748006,
+   "likely_cause": "shared address point (unit numbers recorded)",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "76cf530d-a6e3-4a24-a66c-4aa8987d2a61",
+    "a9b7306e-c9f2-4e67-bc12-8779609f1bbe"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.189174,
+   "lat": -25.755369,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "3166227f-94ac-4112-a6e8-3d09915f050c",
+    "ccd410b6-7cd8-4892-bef0-7eb382f18c49"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.189184,
+   "lat": -25.743233,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "7e922875-7dce-4414-a356-2ef2df02b5ef",
+    "92aa4b73-5d26-4219-81b1-15d1cdaecd58"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.189212,
+   "lat": -25.746863,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "d640789d-6bd8-4001-90f8-e6d8a8f6e1b2",
+    "eea274e3-3064-4f19-b0da-c2723e483445"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.189216,
+   "lat": -25.747984,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "226d2ce5-0c46-4dac-b828-964406fbb45f",
+    "92e9e518-9a50-48fa-8510-b20c6434fe38"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.189249,
+   "lat": -25.747931,
+   "likely_cause": "shared address point (unit numbers recorded)",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "450f36b1-44c8-4beb-b74d-ab35938fdc38",
+    "d9f07a49-be18-4ea4-bcf5-17d25e4d55a4"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.189271,
+   "lat": -25.747744,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "1d480e7f-c8b7-4e38-88fa-2be3d40b4bf3",
+    "efa79226-9809-4258-9672-a8bd6abc7e1a"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.189296,
+   "lat": -25.748032,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "61d026cc-0e6c-4349-a586-5033af9659ba",
+    "8cab28bd-d59f-4bc4-9982-cd12485986b5"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.189337,
+   "lat": -25.747776,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "767eb15f-1b0e-4cee-bcce-d58cb6b2441a",
+    "e076a086-aa15-4a73-a6e2-c1d84f41dff8"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.189429,
+   "lat": -25.747355,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "376d8f24-3101-4699-8c0b-aded83d2e61a",
+    "de871108-2448-4dcf-b8cb-67535a958cb2"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.189435,
+   "lat": -25.747528,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "933c3f26-bb94-4556-b7f0-f4cd90871a1d",
+    "dc301451-f635-429f-9cc2-8dace6ad2168"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.189445,
+   "lat": -25.746625,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "0919a155-a530-42f9-8bb3-fb30d7d80763",
+    "6072b337-980a-40f2-831b-4258749c174d"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.189577,
+   "lat": -25.746953,
+   "likely_cause": "shared address point (unit numbers recorded)",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "30ec7d12-98fe-4280-b2b1-4d7b5ee6780a",
+    "ef80be7c-53ea-4bff-b3e4-6021c1d1a34b"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.18959,
+   "lat": -25.75407,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "38b4e822-c4de-4e54-a55e-d354a9acf054",
+    "3dcbbe52-ebab-451f-9fd7-5b72509b5aed"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.189633,
+   "lat": -25.747694,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "0bc35dee-b1ac-4805-bfc9-0c4cd651d10b",
+    "6532729d-9b9f-4f0f-ad20-1969e349ee66"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.18977,
+   "lat": -25.74667,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "69bfee60-3ed0-4b15-960c-06d0aa0f84e0",
+    "d852da6d-be0c-4fa7-aab5-7c58ad8da5e4"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.189808,
+   "lat": -25.746805,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "180dae3e-d611-4a83-a3e8-6766880ad4ab",
+    "5e67bd11-dfd6-478c-be12-34282bcd03af"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.18989,
+   "lat": -25.74702,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "1d2e9d22-bcd6-4a0f-95d9-9613a7b21713",
+    "9757bdd9-ccce-4ccf-9db8-f2e3885f5d5f"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.189938,
+   "lat": -25.747607,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "411d6424-3321-4b86-ab4e-d118ae06bad8",
+    "aaca57bf-37ed-47e5-849a-7dd8455a345c"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.189985,
+   "lat": -25.749989,
+   "likely_cause": "town-only address",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "3d8f5c92-d3f8-48a2-9b26-c558874450bf",
+    "a3ee783d-81d0-4cb6-b549-b8bd799a6bca"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.190012,
+   "lat": -25.749934,
+   "likely_cause": "one compact building",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "0ed033cf-7b50-47b8-a953-9fa35eec406f",
+    "22e39a55-b6dd-4115-b4e9-1988cf8e1ff9"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.19031,
+   "lat": -25.74757,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "0f29d75f-2a65-4fa1-90b0-50127247041c",
+    "c418e2ed-d2c7-4d85-9124-b72f9cd50332"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.190341,
+   "lat": -25.74771,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "709a4fac-4a58-4ca6-b1f8-d067d376d199",
+    "da1d75c4-a3d8-4aae-9f67-2a11fb0ea88c"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.19039,
+   "lat": -25.74486,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "086f2ed5-0cee-4e8f-81ae-78ac976a0bd0",
+    "a9497261-7fbe-4d59-ae38-4f549e45b75e"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.190399,
+   "lat": -25.744811,
+   "likely_cause": "unknown: manual inspection",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "938498ff-e445-45cc-923d-bb57fa83e90f",
+    "d17689fd-230d-4c6b-ae14-442dd4de243a"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.19041,
+   "lat": -25.757092,
+   "likely_cause": "town-only address",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "0f768a2e-8f16-49cb-9ba1-f9b3f3aff07a",
+    "ff842d93-9021-44fe-820c-fd9e869674ad"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.190471,
+   "lat": -25.747652,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "3deb6e9e-52e7-46cd-b9a9-be3609aaa46c",
+    "9b178086-9993-4b3f-8aa3-802be05e727a"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.190565,
+   "lat": -25.746013,
+   "likely_cause": "shared address point (unit numbers recorded)",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "247e67f6-7373-452c-ad90-f12080729fc6",
+    "74b76adb-c702-43fa-8ec7-bea9aedff395"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.190575,
+   "lat": -25.748918,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "974afa14-4c99-4301-8dcd-79a7eb6b9cf6",
+    "e48c19b3-4d1f-421a-b52e-e1193913e9f7"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.190585,
+   "lat": -25.748825,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "1f8224d3-eda8-433e-b14e-941c0d40a950",
+    "7eeca32a-b741-4587-a690-29f5f089124f"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.190622,
+   "lat": -25.75135,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "29c9e046-e371-4c7d-ac61-923b6fba9424",
+    "481ff544-e4d2-4c43-ba96-f2597316418d"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.190736,
+   "lat": -25.739304,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "6cfb89a6-1c11-438a-8927-8c8b079a8ea6",
+    "d24252e4-aa31-425d-b04e-5bcbbe76f1de"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.190807,
+   "lat": -25.747583,
+   "likely_cause": "town-only address",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "28cc2045-3afd-4cc6-bc85-da1b9f15d101",
+    "949df08b-64ef-4296-9ede-25f279fcf9b6"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.190913,
+   "lat": -25.748186,
+   "likely_cause": "shared address point (unit numbers recorded)",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "c1f03b73-5025-4cfc-8513-c3325040188e",
+    "c967466d-c4a6-4300-bda9-6e950932b7f9"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.190966,
+   "lat": -25.751749,
+   "likely_cause": "town-only address",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "7e2b3de5-e449-4d25-8f36-6dbd036d9e2b",
+    "d64e5187-9cc9-45b9-a563-e2e03429f6fe"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.19108,
+   "lat": -25.74791,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "85c972c5-c086-4262-9553-7060fc7d11d5",
+    "b2260d06-e450-4597-974f-b7ea285cb0d7"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.191181,
+   "lat": -25.744647,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "3922cb0b-7e00-4743-a10b-955e1aa14916",
+    "8220debe-c42b-4e35-938e-b4497b154641"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.191193,
+   "lat": -25.747716,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "558f8ec3-d8af-4329-8cc8-90af881148e3",
+    "a58c48f7-7b95-4e75-926d-0240865062b4"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.19124,
+   "lat": -25.74788,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "6c90e969-bee6-4d7f-b094-67a10e7fd2d5",
+    "ebb3e7bc-af89-4245-9758-f588be75b6a2"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.191317,
+   "lat": -25.740644,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "dae98adc-ca0a-435d-86ea-3a08219496c6",
+    "dfe228ea-9b2e-4e09-b75b-cf56a5df188c"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.191383,
+   "lat": -25.744802,
+   "likely_cause": "duplicate records",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "57f3da12-837d-42c2-abc9-ac63128f30b0",
+    "81a5edbe-1763-48bd-bdb7-4f813f5711b8"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.191404,
+   "lat": -25.749323,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "235abfff-ebbf-4362-b8fb-23f139660be8",
+    "6ce7af21-07a7-44b0-948a-db483c605988"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.191413,
+   "lat": -25.746297,
+   "likely_cause": "shared address point (unit numbers recorded)",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "68cf7f13-9159-4148-8c70-8b0623ccce77",
+    "9eb6b893-a405-41c5-bb4d-74c599a1d780"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.191433,
+   "lat": -25.745755,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "c06377c1-3910-4a3b-a117-2e64bb66c28f",
+    "e06c4274-9c6f-42e5-b586-60100830f150"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.19148,
+   "lat": -25.748874,
+   "likely_cause": "shared address point (unit numbers recorded)",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "152d5963-52ea-4f6f-98a6-2775bab051fb",
+    "91f46b5d-368e-4d68-9520-cd9092660b93"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.191583,
+   "lat": -25.745488,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "bfb06774-4be9-4b19-bbcb-e0d00857f33e",
+    "d0c7e5a0-e6fc-40e9-bae9-789260c81b10"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.191586,
+   "lat": -25.746122,
+   "likely_cause": "shared address point (unit numbers recorded)",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "55321fcf-65ee-45b0-b348-4351a5735b73",
+    "bc61b868-c475-48c0-87c0-b5bc9b172d45"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.191636,
+   "lat": -25.739877,
+   "likely_cause": "shared address point (unit numbers recorded)",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "9eec3906-e502-4c4c-b750-e72c2c6bd6fe",
+    "c1ed3015-bba2-419e-a81e-30d7b7a5cf01"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.191658,
+   "lat": -25.749362,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "00855f1d-1acd-4c17-b7dc-2577e98538c1",
+    "ea607111-8797-4f06-ac0c-76e272cc915a"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.191668,
+   "lat": -25.747773,
+   "likely_cause": "shared address point (unit numbers recorded)",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "27b92e53-8a67-4015-99fd-5f490ae734f7",
+    "73ccbc5b-1296-41b2-a4b6-01724af18e10"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.19172,
+   "lat": -25.75181,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "106e79ff-d796-4241-afdb-25a2c004ad8e",
+    "eb53c8ee-ec4f-4f64-909f-cac02a62afde"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.191779,
+   "lat": -25.750031,
+   "likely_cause": "town-only address",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "a2c3008f-cb2f-46d9-9dca-3f1a59314f1f",
+    "eee85047-7547-498d-81ed-4a54c8c28186"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.191883,
+   "lat": -25.747236,
+   "likely_cause": "shared address point (unit numbers recorded)",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "063d0834-336c-4223-97f9-ad0db020ce55",
+    "927dc514-c66a-4ec1-bd04-f043fae26ae4"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.191922,
+   "lat": -25.747246,
+   "likely_cause": "shared address point (unit numbers recorded)",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "f4b5ebdd-31e5-489b-9456-3a591242909c",
+    "f59357e6-ab0b-470e-9d66-08b4b4277bff"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.191923,
+   "lat": -25.747984,
+   "likely_cause": "shared address point (unit numbers recorded)",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "46ff63a9-832b-4375-842b-430020fe96f5",
+    "7cb79324-2905-4bbe-9520-317c900c06a6"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.191959,
+   "lat": -25.757827,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "3789daf8-b060-4999-a77a-ac9f4fa9789e",
+    "f679db6f-7ad0-43d9-b8f6-f76b641fe5b9"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.191991,
+   "lat": -25.743292,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "ca60aa28-edd2-470a-a61d-c0522e96fc4e",
+    "fc991671-207e-4a84-8f59-1b599e3cfb80"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.191998,
+   "lat": -25.749031,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "549b4688-9a19-405e-99ea-76eeb23d81bf",
+    "634d53d9-bf2d-4323-870a-34b49cd25651"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.192035,
+   "lat": -25.747392,
+   "likely_cause": "shared address point (unit numbers recorded)",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "90242aa8-6e4c-4b9c-978b-208ac141c184",
+    "aea78b26-cb45-453f-acf2-fe66f95cc9df"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.192236,
+   "lat": -25.747254,
+   "likely_cause": "shared address point (unit numbers recorded)",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "4718d1a9-0157-46ce-a75c-a43079f8d9b0",
+    "560a4054-ea3e-4b9e-8175-46c8dadb553a"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.19227,
+   "lat": -25.74248,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "93905ead-ee48-4f0c-aea2-c5ddd0018a83",
+    "c37c5439-9f0e-4868-a487-263513f29c48"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.192286,
+   "lat": -25.749023,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "c9d99323-99eb-42bd-9fb3-ce08e0d1ceec",
+    "e9a0b28d-cb2b-43b0-b726-5d8bfb442db7"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.1923,
+   "lat": -25.74767,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "1e49cdd2-c0ae-4dda-9dcd-d09cbb4827e5",
+    "a081fd30-5988-4ede-ad3e-578fda1a1d95"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.192327,
+   "lat": -25.746964,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "44f821e6-05ee-4660-9e7b-eab90faf9b5e",
+    "67725bc0-748e-43de-a39e-c3b0b28a36ce"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.192339,
+   "lat": -25.739796,
+   "likely_cause": "town-only address",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "5efc5aa4-3a83-42f7-af4d-91d9d654ed9d",
+    "b81e5c5a-438f-4bb7-ad32-61eda1cf94f2"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.192354,
+   "lat": -25.747294,
+   "likely_cause": "shared address point (unit numbers recorded)",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "44235064-0481-4e46-8db0-79774d8ecbc0",
+    "fbae7bbc-45ef-44e4-b632-35a5366dd221"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.192444,
+   "lat": -25.740225,
+   "likely_cause": "town-only address",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "9a461b40-ac8a-44a3-837b-4b11dcc154a7",
+    "efc45906-809f-40af-a6df-1e8632600a40"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.192526,
+   "lat": -25.748051,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "6ba822e4-f0f2-4cab-af9d-3f6a0661a328",
+    "9d73add9-18f4-46bd-aed7-d5a6371508e8"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.192532,
+   "lat": -25.748026,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "2e413166-3fc8-4e7a-b971-e89e5332c2a2",
+    "8e15e37f-c9fc-41c1-80e4-0b204d6fd0dd"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.19256,
+   "lat": -25.74443,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "cd7c8632-0ae9-4209-a25b-d46d8714144d",
+    "eb14fef2-09a2-4f4e-a067-b8675912a23d"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.192569,
+   "lat": -25.745163,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "9bb8064f-e444-44c3-9a0b-cabf12fdb2e4",
+    "eadce20b-9e03-4768-9b65-dec65c72c70c"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.192603,
+   "lat": -25.744788,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "39b6e3e1-2a63-4086-9172-fe7c366345b9",
+    "7e929215-4e69-4881-a05c-958992cb702f"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.192633,
+   "lat": -25.744906,
+   "likely_cause": "town-only address",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "42e2ddc6-78d1-415c-b0d6-e90b9db1e663",
+    "d4215463-bb56-4b26-906a-3c6f6c5a391b"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.192649,
+   "lat": -25.744815,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "4cbf8306-9a81-42c0-aae3-eb409dce2f42",
+    "d0589ea5-42cf-43d0-944c-7d34d8c4b4a6"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.192658,
+   "lat": -25.744761,
+   "likely_cause": "shared address point (unit numbers recorded)",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "b7eb8af1-6598-4156-a761-faad1c0752e1",
+    "da397764-a46a-4324-83c3-4232ee51c2a7"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.19272,
+   "lat": -25.74701,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "7db8f8a5-c52d-4d2b-9635-03d1e8c9885c",
+    "845acc46-bc1d-478e-a4a2-830c475e0afa"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.192771,
+   "lat": -25.739987,
+   "likely_cause": "shared address point (unit numbers recorded)",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "8dd99a80-f17a-4a95-bcc6-90edb163191d",
+    "b8ef7aec-45d6-427e-8f0d-54652383cbb0"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.19278,
+   "lat": -25.74752,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "bbe8c9da-7b7e-4fac-8493-4802c170c1a9",
+    "bf608dc0-b058-4736-956e-2bd279baa897"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.19284,
+   "lat": -25.74822,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "80f5182b-d7a0-458c-b31c-ab0fb8be92fc",
+    "8abc9239-21f9-4ee6-a8ce-bc8e35f11de3"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.192868,
+   "lat": -25.747519,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "78b87a3e-3fc5-4ebe-8379-99e09bedfa7b",
+    "8566ebff-48f4-4ecf-85bf-7ca86c9cef1c"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.192914,
+   "lat": -25.747131,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "b18220b7-081f-4f45-9430-4dd10be43afe",
+    "ed91d9d5-712a-4066-99ca-0f23323a605e"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.192918,
+   "lat": -25.740085,
+   "likely_cause": "duplicate records",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "06ec5e67-1e74-4d7b-b6fd-1c39c4253863",
+    "e105589c-a4ba-4bbd-902a-063a07db8805"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.192936,
+   "lat": -25.747704,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "45f01689-97d0-4193-be15-420c20224fc9",
+    "dfd419ba-2605-4d58-8669-cd25f4da6c60"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.19297,
+   "lat": -25.74614,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "444fd809-00cd-4c1d-8f65-2f2c0267a6a3",
+    "cf3b60fd-e7ed-466a-8e73-e3a05062a5fc"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.193116,
+   "lat": -25.755968,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "aaf95d7b-ed1b-4aff-beee-b31306d18df0",
+    "e90055cf-dfc0-452f-b978-d82ec10710ca"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.193144,
+   "lat": -25.757425,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "279f6ac5-5f2b-41bb-bd0c-d2e2118aa475",
+    "483d17d6-f338-46d1-985e-f5e0e3766a85"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.193266,
+   "lat": -25.749769,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "437237e7-018c-42ab-8b63-96b6560d716c",
+    "d05b0203-7412-4b44-970a-3cc4bed2b14c"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.193278,
+   "lat": -25.750073,
+   "likely_cause": "street-centreline geocode",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "ba01e932-fd15-4a4a-8d8b-4fb235c0ca0e",
+    "f5a590bd-c8b7-4acf-821e-ae2c96a19900"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.193305,
+   "lat": -25.744758,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "4bf03b68-e171-4d73-a196-f1c8f54a1d5a",
+    "b52e415b-dabd-43eb-9853-f48e481a5397"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.193311,
+   "lat": -25.757359,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "789e0663-756e-4dcf-ba67-f9a5c06d5344",
+    "de481c32-b2c7-4b41-b80c-fe1c4a3d61f5"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.193411,
+   "lat": -25.750452,
+   "likely_cause": "town-only address",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "2faf4946-efa2-460c-83ae-10242c4f4737",
+    "72f790bd-11ad-4fbd-8ab4-525a82822416"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.193635,
+   "lat": -25.749231,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "3a11a7eb-7dea-47cb-a70c-b9237d592fcc",
+    "596e4988-2616-44bc-b5de-a063230ab5f3"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.19387,
+   "lat": -25.74136,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "b1b45eec-535a-43a6-8065-54c83fe8af23",
+    "cfe95b38-e9cf-4ce1-bf70-de2493e12f2a"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.19389,
+   "lat": -25.75253,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "56c38759-2c09-4573-913d-cb1a5ba259b5",
+    "64e36efe-f3a2-4db5-b898-0318b1ebabd5"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.19404,
+   "lat": -25.74393,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "461e1793-026d-4635-a96c-ac4f8f87deba",
+    "df361fab-ceb5-4fc6-8d31-acf02ff32f18"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.194226,
+   "lat": -25.741194,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "5d066ac0-4325-41df-a889-b7eef39e244d",
+    "9b839d63-3d00-4eae-bee8-ec319eacc8b7"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.19425,
+   "lat": -25.74729,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "b1b9524c-290b-4518-a98c-e823a95c5d90",
+    "eeae85b1-986d-4dba-ae44-613bd97b4756"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.194311,
+   "lat": -25.754573,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "c396fee3-7b4c-4e95-a403-8562813deb09",
+    "daebe7d1-db0b-496c-9b72-df4d2b24cbda"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.194401,
+   "lat": -25.746764,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "821f582f-c243-4089-ac18-b7828b8ad40f",
+    "fe70b453-5f0d-4574-82fb-b6fd0da9e00a"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.194596,
+   "lat": -25.749901,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "4162da6c-b541-4f97-94fc-ff8406b5779d",
+    "7122c229-2759-4bab-9f3e-62bd6e7d404c"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.1947,
+   "lat": -25.74895,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "383dc8ee-b70d-46e3-83cd-63a0a7953513",
+    "b5ceb8f5-d0f4-4f81-ae9c-4f9a76ac610e"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.19479,
+   "lat": -25.75233,
+   "likely_cause": "town-only address",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "6f64d10e-8093-43e1-80f7-89127534062b",
+    "d0ae8522-a7e1-4e4a-ad2e-c1cdf140ca28"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.194891,
+   "lat": -25.74869,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "29765224-0f0c-47cb-be8b-26ff92560b15",
+    "e839cb4c-b8b9-4638-bf0f-619074cd2d28"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.194899,
+   "lat": -25.744567,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "a0156f3c-6e6a-4614-ba14-836f66ab6a3f",
+    "bea3d138-e912-459e-85f3-f6eacbf99f76"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.194928,
+   "lat": -25.749075,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "46d1f16d-7332-4273-a144-32036930bb4c",
+    "978ce043-a31c-45c1-b81c-10548b3eb98f"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.195132,
+   "lat": -25.748821,
+   "likely_cause": "shared address point (unit numbers recorded)",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "8009981f-3bd8-4d6e-8aba-01bf312e8485",
+    "ac56c06a-b72e-44a2-8e7d-e0c65af8ec81"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.195293,
+   "lat": -25.742158,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "27f90be8-5fd5-478d-9910-b6a661d0d3f7",
+    "57ad1233-8c8b-45d9-953f-7989751e3ead"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.195323,
+   "lat": -25.747536,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "2d56e107-c81d-4191-8cde-b0ce1383aa56",
+    "c9dc1a5d-3bf0-489d-9f0e-5ced6fbaa493"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.19533,
+   "lat": -25.74831,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "abc03005-5630-42bf-b30f-b4150e567582",
+    "e1cd1ada-abe8-4399-a35f-0a27f1bfa15b"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.19536,
+   "lat": -25.7455,
+   "likely_cause": "town-only address",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "18ce6075-a5fd-4ce0-a496-b7efd4a2dd7b",
+    "d2c2c098-434b-4d50-b9a5-19eeb9ea388f"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.195413,
+   "lat": -25.749817,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "18741bf6-ca6b-4914-bb65-dfaebd976647",
+    "32a1554b-2898-412d-83d1-652ebea282e5"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.19559,
+   "lat": -25.74818,
+   "likely_cause": "town-only address",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "a0e438c5-4bd8-4087-bcc8-77e597e3e758",
+    "f49abb06-b8a4-4ef4-89ba-9e7605bb4870"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.19563,
+   "lat": -25.74177,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "2fefc169-e716-4a9a-877e-d8f488a8c911",
+    "3a933704-79d1-456e-be9b-c296673f4d3d"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.195667,
+   "lat": -25.748885,
+   "likely_cause": "town-only address",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "bf837efa-7fea-41dc-a200-8f5c77bd0e2d",
+    "e0a3c0c0-b058-4996-af34-aced39fca6d0"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.195692,
+   "lat": -25.747996,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "4529bd08-c5e6-4958-b31a-b95c5824e86d",
+    "724c7f8a-8894-4203-bf70-a74daeaf9589"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.19575,
+   "lat": -25.746475,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "50c6859b-d904-44b1-be23-f8b687312e31",
+    "daca85b3-ce1e-476a-9712-19feedda1fb3"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.195765,
+   "lat": -25.748758,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "0acd243b-88f4-4483-a2a0-5dda8350f0b5",
+    "319461b1-2197-4658-8c74-81051b3e763e"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.195815,
+   "lat": -25.747864,
+   "likely_cause": "shared address point (unit numbers recorded)",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "3bdd3a0d-6c4e-4c21-9174-b0e313c42b41",
+    "6a401dd5-4a8d-4c49-b45c-1cf978307eff"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.196043,
+   "lat": -25.7443,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "5b709d63-321c-45f2-a160-8b848b23d110",
+    "db419c5a-ae2f-4052-b024-369793456b21"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.196168,
+   "lat": -25.751643,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "9dd0b1bd-0e19-473d-b8db-925cfd4137b3",
+    "ba237c27-b51f-4e09-a1f6-dbe97cdff39a"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.19623,
+   "lat": -25.74917,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "75fdb498-ae08-4b6d-9085-a2533075558d",
+    "8b84d8d1-d29a-4850-b83d-b030ccbc80fb"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.196241,
+   "lat": -25.7464,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "78e2ad90-7825-43db-be38-fa7c159d4737",
+    "9f2d3aa6-9cfc-477c-b060-6a7bf3ba55b0"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.196364,
+   "lat": -25.748378,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "53336e30-6dcc-4e34-bd88-72f9265d07be",
+    "f0d78243-7572-4ed7-bbc0-a1ad765f85f5"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.19643,
+   "lat": -25.748613,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "25227b8b-4c9f-4f7d-b2b3-6c87414abc23",
+    "677f5cc0-7fd6-453c-9b49-83b3ec675b42"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.196446,
+   "lat": -25.748287,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "cb4bf192-7fde-4d5a-b5ca-c954cfc14576",
+    "f180b78d-b0db-4f26-98e6-fe66857ed239"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.196507,
+   "lat": -25.748637,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "ab88fdc6-ed28-4033-b635-07577125f3b5",
+    "eeed5068-17f4-4233-b0e2-44d218f7bd53"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.196623,
+   "lat": -25.751834,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "2b905ba7-8594-4a7b-9a2e-d6c9aea5d5cd",
+    "c67fc8a4-1c87-4f35-946b-d2c1366d6a60"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.196623,
+   "lat": -25.748966,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "0e58dc15-5ad4-430c-8335-e1ef82db6cbb",
+    "222bb70a-edd6-4ade-98e4-0c4b27c2eccd"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.196728,
+   "lat": -25.751911,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "0343aeef-83f5-4512-b1eb-46cce610a138",
+    "46f1d244-7ad9-4caf-9ce9-c4328af44c3a"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.19707,
+   "lat": -25.74755,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "e20539be-24e1-4ed0-ab6e-1ca7c9299504",
+    "fbf49dcd-0230-420c-b72e-68760ff369be"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.197157,
+   "lat": -25.746977,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "c08ba5ae-c04d-4729-bc46-3fbe3e6b5be6",
+    "e49b1118-ac84-450c-8624-126a5dca569e"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.197244,
+   "lat": -25.748368,
+   "likely_cause": "shared address point (unit numbers recorded)",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "707a22a4-d876-4d51-a5f8-3ba9a6d7514b",
+    "fcdfab18-20fc-4d2c-aa7a-883067a335a7"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.1974,
+   "lat": -25.74763,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "28552108-24fa-448f-9179-73f792e0e4e4",
+    "f68aa257-5dd6-4f49-93de-4e4d49a83a3a"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.197408,
+   "lat": -25.743059,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "83a7e1fd-31dd-4d63-810d-afc1d3b5d9cc",
+    "e3452a18-3ff0-411a-84d0-d9df9efeb354"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.197561,
+   "lat": -25.748576,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "a9f6b597-ed3d-45d2-8558-416f233c87b5",
+    "ff1abbc9-378c-4626-b273-6fc6b122786b"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.197567,
+   "lat": -25.748376,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "9dd227d5-9a2b-46be-a307-a18b8c30d4a6",
+    "c3b67fad-f828-4b07-8107-d05b7b080f02"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.197733,
+   "lat": -25.745901,
+   "likely_cause": "town-only address",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "8004cfb4-d01f-4e6c-8543-ce88ba838233",
+    "93c4e9b5-45f5-4149-8096-589cde3dcc21"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.197755,
+   "lat": -25.746224,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "694a7fc3-6ae6-4bab-ac26-cc5ce797ebac",
+    "9d269f4d-d814-47e9-acde-eca3cf8ed42b"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.197892,
+   "lat": -25.745916,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "179fe40e-6839-4c1a-8890-ca72ab1d8488",
+    "348d1919-a113-492d-a910-31102fbddf3b"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.197988,
+   "lat": -25.746919,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "345aa0f5-ca49-4388-93fa-42efac0aa4bc",
+    "ca56b129-cd04-41d0-a301-9575d56f6687"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.197997,
+   "lat": -25.744175,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "a970a36d-7d7b-43b7-95eb-cd4039ab742a",
+    "f764b9ec-1ca7-40b9-974f-5be584cdfea2"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.198054,
+   "lat": -25.749569,
+   "likely_cause": "duplicate records",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "43b75e1d-ba6f-4eb1-8928-1ea5dccf4587",
+    "5a9e1ea7-cdcf-4358-95bc-ad35f1992262"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.19829,
+   "lat": -25.74665,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "880fb48b-c5f9-4ce7-9665-9766129d8812",
+    "e7b19321-c436-495a-8d79-98ce7c705138"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.19845,
+   "lat": -25.74617,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "2b2fcdc8-cb1d-4288-b0ea-6f8f7f020610",
+    "d602cc9f-ca2f-49c5-8041-a281b678c892"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.198507,
+   "lat": -25.747164,
+   "likely_cause": "shared address point (unit numbers recorded)",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "61b5005a-1473-4727-9b29-5cf031e58c12",
+    "d142946e-8e2b-419d-88ef-145fd3e1de9a"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.198508,
+   "lat": -25.745978,
+   "likely_cause": "duplicate records",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "ae80d81f-4a05-49a0-bc22-7907a66f42fc",
+    "b10d7aac-3bc9-4bd6-b13d-586a1680729b"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.198573,
+   "lat": -25.745865,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "03d0cf25-2cbb-43dc-9c66-ce11c851acf2",
+    "6b6185b1-0acf-4105-b08e-c0510bc97134"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.198684,
+   "lat": -25.748058,
+   "likely_cause": "shared address point (unit numbers recorded)",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "2aaccd59-f223-4f9a-88ff-29dee0e73641",
+    "be2df0db-b9ae-4a32-bea9-cba03b18171a"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.198954,
+   "lat": -25.747322,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "68060fd4-2d0f-4d49-a769-221a9e7b4bb3",
+    "72de222a-99bb-4b07-bd0f-6f2200b77084"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.199217,
+   "lat": -25.7522,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "2757fadf-07de-4c60-ac93-bec605f6732b",
+    "b413633a-0e2f-4a80-aae3-2a4a1a3db48f"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.199453,
+   "lat": -25.750827,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "14328b82-76b6-4e30-9fab-cd68e509cda3",
+    "d9242a80-ce9c-4aba-9cba-c8a8145cf63a"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.199595,
+   "lat": -25.757858,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "3fae7d84-5297-44de-9e5a-a7afa2347ab4",
+    "9866db1b-92ad-4d66-a077-a0b9cb4cf91a"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.199697,
+   "lat": -25.745664,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "3c8fb21d-45ce-49cf-83f3-221c93eb3b7a",
+    "56c7c516-14f7-466c-9056-5fa859b1fa69"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.199801,
+   "lat": -25.75214,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "6f1e70d1-461d-4354-bbce-eb1a437ebd5e",
+    "a3c17a2a-80a9-436b-806d-b165fb586757"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.200098,
+   "lat": -25.751723,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "21916bfc-60b7-4514-962a-23ce3afdba47",
+    "39c541c2-5c79-4ec7-9e62-3df519750de2"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.20019,
+   "lat": -25.752537,
+   "likely_cause": "duplicate records",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "24ea2d27-4480-40c9-998f-0d9e4c80a320",
+    "3c5af755-5488-48b2-982b-27ee157a2fd9"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.200242,
+   "lat": -25.740103,
+   "likely_cause": "shared address point (unit numbers recorded)",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "82f60b44-30c6-49eb-b716-fe0788814af6",
+    "a5f10a43-8c72-419e-85d8-917639fca778"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.20084,
+   "lat": -25.74441,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "0b6bfcb6-453b-4213-b19f-e4f650872779",
+    "d50360c8-8738-428b-8d03-145bca81cbac"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.2009,
+   "lat": -25.75144,
+   "likely_cause": "town-only address",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "249af21c-0ec0-4eca-b767-6147d8186490",
+    "9a81d00d-8005-4782-b630-5429d31c3a2c"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.201324,
+   "lat": -25.751461,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "e394fd56-785e-4303-bcd2-80918fb87f19",
+    "e7124bf7-ac4b-4b00-8e06-291cb451075a"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.201332,
+   "lat": -25.751366,
+   "likely_cause": "shared address point (unit numbers recorded)",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "36140f2b-039e-4554-945b-0e3875b8b311",
+    "6dcefc78-4967-4203-8816-31dad59908d5"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.201566,
+   "lat": -25.742449,
+   "likely_cause": "shared address point (unit numbers recorded)",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "273cf8fe-9977-49de-bbf7-d21c21505a8f",
+    "e56ab615-870d-4a4b-8f02-8e13bfcbae2a"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.201845,
+   "lat": -25.741467,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "99287e28-38b5-44bd-95b5-8097d82d809d",
+    "b0876848-6041-4ef2-9e07-c777691145e8"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.202058,
+   "lat": -25.745222,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "11a5abb9-a0bf-4d19-b4ba-2afc7becd542",
+    "2da30402-7bbb-46e0-a17e-9dce3028d815"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.2023,
+   "lat": -25.75316,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "1bf7b0c7-f193-4603-9430-76e3abb8bb48",
+    "f12a0238-836c-47ac-959b-a4514b71deee"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.202436,
+   "lat": -25.756853,
+   "likely_cause": "unknown: manual inspection",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "bcfa5029-262c-464a-b222-c79c19dc7afd",
+    "d3842fbf-da3c-463c-ac2d-5699a82cc03f"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.202772,
+   "lat": -25.737002,
+   "likely_cause": "duplicate records",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "6d7ba059-07f2-471c-9351-fdaed5a67522",
+    "ed5aef54-35b1-4341-a8d4-2e01fcbc6b51"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.20295,
+   "lat": -25.75517,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "1719e4d5-96ad-4b2e-a0b5-09c1a07343a0",
+    "e5ca67b8-7af0-4192-99de-91ab9eef71d4"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.202993,
+   "lat": -25.750903,
+   "likely_cause": "shared address point (unit numbers recorded)",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "1ec00a9d-a8ab-4e6f-ba0c-94d02b9ae5f4",
+    "ee8212f2-980a-4f2e-9922-fd8d304cb17d"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.203072,
+   "lat": -25.75106,
+   "likely_cause": "shared address point (unit numbers recorded)",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "1bff8940-6d36-42f9-9b7a-eb125fe2a406",
+    "fa852a86-d70b-4cdd-af7e-cb00c9b96d1a"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.203113,
+   "lat": -25.752013,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "225c8c1d-f4d7-4d59-9ff3-76ae86ea2224",
+    "c3192f90-f377-44e0-8b6c-1270a3026ebf"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.203173,
+   "lat": -25.752074,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "3f7f5a7c-797d-47fa-9354-96522f8768e8",
+    "7985eff8-c8ee-4d11-9c52-59c3e23594f3"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.203234,
+   "lat": -25.747181,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "2a56d917-217f-43d5-aa0a-1bf2ae396527",
+    "4f2d68e9-2fe9-4c07-8e35-cc76df1f93c2"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.203281,
+   "lat": -25.75119,
+   "likely_cause": "town-only address",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "638eb389-18ef-4b71-a1cf-b2132a1e281c",
+    "930bd41d-10f7-420b-b294-1cc93e9945b8"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.203483,
+   "lat": -25.742819,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "2741eb6c-63ae-4c33-894d-e11bd6ca872a",
+    "a878ad69-9d11-44eb-b1fe-3788eb38bd3c"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.203488,
+   "lat": -25.75163,
+   "likely_cause": "shared address point (unit numbers recorded)",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "a4054f56-466c-4789-a8aa-e8449c48f9d5",
+    "e416f405-5793-47a9-91c5-485ba30e67f6"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.203575,
+   "lat": -25.743377,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "9fb7d56c-83ff-4977-859f-cfec245aed28",
+    "bfd86dd2-58f0-4e64-bbb9-646c7234b92c"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.203649,
+   "lat": -25.744401,
+   "likely_cause": "duplicate records",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "86a98ca1-ec8a-4912-a348-956025e10ff9",
+    "990e4ed2-e3b8-413c-ab2b-cbe7686bf5ed"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.203686,
+   "lat": -25.750916,
+   "likely_cause": "unknown: manual inspection",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "1c4aaf1e-aa74-4ecf-8dcd-768d9ac1396e",
+    "ee18be17-b360-4d05-aab2-7fe8fc50b281"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.203972,
+   "lat": -25.756748,
+   "likely_cause": "shared address point (unit numbers recorded)",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "4a2467d8-d9e6-4c58-95c4-faaa989b6ba9",
+    "873701b5-7124-4df4-a0b5-cb9409211886"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.20405,
+   "lat": -25.74871,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "2c572b02-dce0-4b45-b5cb-4b36db4236bd",
+    "89e02733-c7b9-43f5-9b8b-a6efa5877ecb"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.204167,
+   "lat": -25.750016,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "30b948c1-72c7-4083-a9a5-5c2169de1fa9",
+    "98e5d51b-8df2-4ff1-8b87-20715b86a6ad"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.204176,
+   "lat": -25.752215,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "6edd8c8c-c42e-47d8-a1ee-eefdc5e6894f",
+    "c23445fb-b332-48fa-ba32-3738ef5dd0f3"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.204189,
+   "lat": -25.752104,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "7ca45ddb-5d70-4fb4-a030-03a7f401b388",
+    "f0b5ab57-6110-4fbd-b3fe-1b962a4a0198"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.204246,
+   "lat": -25.751822,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "97a393a4-ca86-40c0-aa69-6cc85367bcdb",
+    "ec55c55c-1855-4d38-b24f-c2bcb13da82f"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.204746,
+   "lat": -25.752045,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "283def82-59ea-410f-b69f-8f3d51727af4",
+    "aa8ce4f0-b3df-4fd9-abef-3e20b07344a6"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.20477,
+   "lat": -25.75335,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "157df27d-a02d-4b2d-9586-202f4448a4e4",
+    "1bc6cbe9-9316-4943-8593-0131c9da4958"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.20482,
+   "lat": -25.74973,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "270438c0-eac7-4224-9b80-412b05e431b4",
+    "278f19ba-4a5e-4fae-8e1a-e7a344baa16a"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.20488,
+   "lat": -25.75188,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "9cf6f6c5-f063-4897-9a68-0315f7f02471",
+    "da434064-2ca1-4be1-9eca-fac7e6019d62"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.204884,
+   "lat": -25.744597,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "77b93cc5-8492-4036-ab10-670f22abb919",
+    "adaf5b19-4438-469a-8085-0511069d7c4d"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.204933,
+   "lat": -25.745779,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "df393847-ed0f-4198-877e-cc32fab1b6dc",
+    "eaf47c16-9f16-44ec-9b96-7b3972b5b32e"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.204953,
+   "lat": -25.745843,
+   "likely_cause": "shared address point (unit numbers recorded)",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "516f62dd-10f3-405d-9e4d-6793b216d903",
+    "f44de788-37e0-4aaf-b1b1-6074493a3886"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.204965,
+   "lat": -25.752276,
+   "likely_cause": "town-only address",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "58dae6e3-2b00-4dc3-971c-de8bccf933c7",
+    "e6db7f7d-a43a-4f81-bf61-d81bfabdfb3d"
+   ]
+  },
+  {
+   "size": 2,
+   "lon": 28.20497,
+   "lat": -25.75124,
+   "likely_cause": "shared address point",
+   "also_duplicates": false,
+   "manual_inspection": true,
+   "ids": [
+    "59c051e0-8802-47d0-a463-821735a81de0",
+    "6d1581ef-bc6e-4d5e-98b6-e23f9a9ac5a4"
+   ]
+  }
+ ]
+}

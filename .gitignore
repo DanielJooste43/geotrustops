@@ -17,3 +17,7 @@ data/raw/
 # Frontend
 node_modules/
 web/dist/
+
+# Web map: data is copied from out/ on every dev/build
+web/public/data/
+web/public/licenses/
