@@ -39,6 +39,7 @@
             <div class="segmented" role="radiogroup" aria-label="Map view">
               <label><input type="radio" name="view" value="types" checked /> <span>Change types</span></label>
               <label><input type="radio" name="view" value="overall" /> <span>Overall change</span></label>
+              <label><input type="radio" name="view" value="history" /> <span>History</span></label>
             </div>
             <div class="overall-legend" id="overall-legend" hidden>
               <p class="legend-row"><span class="glow-swatch" aria-hidden="true"></span>
@@ -46,6 +47,18 @@
               <label class="filter"><input type="checkbox" id="density" /> <span class="name">Smoothed density</span></label>
               <p class="note small" id="density-note" hidden>Kernel-smoothed density of the changed records shown.
                 It shows where record changes concentrate, not where data is wrong.</p>
+            </div>
+            <div class="history-legend" id="history-legend" hidden>
+              <p class="legend-row"><span class="glow-swatch" aria-hidden="true"></span>
+                Records added, removed or moved in the chosen release; the two releases before it fade out. Records
+                that moved are drawn with an amber core.</p>
+              <label class="filter"><input type="checkbox" id="trails" checked />
+                <span class="trail-swatch" aria-hidden="true"></span> <span class="name">Movement trails</span></label>
+              <p class="note small">Each line joins a record's last-seen position to its position in the chosen
+                release (or one of the two before it); a record's full trail is listed in its details. Overture's changelogs give positions per release, not dates within it, so the lines are steps
+                between releases, not observed paths.</p>
+              <p class="note small" id="history-status" aria-live="polite"></p>
+              <p class="note small" id="history-credit"></p>
             </div>
           </fieldset>
           <fieldset id="filters">
@@ -72,6 +85,17 @@
       <div class="map-wrap">
         <div id="map" role="region" aria-label="Map of changed place records"></div>
         <div class="notice" id="notice" hidden></div>
+        <section class="playback" id="playback" aria-label="Release history playback" hidden>
+          <div class="pb-controls">
+            <button type="button" id="pb-prev" aria-label="Previous release">‹</button>
+            <button type="button" id="pb-play" aria-pressed="false">Play</button>
+            <button type="button" id="pb-next" aria-label="Next release">›</button>
+            <input type="range" id="pb-slider" aria-label="Release" />
+          </div>
+          <svg class="pb-bars" id="pb-bars" aria-hidden="true"></svg>
+          <p class="pb-label" id="pb-label" aria-live="polite"></p>
+          <p class="pb-note" id="pb-note" hidden></p>
+        </section>
       </div>
 
       <aside class="inspector" id="inspector" aria-label="Selected record" hidden>
@@ -127,6 +151,12 @@
           <a href="./data/stack_causes.json" download>Download the database</a> (JSON); the method is
           <code>scripts/investigate/stack_causes.py</code> in the
           <a href="https://github.com/DanielJooste43/geotrustops" rel="noopener">repository</a>.</p>
+        <h3>Release history</h3>
+        <p>The history view and the position list in the record details come from Overture's places changelogs, one
+          per release since July 2024. Overture states no licence for the changelogs; their content is places data,
+          so the timeline is shared under the three places licences above, with Overture and its sources credited.
+          <a href="./data/timeline.json" download>Download the timeline</a> (JSON); the method is data contract §12
+          in the <a href="https://github.com/DanielJooste43/geotrustops" rel="noopener">repository</a>.</p>
         <h3>Software</h3>
         <p><a href="https://maplibre.org/" rel="noopener">MapLibre GL JS</a> (BSD-3-Clause,
           <a href="./licenses/maplibre-gl-LICENSE.txt">licence</a>). Fonts and icons in the basemap are served by

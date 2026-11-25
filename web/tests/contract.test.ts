@@ -3,7 +3,8 @@ import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 import {
-  CHANGE_TYPES, ContractError, checkSameRun, checkTriageMatchesRun, parseChanges, parseSummary, parseTriage, positions, reconciliationHolds,
+  CHANGE_TYPES, ContractError, checkSameRun, checkTimelineMatchesRun, checkTriageMatchesRun, parseChanges, parseSummary,
+  parseTimeline, parseTriage, positions, reconciliationHolds, recordHistory,
   type ChangeProperties,
 } from "../src/contract";
 
@@ -133,5 +134,82 @@ describe("real triage file", () => {
   it("lists each place in at most one cluster", () => {
     const ids = triage.clusters.flatMap((c) => c.ids);
     expect(new Set(ids).size).toBe(ids.length);
+  });
+});
+
+describe("parseTimeline", () => {
+  const rel = (release: string, over: object = {}) => ({
+    release, change_type_partitions: ["added", "data_changed", "removed", "unchanged"], changes_published: true,
+    added: 0, removed: 0, position_changed: 0, position_changed_labelled_unchanged: 0, first_seen_without_added: 0,
+    ...over,
+  });
+  const tl = (over: object = {}) => ({
+    schema_version: 1, aoi: { west: 0, south: 0, east: 1, north: 1 }, min_step_m: 1, method: "m",
+    interpretation: ["per release"], kinds: ["added", "removed", "position_changed"],
+    event_fields: ["release_index", "kind_index", "id_index", "lon", "lat", "from_release_index", "from_lon", "from_lat", "distance_m"],
+    releases: [rel("2026-01-01.0", { added: 1 }), rel("2026-02-01.0", { position_changed: 1 })],
+    ids: ["a"],
+    events: [[0, 0, 0, 0.5, 0.5, null, null, null, null], [1, 2, 0, 0.6, 0.5, 0, 0.5, 0.5, 10.1]],
+    event_count: 2, inputs_sha256: { "2026-01-01.0": "x", "2026-02-01.0": "cl" },
+    licences: ["CDLA-Permissive-2.0", "Apache-2.0", "CC0-1.0"], attribution: "© Overture Maps Foundation",
+    ...over,
+  });
+
+  it("accepts a valid file", () => {
+    expect(parseTimeline(tl()).events).toHaveLength(2);
+  });
+  it("requires the three places licences and an attribution", () => {
+    expect(() => parseTimeline(tl({ licences: ["CC0-1.0"] }))).toThrow(/licences/);
+    expect(() => parseTimeline(tl({ attribution: "" }))).toThrow(/attribution/);
+  });
+  it("rejects counts that do not add up to the events", () => {
+    expect(() => parseTimeline(tl({ releases: [rel("2026-01-01.0", { added: 2 }), rel("2026-02-01.0", { position_changed: 1 })] })))
+      .toThrow(/add up/);
+    expect(() => parseTimeline(tl({ event_count: 3 }))).toThrow(/event_count/);
+  });
+  it("rejects releases out of order and indexes out of range", () => {
+    expect(() => parseTimeline(tl({ releases: [rel("2026-02-01.0", { added: 1 }), rel("2026-01-01.0", { position_changed: 1 })] })))
+      .toThrow(/oldest first/);
+    expect(() => parseTimeline(tl({ events: [[0, 0, 5, 0.5, 0.5, null, null, null, null], [1, 2, 0, 0.6, 0.5, 0, 0.5, 0.5, 10.1]] })))
+      .toThrow(/id out of range/);
+  });
+  it("requires a from position on moves only", () => {
+    expect(() => parseTimeline(tl({ events: [[0, 0, 0, 0.5, 0.5, null, null, null, null], [1, 2, 0, 0.6, 0.5, null, null, null, null]] })))
+      .toThrow(/from position/);
+    expect(() => parseTimeline(tl({ events: [[0, 0, 0, 0.5, 0.5, 0, 0.5, 0.5, 1], [1, 2, 0, 0.6, 0.5, 0, 0.5, 0.5, 10.1]] })))
+      .toThrow(/only position changes/);
+  });
+  it("is accepted only with the change run whose changelog it ends with", () => {
+    const run = (curr: string, sha: string) => ({ geotrustops: { releases: { prev: "p", curr }, changelog_sha256: sha } }) as never;
+    expect(() => checkTimelineMatchesRun(parseTimeline(tl()), run("2026-02-01.0", "cl"))).not.toThrow();
+    expect(() => checkTimelineMatchesRun(parseTimeline(tl()), run("2026-03-01.0", "cl"))).toThrow(/current release/);
+    expect(() => checkTimelineMatchesRun(parseTimeline(tl()), run("2026-02-01.0", "other"))).toThrow(/changelog/);
+  });
+  it("lists a record's positions by release, starting from where its first move began", () => {
+    const steps = recordHistory(parseTimeline(tl()), "a");
+    expect(steps.map((s) => [s.release, s.kind])).toEqual([["2026-01-01.0", "added"], ["2026-02-01.0", "position_changed"]]);
+    expect(recordHistory(parseTimeline(tl()), "missing")).toEqual([]);
+    const moveOnly = tl({ releases: [rel("2026-01-01.0"), rel("2026-02-01.0", { position_changed: 1 })],
+      events: [[1, 2, 0, 0.6, 0.5, 0, 0.5, 0.5, 10.1]], event_count: 1 });
+    expect(recordHistory(parseTimeline(moveOnly), "a").map((s) => s.kind)).toEqual(["seen", "position_changed"]);
+  });
+});
+
+describe("real timeline file", () => {
+  const read = (p: string) => JSON.parse(readFileSync(fileURLToPath(new URL(p, import.meta.url)), "utf8")) as unknown;
+  const timeline = parseTimeline(read("../../out_timeline/timeline.json"));
+  const changes = parseChanges(read("../../out/changes.geojson"));
+
+  it("ends at the committed change run and uses its changelog", () => {
+    expect(() => checkTimelineMatchesRun(timeline, changes)).not.toThrow();
+  });
+  it("gives every moved record of the change run a position history ending at its current position", () => {
+    for (const f of changes.features.filter((x) => x.properties.change_type === "moved")) {
+      const steps = recordHistory(timeline, f.properties.id);
+      const last = steps[steps.length - 1];
+      expect(last, f.properties.id).toBeDefined();
+      expect(last!.lon).toBeCloseTo(f.geometry.coordinates[0], 5);
+      expect(last!.lat).toBeCloseTo(f.geometry.coordinates[1], 5);
+    }
   });
 });

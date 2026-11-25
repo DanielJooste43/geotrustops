@@ -247,3 +247,118 @@ export function checkTriageMatchesRun(triage: Triage, summary: Summary): void {
   need(triage.inputs_sha256.places === summary.inputs_sha256.curr,
     "quality flags were computed from a different places extract than the change run");
 }
+
+// ---------- release timeline (out_timeline/timeline.json, contract §12, schema_version 1) ----------
+
+export const TIMELINE_KINDS = ["added", "removed", "position_changed"] as const;
+export type TimelineKind = (typeof TIMELINE_KINDS)[number];
+export const TIMELINE_FIELDS = [
+  "release_index", "kind_index", "id_index", "lon", "lat", "from_release_index", "from_lon", "from_lat", "distance_m",
+] as const;
+export const TIMELINE_LICENCES = ["CDLA-Permissive-2.0", "Apache-2.0", "CC0-1.0"] as const;
+
+/** One event: [release, kind, id, lon, lat, from release, from lon, from lat, distance m] (contract §12). */
+export type TimelineEvent = [
+  number, number, number, number, number, number | null, number | null, number | null, number | null,
+];
+
+export interface TimelineRelease {
+  release: string;
+  change_type_partitions: string[];
+  changes_published: boolean;
+  added: number;
+  removed: number;
+  position_changed: number;
+  position_changed_labelled_unchanged: number;
+  first_seen_without_added: number;
+}
+
+export interface Timeline {
+  schema_version: 1;
+  aoi: { west: number; south: number; east: number; north: number };
+  min_step_m: number;
+  method: string;
+  interpretation: string[];
+  kinds: TimelineKind[];
+  event_fields: string[];
+  releases: TimelineRelease[];
+  ids: string[];
+  events: TimelineEvent[];
+  event_count: number;
+  inputs_sha256: Record<string, string>;
+  licences: string[];
+  attribution: string;
+}
+
+const sameList = (a: unknown, b: readonly string[]) =>
+  Array.isArray(a) && a.length === b.length && a.every((x, i) => x === b[i]);
+
+/** Validates the release timeline; throws ContractError on the first violation. */
+export function parseTimeline(raw: unknown): Timeline {
+  need(isObject(raw), "timeline: not an object");
+  need(raw.schema_version === 1, `timeline: schema ${String(raw.schema_version)}, map supports 1`);
+  need(sameList(raw.kinds, TIMELINE_KINDS), "timeline: unexpected kinds");
+  need(sameList(raw.event_fields, TIMELINE_FIELDS), "timeline: unexpected event_fields");
+  need(sameList(raw.licences, TIMELINE_LICENCES) && typeof raw.attribution === "string" && raw.attribution.length > 0,
+    "timeline: licences or attribution missing");
+  need(Array.isArray(raw.interpretation) && raw.interpretation.length > 0, "timeline: interpretation missing");
+  need(Array.isArray(raw.releases) && raw.releases.length >= 2, "timeline: releases missing");
+  need(Array.isArray(raw.ids) && raw.ids.every((x) => typeof x === "string"), "timeline: ids must be strings");
+  need(Array.isArray(raw.events) && raw.event_count === raw.events.length, "timeline: event_count does not match");
+  need(isObject(raw.inputs_sha256), "timeline: inputs_sha256 missing");
+  const releases = raw.releases as unknown[];
+  let total = 0;
+  releases.forEach((r, i) => {
+    need(isObject(r) && typeof r.release === "string" && typeof r.changes_published === "boolean",
+      `timeline releases[${i}]: release or changes_published missing`);
+    for (const k of TIMELINE_KINDS) {
+      need(typeof r[k] === "number", `timeline releases[${i}]: ${k} count missing`);
+      total += r[k] as number;
+    }
+    need(i === 0 || (releases[i - 1] as { release: string }).release < r.release, "timeline: releases not oldest first");
+  });
+  need(total === raw.events.length, "timeline: per-release counts do not add up to the events listed");
+  const nIds = (raw.ids as unknown[]).length;
+  (raw.events as unknown[]).forEach((e, i) => {
+    const at = `timeline events[${i}]`;
+    need(Array.isArray(e) && e.length === TIMELINE_FIELDS.length, `${at}: wrong length`);
+    const [rel, kind, id, lon, lat, fromRel, fromLon, fromLat, dist] = e as unknown[];
+    need(Number.isInteger(rel) && (rel as number) >= 0 && (rel as number) < releases.length, `${at}: release out of range`);
+    need(Number.isInteger(kind) && (kind as number) >= 0 && (kind as number) < TIMELINE_KINDS.length, `${at}: kind out of range`);
+    need(Number.isInteger(id) && (id as number) >= 0 && (id as number) < nIds, `${at}: id out of range`);
+    need(typeof lon === "number" && typeof lat === "number", `${at}: position missing`);
+    const moved = TIMELINE_KINDS[kind as number] === "position_changed";
+    if (moved) {
+      need(Number.isInteger(fromRel) && (fromRel as number) < (rel as number) && typeof fromLon === "number"
+        && typeof fromLat === "number" && typeof dist === "number", `${at}: a position change needs its from position`);
+    } else {
+      need(fromRel === null && fromLon === null && fromLat === null && dist === null, `${at}: only position changes have a from position`);
+    }
+  });
+  return raw as unknown as Timeline;
+}
+
+/** The timeline must end at the change run's current release and use the same changelog (contract §12). */
+export function checkTimelineMatchesRun(timeline: Timeline, changes: Changes): void {
+  const curr = changes.geotrustops.releases.curr;
+  need(timeline.releases[timeline.releases.length - 1]?.release === curr,
+    `the timeline does not end at the change run's current release ${curr}`);
+  need(timeline.inputs_sha256[curr] === changes.geotrustops.changelog_sha256,
+    "the timeline was built from a different changelog than the change run's cross-check");
+}
+
+/** A record's positions by release from the timeline: the from position of its first move, then each event. */
+export function recordHistory(timeline: Timeline, id: string): { release: string; kind: TimelineKind | "seen"; lon: number; lat: number; distance_m: number | null }[] {
+  const idx = timeline.ids.indexOf(id);
+  if (idx < 0) return [];
+  const out: { release: string; kind: TimelineKind | "seen"; lon: number; lat: number; distance_m: number | null }[] = [];
+  for (const e of timeline.events) {
+    if (e[2] !== idx) continue;
+    const kind = TIMELINE_KINDS[e[1]]!;
+    if (kind === "position_changed" && out.length === 0 && e[5] !== null && e[6] !== null && e[7] !== null) {
+      out.push({ release: timeline.releases[e[5]]!.release, kind: "seen", lon: e[6], lat: e[7], distance_m: null });
+    }
+    out.push({ release: timeline.releases[e[0]]!.release, kind, lon: e[3], lat: e[4], distance_m: e[8] });
+  }
+  return out;
+}
