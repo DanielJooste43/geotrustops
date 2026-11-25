@@ -88,7 +88,7 @@ legend { font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; col
 .map-wrap { position: relative; min-height: 0; }
 #map { position: absolute; inset: 0; background: var(--bg); }
 .notice {
-  position: absolute; left: 16px; top: 16px; max-width: 420px; padding: 10px 14px; border-radius: 8px;
+  position: absolute; left: 64px; top: 16px; max-width: 420px; padding: 10px 14px; border-radius: 8px; /* clear of the zoom buttons */
   background: var(--surface); border: 1px solid var(--moved); font-size: 13px; z-index: 2;
 }
 
