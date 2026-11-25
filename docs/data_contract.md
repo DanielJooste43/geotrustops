@@ -251,3 +251,28 @@ optional `operating_status VARCHAR`, `addresses STRUCT(freeform, locality, postc
 `phones/websites/emails/socials VARCHAR[]`, `brand STRUCT(names STRUCT("primary"))`.
 **Changelog parquet `[source: overture]`:** `id`, `change_type`, `columns_changed VARCHAR[]`.
 `tests/fixtures/make_fixture.py` writes all of these from plain Python dicts.
+
+## 11. Quality-triage output (separate database) `[source: overture]`
+**`out_triage/stack_causes.json`**, written by `scripts/investigate/stack_causes.py --export` for one release (default:
+config `releases.curr`). It is versioned by its own `schema_version` (currently `1`) and does not change the
+change-output contract above: the classification, reconciliation and `out/` files are unaffected. It lives outside
+`out/` because `geotrustops build` replaces that folder as a whole.
+
+- **Grain:** one entry per cluster of **2 or more** places whose points lie within `cluster_rule_m` (`2.0` m) of each
+  other (single linkage), among the release's valid points inside the AOI. A place belongs to at most one cluster.
+- **Cluster fields:** `size` (= number of `ids`), `lon`/`lat` (cluster centre, mean of member points, 6 dp),
+  `likely_cause` (first matching step of the pre-registered cascade in `docs/investigation_backlog.md`, I-1 stage C),
+  `also_duplicates` (the cluster contains duplicate records although another cause matched first),
+  `manual_inspection` (always `true`), `ids` (sorted). **No names or other place attributes.**
+- **Top level:** `schema_version`, `release`, `method`, `cluster_rule_m`, `places_in_aoi`, `cluster_count`
+  (= number of clusters), `clustered_places` (= sum of `size`), `inputs_sha256` (places extract and the four context
+  layers: `building`, `connector`, `division`, `segment`), `licence` (`ODbL-1.0`), `licence_uri`, `attribution`,
+  `interpretation`, `clusters`.
+- **Determinism:** clusters sorted by `size` descending, then `lon`, then `lat`; UTF-8, `\n` line endings, no
+  timestamps. The same inputs give byte-identical output.
+- **Licence:** the likely causes are derived from Overture's ODbL themes, so the file is a separate database under
+  ODbL 1.0 (licence URI and attribution inside the file; text in `LICENSES/ODbL-1.0.txt`). It is never merged into
+  the change outputs.
+- **Consumers** must check that `release` and `inputs_sha256.places` equal `releases.curr` and `inputs_sha256.curr`
+  of the change run they are shown with, and must not show the flags otherwise.
+- **Interpretation:** a likely cause from simple checks, not a verified defect; every cluster needs manual inspection.

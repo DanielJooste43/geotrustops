@@ -11,7 +11,7 @@ import workerUrl from "maplibre-gl/dist/maplibre-gl-worker.mjs?url";
 import "maplibre-gl/dist/maplibre-gl.css";
 import "./styles.css";
 import {
-  CHANGE_TYPES, ContractError, checkSameRun, parseChanges, parseSummary, parseTriage, positions, reconciliationHolds,
+  CHANGE_TYPES, ContractError, checkSameRun, checkTriageMatchesRun, parseChanges, parseSummary, parseTriage, positions, reconciliationHolds,
   type ChangeFeature, type ChangeProperties, type ChangeType, type Changes, type StackCluster, type Summary,
   type Triage,
 } from "./contract";
@@ -272,12 +272,14 @@ async function main(): Promise<void> {
   // The quality layer is optional: if its file is missing or invalid, the change map still works.
   let triage: Triage | null = null;
   try {
-    triage = parseTriage(await loadJson("./data/stack_causes.json"));
+    const parsed = parseTriage(await loadJson("./data/stack_causes.json"));
+    checkTriageMatchesRun(parsed, summary); // never show flags from another release under this run's label
+    triage = parsed;
     $("quality-count").textContent =
       `${fmt.format(triage.cluster_count)} groups · ${fmt.format(triage.clustered_places)} places`;
   } catch (e) {
     $<HTMLInputElement>("quality").disabled = true;
-    $("quality-count").textContent = "unavailable";
+    $("quality-count").textContent = e instanceof ContractError ? "not available for this release" : "unavailable";
     console.warn("quality flags not loaded:", e);
   }
 
