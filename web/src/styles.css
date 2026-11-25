@@ -79,7 +79,9 @@ legend { font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; col
 }
 .filter:hover { background: var(--surface); }
 .filter input { width: 18px; height: 18px; accent-color: var(--muted); margin: 0; }
-.filter .swatch { width: 18px; height: 18px; flex: none; }
+/* Shared symbol icon: sized here because the SVG carries only a viewBox (count strip, filters, inspector). */
+.swatch { width: 18px; height: 18px; flex: none; }
+.badge .swatch { width: 14px; height: 14px; }
 .filter .name { flex: 1; }
 .filter .n { color: var(--muted); font-variant-numeric: tabular-nums; font-size: 13px; }
 .note { color: var(--muted); font-size: 13px; margin: 16px 0 0; }
