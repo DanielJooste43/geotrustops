@@ -145,7 +145,9 @@ with its licence.
 | pytest 9.2.0, pytest-cov 7.1.0 | tests, coverage | MIT |
 | ruff 0.17.6 | lint and formatting | MIT |
 | mypy 2.4.1 | static type checking | MIT (some bundled files PSF-2.0) |
-| GitHub Actions: `actions/checkout` v7.0.1, `actions/setup-python` v7.1.0, `actions/upload-artifact` v7.0.2 | CI (pinned to commit SHAs) | MIT |
+| GitHub Actions: `actions/checkout` v7.0.1, `actions/setup-python` v7.1.0, `actions/setup-node` v7.1.0, `actions/upload-artifact` v7.0.2 | CI (pinned to commit SHAs) | MIT |
+| GitHub Actions: `actions/configure-pages` v6.0.0, `actions/upload-pages-artifact` v5.0.0, `actions/deploy-pages` v5.0.1 | web map deployment (pinned to commit SHAs) | MIT |
+| GitHub Pages | hosting of the web map | GitHub Terms of Service; data licences as above |
 | Overture Maps data via AWS Open Data | source data | see [DATA_LICENSE.md](DATA_LICENSE.md) |
 | Overture divisions, buildings and transportation themes | context layers for the quality-triage checks; layers not redistributed, derived results in `out_triage/` | ODbL 1.0; see [DATA_LICENSE.md](DATA_LICENSE.md) |
 | MapLibre GL JS 6.17.0 | web map rendering (shipped) | BSD-3-Clause |
