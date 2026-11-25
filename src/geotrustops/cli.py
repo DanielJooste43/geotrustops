@@ -1,4 +1,4 @@
-"""Command line: `geotrustops fetch` and `geotrustops build` (contract §10).
+"""Command line: `geotrustops fetch`, `geotrustops build` (contract §10) and `geotrustops timeline` (§12).
 
 Exit codes: 0 success; 2 a gate failed (bad config, missing/altered input, QA or
 reconciliation failure) and no output was written.
@@ -17,6 +17,14 @@ from geotrustops.config import Config, ConfigError, load_config
 from geotrustops.export import write_outputs
 from geotrustops.extract import ExtractError, changelog_path, fetch, release_path, verify_manifest
 from geotrustops.pipeline import PipelineError, Result, run
+from geotrustops.timeline import (
+    TimelineError,
+    build_timeline,
+    fetch_timeline,
+    load_inputs,
+    load_timeline_config,
+    write_timeline,
+)
 
 ROOT = Path.cwd()
 HISTORY = ROOT / "runs" / "history.jsonl"
@@ -46,6 +54,13 @@ def _parser() -> argparse.ArgumentParser:
     b.add_argument("--out", type=Path, help="output folder (default: config out_dir, else out/)")
     b.add_argument("--no-history", action="store_true", help="do not update runs/history.jsonl")
     b.add_argument("--history", type=Path, default=HISTORY, help=argparse.SUPPRESS)
+    t = sub.add_parser(
+        "timeline", help="build the release timeline from the changelog of every release"
+    )
+    t.add_argument("--fetch", action="store_true", help="download missing changelog extracts first")
+    t.add_argument("--force", action="store_true", help="with --fetch: re-download all extracts")
+    t.add_argument("--timeline-config", type=Path, default=ROOT / "config" / "timeline.json")
+    t.add_argument("--out", type=Path, help="output folder (default: timeline config out_dir)")
     return p
 
 
@@ -111,6 +126,16 @@ def _record_history(result: Result, cfg: Config, path: Path) -> None:
     path.write_text("".join(lines[k] + "\n" for k in sorted(lines)), encoding="utf-8", newline="\n")
 
 
+def _timeline(args: argparse.Namespace, cfg: Config) -> int:
+    tcfg = load_timeline_config(args.timeline_config)
+    if args.fetch:
+        fetch_timeline(cfg, tcfg, args.raw_dir, force=args.force)
+    doc = build_timeline(cfg, load_inputs(cfg, tcfg, args.raw_dir), tcfg.min_step_m)
+    path = write_timeline(doc, args.out or ROOT / tcfg.out_dir)
+    print(f"ok: {doc['event_count']} events over {len(doc['releases'])} releases -> {path}")
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     args = _parser().parse_args(_hoist_globals(list(sys.argv[1:] if argv is None else argv)))
     try:
@@ -118,6 +143,8 @@ def main(argv: list[str] | None = None) -> int:
         if args.command == "fetch":
             fetch(cfg, args.raw_dir, force=args.force, source=args.source, archive=args.archive)
             return 0
+        if args.command == "timeline":
+            return _timeline(args, cfg)
         if (args.prev is None) != (args.curr is None):
             raise PipelineError("give both --prev and --curr, or neither")
         if args.prev is not None:
@@ -138,7 +165,7 @@ def main(argv: list[str] | None = None) -> int:
         write_outputs(result, out)
         if not args.no_history:
             _record_history(result, cfg, args.history)
-    except (ConfigError, ExtractError, PipelineError) as exc:
+    except (ConfigError, ExtractError, PipelineError, TimelineError) as exc:
         print(f"geotrustops: FAILED: {exc}", file=sys.stderr)
         return 2
     s = result.summary

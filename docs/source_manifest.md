@@ -25,6 +25,10 @@ Full hashes are in `data/raw/*.manifest.json` (local, not committed).
 - `s3://overturemaps-us-west-2/changelog/2026-11-18.0/theme=places/type=place/change_type=*/*.parquet` (64 files; listed 2026-11-23)
 - Schema: `id, bbox, columns_changed (VARCHAR[]), change_type, theme, type`
 - Used only to cross-check GeoTrustOps classes (contract §9). Changelogs exist for every release back to `2024-06-13-beta.0`.
+- Also the input of the release timeline (contract §12): the places changelog of each release in
+  `config/timeline.json` (listed 2026-11-25; extracts in `data/raw/changelog/`, SHA-256 per release in the output).
+  Changelogs before `2026-03-18.0` have no `columns_changed` and a 32-bit `bbox`; some releases publish only some
+  change sets (recorded per release); there is no June 2025 changelog.
 
 ## Archived extracts (current layout)
 

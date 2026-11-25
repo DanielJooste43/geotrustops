@@ -9,6 +9,7 @@ releases and keeps the licence of each source record.
 | Path | Contents |
 |---|---|
 | `out/`, `out_pairs/` | change outputs (GeoJSON, JSON, Markdown) containing place names, coordinates and categories |
+| `out_timeline/timeline.json` | record ids, positions and change kinds per release, from Overture's places changelogs (no names or other attributes) |
 | `runs/history.jsonl` | aggregate run statistics |
 | `tests/golden/` | place ids used as hand-classified test cases |
 | `docs/feasibility_probe.json` | sample counts and records from the initial feasibility probe |
@@ -25,6 +26,11 @@ with `LICENSES/` and `NOTICE`, are deleted 12 months after the v1.0 release, and
 Licence review (2026-11-24): the extracts contain only the three licences below, and Overture's
 [attribution page](https://docs.overturemaps.org/attribution/) states no further restriction on redistribution.
 Overture states no licence for the GERS changelog; only identifiers and change codes are kept from it.
+Licence review (2026-11-25), for `out_timeline/timeline.json`: Overture's attribution, changelog and data-access
+pages and its site terms state no licence for the changelog. Its content is Places data, and for records from past
+releases the source cannot be identified, so the timeline is shared under all three Places licences below, with
+their texts in `LICENSES/`, the Foursquare `NOTICE`, and the attribution in the file. The timeline extracts keep only
+`id`, `change_type` and `bbox`.
 
 ## Source licences
 

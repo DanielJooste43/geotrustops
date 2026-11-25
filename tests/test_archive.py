@@ -163,6 +163,10 @@ def test_committed_manifest_covers_every_configured_pair():
     _, files = load_archive(ARCHIVE_JSON)
     have = {(f["kind"], f["release"]) for f in files}
     for cfg_file in sorted((ROOT / "config").glob("*.json")):
+        if (
+            cfg_file.name == "timeline.json"
+        ):  # changelog list, not a release pair; Overture keeps changelogs
+            continue
         cfg = load_config(cfg_file)
         for kind, rel, asset in _jobs(cfg):
             assert (kind, rel) in have, f"{cfg_file.name}: {kind} {rel} not archived"
