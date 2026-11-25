@@ -1,0 +1,13 @@
+{
+  "releases": [
+    "2024-07-22.0", "2024-08-20.0", "2024-09-18.0", "2024-10-23.0", "2024-11-13.0", "2024-12-18.0",
+    "2025-01-22.0", "2025-02-19.0", "2025-03-19.1", "2025-04-23.0", "2025-05-21.0",
+    "2025-07-23.0", "2025-08-20.0", "2025-08-20.1", "2025-09-24.0", "2025-10-22.0", "2025-11-19.0",
+    "2025-12-17.0", "2026-01-21.0", "2026-02-18.0", "2026-03-18.0", "2026-04-15.0", "2026-05-20.0",
+    "2026-06-17.0", "2026-07-22.0", "2026-08-19.0", "2026-09-23.1", "2026-10-21.0",
+    "2026-11-18.0"
+  ],
+  "min_step_m": 1.0,
+  "out_dir": "out_timeline",
+  "notes": "Every non-beta places changelog Overture lists under s3://overturemaps-us-west-2/changelog/ (listed 2026-11-25), oldest first, except 2025-03-19.0 and 2026-09-23.0: their extracts are identical to the .1 patch releases that replaced them (same SHA-256, both relative to the month before), so only the .1 is kept. 2025-08-20.1 is relative to 2025-08-20.0 and is kept with it. No changelog exists for June 2025. Each changelog is relative to the release before it. The AOI, buffer and changelog URI come from config/study_area.json. min_step_m: smallest position change counted; above the 32-bit float precision of positions before 2026-03-18.0 (about 0.2 m here)."
+}

@@ -276,3 +276,39 @@ change-output contract above: the classification, reconciliation and `out/` file
 - **Consumers** must check that `release` and `inputs_sha256.places` equal `releases.curr` and `inputs_sha256.curr`
   of the change run they are shown with, and must not show the flags otherwise.
 - **Interpretation:** a likely cause from simple checks, not a verified defect; every cluster needs manual inspection.
+
+## 12. Release timeline output (separate file) `[source: overture]`
+**`out_timeline/timeline.json`**, written by `geotrustops timeline` from one places changelog extract per release in
+`config/timeline.json` (AOI and extraction bbox from `config/study_area.json`). Versioned by its own
+`schema_version` (currently `1`); it does not change the change-output contract above. Each extract is checked
+against its manifest (release, extraction bbox, SHA-256) before use.
+
+- **Releases:** every non-beta places changelog Overture lists, oldest first. A patch release whose changelog is
+  identical to its `.0` (same SHA-256, both relative to the month before) replaces it; the build refuses two
+  identical changelogs that contain changes. A changelog is relative to the release before it.
+- **Position:** the changelog `bbox` centre (for `removed`, the last position). `bbox` is 32-bit before
+  `2026-03-18.0` and 64-bit after; coordinates are written to 6 dp.
+- **Events (grain: one per record and release):** `added` and `removed` from the changelog change type, if the
+  position is in the AOI; `position_changed` when the position differs from the record's last-seen position (latest
+  earlier changelog listing it, not after a removal) by at least `min_step_m` (`1.0`), whatever the change type, if
+  either position is in the AOI. Changelogs before `2026-03-18.0` have no `columns_changed`, so labels are not used
+  for moves. Fields (`event_fields`): `release_index`, `kind_index` (into `kinds`), `id_index` (into `ids`), `lon`,
+  `lat`, and for `position_changed` only `from_release_index`, `from_lon`, `from_lat`, `distance_m` (1 dp,
+  haversine); otherwise `null`.
+- **Per release (`releases`):** `release`, `change_type_partitions` (change sets Overture published), `changes_published`
+  (any of added/removed/data_changed), counts per kind, `position_changed_labelled_unchanged`,
+  `first_seen_without_added` (records first seen without an `added` row, e.g. after a missing changelog).
+- **Reconciliation:** `event_count` = number of `events` = sum of the per-release counts. For `releases.curr`,
+  `added` and `removed` equal the change run's counts, and every `moved` or `shifted` record of the change run is a
+  `position_changed` event with the same distance (±0.5 m).
+- **Top level:** `schema_version`, `aoi`, `min_step_m`, `method`, `interpretation`, `kinds`, `event_fields`,
+  `releases`, `ids` (sorted), `events`, `event_count`, `inputs_sha256` (per release), `licences`, `attribution`.
+  **No names or other place attributes.**
+- **Determinism:** events sorted by `release_index`, kind, id; sorted top-level keys; one id and one event per line;
+  UTF-8, `
+`, no timestamps. The same inputs give byte-identical output.
+- **Licence:** Overture states no licence for the changelog; its content is Places data, and the source of an old
+  record cannot be identified, so the file is shared under all three Places licences (CDLA-Permissive-2.0,
+  Apache-2.0 with the Foursquare NOTICE, CC0-1.0) with Overture and source attribution.
+- **Interpretation:** timing is per release only; trails join release positions and are not observed paths;
+  releases with `changes_published` false are not evidence of no change; spikes can reflect source or schema changes.

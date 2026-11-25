@@ -75,7 +75,7 @@ def _bbox_where(b: BBox) -> str:
     )
 
 
-def _download(
+def download(
     con: duckdb.DuckDBPyConnection,
     uri: str,
     select: str,
@@ -118,6 +118,18 @@ def _download(
     }
     _manifest_path(out).write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
     return manifest
+
+
+def s3_connection(cfg: Config) -> duckdb.DuckDBPyConnection:
+    """A DuckDB connection that can read Overture's public bucket (anonymous, httpfs)."""
+    c = duckdb.connect()
+    try:
+        c.execute("INSTALL httpfs; LOAD httpfs;")
+        c.execute("SET s3_region = $r", {"r": cfg.s3_region})
+    except duckdb.Error as exc:  # e.g. offline: the extension cannot be installed
+        c.close()
+        raise ExtractError(f"cannot prepare S3 access: {exc}") from exc
+    return c
 
 
 def load_archive(path: Path) -> tuple[str, list[dict[str, Any]]]:
@@ -244,14 +256,7 @@ def fetch(
     def connect() -> duckdb.DuckDBPyConnection:
         nonlocal con
         if con is None:
-            c = duckdb.connect()
-            try:
-                c.execute("INSTALL httpfs; LOAD httpfs;")
-                c.execute("SET s3_region = $r", {"r": cfg.s3_region})
-            except duckdb.Error as exc:  # e.g. offline: the extension cannot be installed
-                c.close()
-                raise ExtractError(f"cannot prepare S3 access: {exc}") from exc
-            con = c
+            con = s3_connection(cfg)
         return con
 
     jobs = [
@@ -283,7 +288,7 @@ def fetch(
                 m = from_archive(out, kind, release)
             else:
                 try:
-                    m = _download(connect(), uri, select, bbox, out, meta)
+                    m = download(connect(), uri, select, bbox, out, meta)
                 except ExtractError as exc:
                     if source == "s3":
                         raise

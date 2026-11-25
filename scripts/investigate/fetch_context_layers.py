@@ -19,7 +19,7 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "src"))
 
 from geotrustops.config import load_config  # noqa: E402
-from geotrustops.extract import ExtractError, _download  # noqa: E402
+from geotrustops.extract import ExtractError, download  # noqa: E402
 
 URI = "s3://overturemaps-us-west-2/release/{release}/theme={theme}/type={type}/*.parquet"
 LAYERS = [
@@ -49,7 +49,7 @@ def main(argv: list[str]) -> int:
                     continue
                 uri = URI.format(release=release, theme=theme, type=typ)
                 meta = {"kind": f"context:{typ}", "release": release, "licence": "ODbL-1.0"}
-                m = _download(con, uri, select, cfg.extraction_bbox, out, meta)
+                m = download(con, uri, select, cfg.extraction_bbox, out, meta)
                 print(f"{release} {typ}: {m['row_count']} rows, {m['bytes']} B")
     except ExtractError as exc:
         print(f"FAILED: {exc}", file=sys.stderr)

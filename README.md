@@ -45,6 +45,7 @@ python -m venv .venv
 .venv\Scripts\pip install -e ".[dev]"
 .venv\Scripts\geotrustops fetch      # pinned extracts from Overture S3 -> data/raw (not committed), ~2 min
 .venv\Scripts\geotrustops build      # -> out/changes.geojson, out/summary.json, out/qa_report.md
+.venv\Scripts\geotrustops timeline --fetch   # changelog of every release -> out_timeline/timeline.json, ~10 min
 .venv\Scripts\python -m pytest       # real-data tests are skipped if data/raw is absent
 ```
 
@@ -74,6 +75,7 @@ they include business contact fields (phones, emails, websites, social links) th
 | `out/changes.geojson` | one point per changed place with before/after values, distance and flags (RFC 7946) |
 | `out/summary.json` | counts, flags, reconciliation results, changelog cross-check, input hashes |
 | `out/qa_report.md` | the same for a human reviewer: largest moves, renames by kind, exclusions, mismatches |
+| `out_timeline/timeline.json` | release timeline: per-release counts and every added, removed or moved record in the study area across 29 releases since July 2024, from Overture's changelogs (`geotrustops timeline`; data contract §12) |
 | `out_triage/stack_causes.json` | quality triage: places stacked within 2 m, each group with a likely cause from simple checks and a manual-inspection flag (separate ODbL database; see [DATA_LICENSE.md](DATA_LICENSE.md)) |
 
 These are **map-record** changes: `added` ≠ a business opened, `removed` ≠ closed, `moved` ≠ the old position was
