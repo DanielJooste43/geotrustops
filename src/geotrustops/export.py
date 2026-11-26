@@ -15,6 +15,11 @@ from typing import Any
 
 from geotrustops.pipeline import Result
 
+
+class ExportError(RuntimeError):
+    """Outputs could not be put in place; the previous outputs are kept."""
+
+
 _PROPERTY_ORDER = [
     "id",
     "change_type",
@@ -215,7 +220,7 @@ def write_outputs(result: Result, out_dir: Path) -> None:
     out_dir = Path(out_dir)
     staging = out_dir.with_name(out_dir.name + ".staging")
     previous = out_dir.with_name(out_dir.name + ".previous")
-    shutil.rmtree(staging, ignore_errors=True)
+    shutil.rmtree(staging, ignore_errors=True)  # leftover from an interrupted run; recreated below
     staging.mkdir(parents=True)
     s = result.summary
     geojson = {
@@ -240,9 +245,33 @@ def write_outputs(result: Result, out_dir: Path) -> None:
     }
     for name, text in files.items():
         (staging / name).write_text(text, encoding="utf-8", newline="\n")
-    # Swap: current -> .previous, staging -> current, then drop .previous.
-    shutil.rmtree(previous, ignore_errors=True)
-    if out_dir.exists():
-        out_dir.rename(previous)
-    staging.rename(out_dir)
-    shutil.rmtree(previous, ignore_errors=True)
+    _swap_into_place(staging, out_dir, previous)
+
+
+def _swap_into_place(staging: Path, out_dir: Path, previous: Path) -> None:
+    """Replace `out_dir` with `staging` so that a failure never leaves the outputs missing.
+
+    current -> .previous, staging -> current, then .previous is dropped. If the second rename fails, the previous
+    outputs are moved back before the error is raised (AGENTS.md: a failed run must not replace previous outputs).
+    """
+    try:
+        if previous.exists():
+            shutil.rmtree(
+                previous
+            )  # a stale copy that cannot be removed stops the run before anything moves
+        had_outputs = out_dir.exists()
+        if had_outputs:
+            out_dir.rename(previous)
+        try:
+            staging.rename(out_dir)
+        except OSError:
+            if had_outputs:
+                previous.rename(out_dir)
+            raise
+    except OSError as exc:
+        raise ExportError(
+            f"could not put the new outputs in place at {out_dir}: {exc}; previous outputs kept"
+        ) from exc
+    shutil.rmtree(
+        previous, ignore_errors=True
+    )  # cleanup after success; a leftover is removed by the next run
