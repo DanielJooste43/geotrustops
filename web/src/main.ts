@@ -101,13 +101,15 @@ function renderCounts(summary: Summary, symbols: Record<ChangeType, Symbol>): vo
     c.append(symbolSvg(symbols[t]), el("span", "n", fmt.format(summary.change_counts[t])), el("span", "label", symbols[t].label));
     strip.append(c);
   }
-  const unchanged = el("div", "count");
-  unchanged.append(el("span", "n", fmt.format(summary.change_counts.unchanged)), el("span", "label", "Unchanged (not drawn)"));
-  strip.append(unchanged);
+  // Context, not change counts: drawn quieter and grouped at the end so the five change classes lead.
+  const meta = el("div", "count-meta");
+  const unchanged = el("span", "meta-item");
+  unchanged.append(el("span", "n", fmt.format(summary.change_counts.unchanged)), " unchanged (not drawn)");
   const ok = reconciliationHolds(summary);
-  const rec = el("div", `count ${ok ? "ok" : "bad"}`);
-  rec.append(el("span", "n", ok ? "✓" : "✗"), el("span", "label", ok ? "Counts reconcile" : "Reconciliation failed"));
-  strip.append(rec);
+  const rec = el("span", `meta-item ${ok ? "ok" : "bad"}`);
+  rec.append(el("span", "mark-ok", ok ? "✓" : "✗"), ok ? " Counts reconcile" : " Reconciliation failed");
+  meta.append(unchanged, rec);
+  strip.append(meta);
 }
 
 function renderFilters(summary: Summary, symbols: Record<ChangeType, Symbol>, onChange: (shown: ChangeType[]) => void): void {

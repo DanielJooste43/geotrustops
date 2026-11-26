@@ -54,11 +54,15 @@
                 that moved are drawn with an amber core. Select a glow to see that record's positions by release.</p>
               <label class="filter"><input type="checkbox" id="trails" checked />
                 <span class="trail-swatch" aria-hidden="true"></span> <span class="name">Movement trails</span></label>
-              <p class="note small">Each line joins a record's last-seen position to its position in the chosen
-                release (or one of the two before it); a record's full trail is listed in its details. Overture's changelogs give positions per release, not dates within it, so the lines are steps
-                between releases, not observed paths.</p>
               <p class="note small" id="history-status" aria-live="polite"></p>
-              <p class="note small" id="history-credit"></p>
+              <details class="about">
+                <summary>About the trails and dates</summary>
+                <p class="note small">Each line joins a record's last-seen position to its position in the chosen
+                  release (or one of the two before it); a record's full trail is listed in its details. Overture's
+                  changelogs give positions per release, not dates within it, so the lines are steps between
+                  releases, not observed paths.</p>
+                <p class="note small" id="history-credit"></p>
+              </details>
             </div>
           </fieldset>
           <fieldset id="filters">
@@ -70,15 +74,22 @@
             <label class="filter"><input type="checkbox" id="quality" checked />
               <span class="ring-swatch" aria-hidden="true"></span>
               <span class="name">Stacked places <span class="n" id="quality-count"></span></span></label>
-            <p class="note small" id="quality-note">Places within 2 m of each other in the current release, with a
-              likely cause from simple checks; each group needs manual inspection. Contains information from Overture
-              Maps context layers (© OpenStreetMap contributors, Overture Maps Foundation), made available here under
-              the <a href="https://opendatacommons.org/licenses/odbl/1-0/" rel="noopener">Open Database License
+            <p class="note small" id="quality-note">Contains information from Overture Maps context layers
+              (© OpenStreetMap contributors, Overture Maps Foundation), made available here under the
+              <a href="https://opendatacommons.org/licenses/odbl/1-0/" rel="noopener">Open Database License
               (ODbL)</a>.</p>
+            <details class="about">
+              <summary>What is a stacked place?</summary>
+              <p class="note small">Places within 2 m of each other in the current release, with a likely cause from
+                simple checks; each group needs manual inspection.</p>
+            </details>
           </fieldset>
-          <p class="note" id="interpretation"></p>
-          <p class="note small">Counts are for the full study area, from the pipeline's summary. Filters change what
-            the map shows, not the counts.</p>
+          <details class="about read-me">
+            <summary>How to read this map</summary>
+            <p class="note small" id="interpretation"></p>
+            <p class="note small">Counts are for the full study area, from the pipeline's summary. Filters change
+              what the map shows, not the counts.</p>
+          </details>
         </div>
       </aside>
 
