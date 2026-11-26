@@ -342,6 +342,7 @@ async function main(): Promise<void> {
   map.addControl(new NavigationControl({ showCompass: false }), "top-left");
   map.addControl(new ScaleControl({ unit: "metric" }), "bottom-left");
   map.touchZoomRotate.disableRotation();
+  trackAttributionHeight();
 
   // The upstream Dark style references a pattern image its sprite does not contain; resolve it to a transparent
   // pixel so the console stays clean (the pattern is not needed for this map).
@@ -676,6 +677,24 @@ async function main(): Promise<void> {
     }
   });
 
+}
+
+// The attribution line wraps to two lines on a phone. Its live height (and the filter sheet's, below the map) are
+// exposed as --attrib-h and --sheet-h so the playback and record panels sit above the credit instead of covering it.
+function trackAttributionHeight(): void {
+  const layout = document.querySelector<HTMLElement>(".layout");
+  const attrib = document.querySelector<HTMLElement>(".maplibregl-ctrl-attrib");
+  const rail = $("rail");
+  if (!layout || !attrib) return;
+  const px = (e: HTMLElement) => `${Math.ceil(e.getBoundingClientRect().height)}px`;
+  const update = () => {
+    layout.style.setProperty("--attrib-h", px(attrib));
+    layout.style.setProperty("--sheet-h", px(rail));
+  };
+  const observer = new ResizeObserver(update);
+  observer.observe(attrib);
+  observer.observe(rail);
+  update();
 }
 
 // Panels and mobile sheet
