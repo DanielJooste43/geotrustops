@@ -15,7 +15,7 @@
   --overall: #e879f9;
   --focus: #f1f5f9;
   --radius: 12px;
-  --rail: 260px;
+  --rail: 296px;
   --inspector: 320px;
   --font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   color-scheme: dark;
@@ -65,8 +65,13 @@ h1 { font-size: 22px; line-height: 1.1; margin: 0; letter-spacing: 0.01em; }
 }
 .count .n { font-size: 22px; font-weight: 650; font-variant-numeric: tabular-nums; }
 .count .label { color: var(--muted); font-size: 13px; }
-.count.ok .n { color: var(--added); font-size: 15px; }
-.count.bad .n { color: var(--removed); font-size: 15px; }
+.count-meta {
+  display: flex; align-items: center; gap: 16px; margin-left: auto; padding: 0 4px 0 12px;
+  border-left: 1px solid var(--border); color: var(--muted); font-size: 13px; white-space: nowrap;
+}
+.count-meta .n { color: var(--text); font-weight: 600; font-variant-numeric: tabular-nums; }
+.count-meta .ok .mark-ok { color: var(--added); }
+.count-meta .bad { color: var(--removed); }
 
 /* Layout */
 .layout { position: relative; display: grid; grid-template-columns: var(--rail) 1fr; min-height: 0; }
@@ -84,8 +89,24 @@ legend { font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; col
 .badge .swatch { width: 14px; height: 14px; }
 .filter .name { flex: 1; }
 .filter .n { color: var(--muted); font-variant-numeric: tabular-nums; font-size: 13px; }
+.filter .name .n { display: block; }
 .note { color: var(--muted); font-size: 13px; margin: 16px 0 0; }
 .note.small { font-size: 12px; }
+/* Longer explanations sit behind a summary line so the controls stay together. */
+.about { margin-top: 8px; }
+.about summary {
+  display: flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 8px; border-radius: 8px;
+  color: var(--muted); font-size: 13px; cursor: pointer; list-style: none;
+}
+.about summary::-webkit-details-marker { display: none; }
+.about summary::before {
+  content: ""; width: 6px; height: 6px; flex: none; border: solid currentColor; border-width: 0 1.5px 1.5px 0;
+  transform: rotate(-45deg); transition: transform 150ms ease-out;
+}
+.about[open] summary::before { transform: rotate(45deg); }
+.about summary:hover { background: var(--surface); color: var(--text); }
+.about > .note { margin: 4px 8px 8px; }
+.read-me { margin-top: 20px; border-top: 1px solid var(--border); padding-top: 8px; }
 
 .map-wrap { position: relative; min-height: 0; }
 #map { position: absolute; inset: 0; background: var(--bg); }
@@ -96,7 +117,7 @@ legend { font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; col
 
 /* Inspector */
 .inspector {
-  position: absolute; right: 16px; top: 16px; bottom: 16px; width: var(--inspector); z-index: 3;
+  position: absolute; right: 16px; top: 16px; bottom: calc(var(--attrib-h, 24px) + 8px); width: var(--inspector); z-index: 3;
   background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
   overflow-y: auto; padding: 16px;
 }
@@ -133,14 +154,15 @@ code, .mono { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; fo
 
 /* View switch */
 .views { margin-bottom: 20px; }
-.segmented { display: grid; grid-template-columns: 1fr 1fr 1fr; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
-.segmented label { display: flex; align-items: center; justify-content: center; min-height: 44px; cursor: pointer; font-size: 13px; text-align: center; padding: 4px 6px; }
+.segmented { display: grid; grid-template-columns: repeat(3, auto); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+.segmented label { display: flex; align-items: center; justify-content: center; min-height: 44px; cursor: pointer; font-size: 13px; text-align: center; padding: 4px 6px; white-space: nowrap; }
 .segmented input { position: absolute; opacity: 0; pointer-events: none; }
-.segmented label:has(input:checked) { background: var(--surface-2); color: var(--text); box-shadow: inset 0 -2px 0 var(--overall); }
+/* Interface accents are neutral; magenta is kept for data (the glow) so each colour has one meaning. */
+.segmented label:has(input:checked) { background: var(--surface-2); color: var(--text); box-shadow: inset 0 -2px 0 var(--text); }
 .segmented label:has(input:focus-visible) { outline: 2px solid var(--focus); outline-offset: -2px; }
 .overall-legend { margin-top: 12px; }
-.legend-row { display: flex; gap: 10px; align-items: center; font-size: 13px; color: var(--muted); margin: 0 0 8px; }
-.glow-swatch { width: 18px; height: 18px; flex: none; border-radius: 50%;
+.legend-row { display: flex; gap: 10px; align-items: flex-start; font-size: 13px; color: var(--muted); margin: 0 0 8px; }
+.glow-swatch { width: 18px; height: 18px; flex: none; border-radius: 50%; margin-top: 1px;
   background: radial-gradient(circle, #fdf4ff 0 18%, var(--overall) 30%, rgb(232 121 249 / 0) 72%); }
 
 /* History view and playback */
@@ -156,12 +178,12 @@ code, .mono { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; fo
   padding: 0 12px; font-size: 15px;
 }
 #pb-play { min-width: 72px; font-weight: 600; }
-.pb-controls input[type="range"] { flex: 1; min-width: 0; height: 44px; accent-color: var(--overall); }
+.pb-controls input[type="range"] { flex: 1; min-width: 0; height: 44px; accent-color: var(--text); }
 .pb-bars { display: block; width: 100%; height: 28px; margin-top: 6px; }
-.pb-bars rect { fill: var(--border); }
-.pb-bars rect.current { fill: var(--overall); }
+.pb-bars rect { fill: #3a4d61; }
+.pb-bars rect.current { fill: var(--text); }
 .pb-bars rect.unpublished { fill: none; stroke: var(--muted); stroke-width: 1; }
-.pb-bars rect.unpublished.current { stroke: var(--overall); }
+.pb-bars rect.unpublished.current { stroke: var(--text); }
 .pb-label { margin: 6px 0 0; font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
 .pb-label strong { color: var(--text); }
 .pb-note { margin: 4px 0 0; font-size: 12px; color: var(--moved); }
@@ -171,8 +193,8 @@ code, .mono { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; fo
 
 /* Quality flags */
 .quality { margin: 20px 0; }
-.ring-swatch { width: 18px; height: 18px; flex: none; border-radius: 50%; border: 2px solid var(--flag);
-  background: rgb(167 139 250 / 0.15); }
+.ring-swatch { width: 18px; height: 18px; flex: none; border-radius: 50%; border: 1.5px solid rgb(167 139 250 / 0.8);
+  background: rgb(167 139 250 / 0.08); }
 .badge.flag { color: var(--flag); }
 .ids { margin: 4px 0 0; padding-left: 16px; }
 
@@ -192,21 +214,49 @@ code, .mono { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; fo
 .records .meta { color: var(--muted); font-size: 12px; }
 .skip[data-panel] { top: 52px; }
 
-/* MapLibre attribution on dark */
-.maplibregl-ctrl.maplibregl-ctrl-attrib { background: rgb(8 15 25 / 0.8); color: var(--muted); }
+/* MapLibre attribution and scale on dark */
+.maplibregl-ctrl.maplibregl-ctrl-attrib { background: rgb(8 15 25 / 0.85); color: var(--muted); padding: 2px 8px; }
 .maplibregl-ctrl-attrib a { color: var(--text); }
+.maplibregl-ctrl.maplibregl-ctrl-scale {
+  background: rgb(8 15 25 / 0.85); color: var(--text); border-color: var(--muted); font-size: 11px; padding: 0 6px;
+}
 
 /* Mobile: full-width map, bottom sheet for filters */
 @media (max-width: 760px) {
-  .top { flex-wrap: wrap; gap: 8px 16px; }
-  .top-actions { margin-left: 0; width: 100%; }
-  .top-actions button { flex: 1; }
+  /* Compact header and count strip: the map keeps most of the screen. */
+  .top { flex-wrap: wrap; gap: 4px 12px; padding: 8px 12px; min-height: 0; }
+  .sub { display: none; }
+  h1 { font-size: 18px; }
+  .mark { width: 24px; height: 16px; }
+  .releases { font-size: 12px; }
+  .top-actions { margin-left: 0; width: 100%; gap: 6px; }
+  .top-actions button { flex: 1; padding: 6px 8px; font-size: 14px; white-space: nowrap; }
+  .wide-only { display: none; }
+  /* The strip scrolls sideways; the fade at the right edge shows there is more. */
+  .counts {
+    gap: 6px; padding: 6px 12px; scroll-snap-type: x proximity; scroll-padding-inline: 12px;
+    mask-image: linear-gradient(to right, #000 calc(100% - 32px), transparent);
+  }
+  .count { padding: 4px 10px; scroll-snap-align: start; }
+  .count .n { font-size: 17px; }
+  .count .label { font-size: 12px; }
+  /* The attribution spans the full width; everything at the bottom of the map sits above it. */
+  .maplibregl-ctrl-bottom-right { left: 0; }
+  .maplibregl-ctrl-bottom-right .maplibregl-ctrl-attrib { margin: 0; width: 100%; }
+  /* Pinch zoom replaces the zoom buttons on touch screens, so the scale bar moves to the free top-left corner,
+     clear of the attribution and the playback panel. */
+  @media (pointer: coarse) {
+    .maplibregl-ctrl-top-left { display: none; }
+    .maplibregl-ctrl-bottom-left { top: 0; bottom: auto; }
+    .maplibregl-ctrl-bottom-left .maplibregl-ctrl { margin-top: 8px; }
+  }
+  @media (pointer: fine) { .maplibregl-ctrl-bottom-left { bottom: var(--attrib-h, 40px); } }
   /* The sheet is a layout row, not an overlay, so the map (and its required attribution) is never covered. */
   .layout { grid-template-columns: 1fr; grid-template-rows: 1fr auto; }
   .rail {
     grid-row: 2; max-height: 50vh; z-index: 4;
     border-right: 0; border-top: 1px solid var(--border); background: var(--surface);
-    border-radius: var(--radius) var(--radius) 0 0; padding: 0 16px 16px;
+    border-radius: var(--radius) var(--radius) 0 0; padding: 0 16px calc(8px + env(safe-area-inset-bottom));
   }
   .sheet-handle {
     display: block; width: 100%; min-height: 44px; background: transparent; border: 0; color: var(--text);
@@ -214,8 +264,11 @@ code, .mono { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; fo
   }
   .rail:not(.open) .rail-body { display: none; }
   /* Leaves the bottom attribution line visible while a record is open. */
-  .inspector { left: 8px; right: 8px; top: auto; bottom: 96px; width: auto; max-height: 60%; z-index: 5; }
-  .playback { left: 8px; right: 8px; bottom: 44px; width: auto; padding: 8px; }
+  .inspector {
+    left: 8px; right: 8px; top: auto; bottom: calc(var(--sheet-h, 60px) + var(--attrib-h, 40px) + 8px); width: auto;
+    max-height: min(60%, calc(100% - var(--sheet-h, 60px) - var(--attrib-h, 40px) - 24px)); z-index: 5;
+  }
+  .playback { left: 8px; right: 8px; bottom: calc(var(--attrib-h, 40px) + 8px); width: auto; padding: 8px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

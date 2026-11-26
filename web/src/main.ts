@@ -30,6 +30,12 @@ const TYPE_LAYERS = ["changes-halo", "changes"];
 const OVERALL_LAYERS = ["overall-glow", "overall-core"];
 const CHANGE_CLICKABLE = ["changes", "overall-core", "overall-glow"];
 const FLAG = "#a78bfa";
+// Quality rings per view. In the glow views the violet ring sits next to the magenta glow, two close hues, so the
+// rings become a thin, dim outline there and the glow carries the colour.
+const RING_STYLE = {
+  types: { fill: 0.06, width: 1.25, stroke: 0.6 },
+  glow: { fill: 0, width: 1, stroke: 0.35 },
+} as const;
 setWorkerUrl(workerUrl);
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -101,13 +107,15 @@ function renderCounts(summary: Summary, symbols: Record<ChangeType, Symbol>): vo
     c.append(symbolSvg(symbols[t]), el("span", "n", fmt.format(summary.change_counts[t])), el("span", "label", symbols[t].label));
     strip.append(c);
   }
-  const unchanged = el("div", "count");
-  unchanged.append(el("span", "n", fmt.format(summary.change_counts.unchanged)), el("span", "label", "Unchanged (not drawn)"));
-  strip.append(unchanged);
+  // Context, not change counts: drawn quieter and grouped at the end so the five change classes lead.
+  const meta = el("div", "count-meta");
+  const unchanged = el("span", "meta-item");
+  unchanged.append(el("span", "n", fmt.format(summary.change_counts.unchanged)), " unchanged (not drawn)");
   const ok = reconciliationHolds(summary);
-  const rec = el("div", `count ${ok ? "ok" : "bad"}`);
-  rec.append(el("span", "n", ok ? "✓" : "✗"), el("span", "label", ok ? "Counts reconcile" : "Reconciliation failed"));
-  strip.append(rec);
+  const rec = el("span", `meta-item ${ok ? "ok" : "bad"}`);
+  rec.append(el("span", "mark-ok", ok ? "✓" : "✗"), ok ? " Counts reconcile" : " Reconciliation failed");
+  meta.append(unchanged, rec);
+  strip.append(meta);
 }
 
 function renderFilters(summary: Summary, symbols: Record<ChangeType, Symbol>, onChange: (shown: ChangeType[]) => void): void {
@@ -342,6 +350,7 @@ async function main(): Promise<void> {
   map.addControl(new NavigationControl({ showCompass: false }), "top-left");
   map.addControl(new ScaleControl({ unit: "metric" }), "bottom-left");
   map.touchZoomRotate.disableRotation();
+  trackAttributionHeight();
 
   // The upstream Dark style references a pattern image its sprite does not contain; resolve it to a transparent
   // pixel so the console stays clean (the pattern is not needed for this map).
@@ -377,14 +386,16 @@ async function main(): Promise<void> {
       map.addLayer({
         id: "quality-ring", type: "circle", source: "quality",
         paint: {
-          // Area grows with group size (radius ~ sqrt(size)), so large stacks stand out without hiding the map.
+          // Area grows with group size (radius ~ sqrt(size)), capped so the largest stacks do not cover whole
+          // clusters. Drawn lighter than the change symbols: the flags support the change map, they do not lead it.
           "circle-radius": ["interpolate", ["linear"], ["zoom"],
-            12, ["*", 2.4, ["sqrt", ["get", "size"]]], 16, ["*", 5, ["sqrt", ["get", "size"]]]],
+            12, ["min", ["*", 2.4, ["sqrt", ["get", "size"]]], 18],
+            16, ["min", ["*", 5, ["sqrt", ["get", "size"]]], 36]],
           "circle-color": FLAG,
-          "circle-opacity": 0.12,
+          "circle-opacity": RING_STYLE.types.fill,
           "circle-stroke-color": FLAG,
-          "circle-stroke-width": 1.5,
-          "circle-stroke-opacity": 0.85,
+          "circle-stroke-width": RING_STYLE.types.width,
+          "circle-stroke-opacity": RING_STYLE.types.stroke,
         },
       });
     }
@@ -632,6 +643,12 @@ async function main(): Promise<void> {
       setVis(TYPE_LAYERS, view === "types");
       setVis(OVERALL_LAYERS, overall);
       setVis(["overall-heat"], overall && density.checked);
+      if (map.getLayer("quality-ring")) {
+        const ring = view === "types" ? RING_STYLE.types : RING_STYLE.glow;
+        map.setPaintProperty("quality-ring", "circle-opacity", ring.fill);
+        map.setPaintProperty("quality-ring", "circle-stroke-width", ring.width);
+        map.setPaintProperty("quality-ring", "circle-stroke-opacity", ring.stroke);
+      }
       $("overall-legend").hidden = !overall;
       $("density-note").hidden = !(overall && density.checked);
       $("history-legend").hidden = !history;
@@ -677,6 +694,34 @@ async function main(): Promise<void> {
   });
 
 }
+
+// The attribution line wraps to two lines on a phone. Its live height (and the filter sheet's, below the map) are
+// exposed as --attrib-h and --sheet-h so the playback and record panels sit above the credit instead of covering it.
+function trackAttributionHeight(): void {
+  const layout = document.querySelector<HTMLElement>(".layout");
+  const attrib = document.querySelector<HTMLElement>(".maplibregl-ctrl-attrib");
+  const rail = $("rail");
+  if (!layout || !attrib) return;
+  const px = (e: HTMLElement) => `${Math.ceil(e.getBoundingClientRect().height)}px`;
+  const update = () => {
+    layout.style.setProperty("--attrib-h", px(attrib));
+    layout.style.setProperty("--sheet-h", px(rail));
+  };
+  const observer = new ResizeObserver(update);
+  observer.observe(attrib);
+  observer.observe(rail);
+  update();
+}
+
+// Category values such as "diagnostics_imaging_or_lab_service" are single long words: offer line breaks after
+// each underscore (<wbr>, so copied text is unchanged) instead of breaking mid-word.
+new MutationObserver(() => {
+  for (const dd of document.querySelectorAll<HTMLElement>("#inspector-body dd")) {
+    const text = dd.textContent ?? "";
+    if (dd.childElementCount > 0 || !text.includes("_")) continue;
+    dd.replaceChildren(...text.split("_").flatMap((part, i) => (i === 0 ? [part] : ["_", el("wbr"), part])));
+  }
+}).observe($("inspector-body"), { childList: true, subtree: true });
 
 // Panels and mobile sheet
 for (const b of document.querySelectorAll<HTMLButtonElement>("[data-panel]")) {
