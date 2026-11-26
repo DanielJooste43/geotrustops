@@ -2,8 +2,9 @@ GeoTrustOps
 Copyright (c) 2026 Daniel Jooste. Source code licensed under the MIT License (see LICENSE).
 
 This repository contains data derived from Overture Maps Foundation releases (overturemaps.org),
-in out/, out_pairs/, runs/, tests/golden/ and docs/feasibility_probe.json. Place records keep their
-original source licences; see DATA_LICENSE.md and the texts in LICENSES/.
+in out/, out_pairs/, out_timeline/, out_triage/, runs/, tests/golden/, docs/history/feasibility_probe.json
+and the map screenshots in docs/images/. Place records keep their original source licences; see DATA_LICENSE.md
+and the texts in LICENSES/.
 
 ================================================================================
 Foursquare OS Places Notice (reproduced in full, as provided at

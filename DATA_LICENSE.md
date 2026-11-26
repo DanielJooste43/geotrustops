@@ -13,6 +13,7 @@ releases and keeps the licence of each source record.
 | `runs/history.jsonl` | aggregate run statistics |
 | `tests/golden/` | place ids used as hand-classified test cases |
 | `docs/history/feasibility_probe.json` | sample counts and records from the initial feasibility probe |
+| `docs/images/` | screenshots of the web map: change records drawn on the OpenFreeMap basemap (map data © OpenStreetMap contributors, ODbL; © OpenMapTiles); each image shows the map's attribution line |
 
 Raw extracts (`data/raw/`) are not committed or republished; `geotrustops fetch` downloads them from Overture's public
 bucket, or from a private archive once Overture has removed a release. `data/archive.json` holds only their checksums.
