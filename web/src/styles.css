@@ -154,7 +154,7 @@ code, .mono { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; fo
 
 /* View switch */
 .views { margin-bottom: 20px; }
-.segmented { display: grid; grid-template-columns: repeat(3, auto); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+.segmented { display: grid; grid-template-columns: repeat(2, 1fr); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
 .segmented label { display: flex; align-items: center; justify-content: center; min-height: 44px; cursor: pointer; font-size: 13px; text-align: center; padding: 4px 6px; white-space: nowrap; }
 .segmented input { position: absolute; opacity: 0; pointer-events: none; }
 /* Interface accents are neutral; magenta is kept for data (the glow) so each colour has one meaning. */
@@ -190,6 +190,31 @@ code, .mono { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; fo
 .history-list { list-style: none; margin: 4px 0 0; padding: 0; font-size: 13px; }
 .history-list li { display: grid; grid-template-columns: max-content 1fr; gap: 2px 10px; padding: 4px 0; border-bottom: 1px solid var(--border); }
 .history-list .meta { color: var(--muted); }
+
+/* Before/after swipe: the earlier-release map sits inside the main map container (below its controls), clipped at
+   the divider; the divider, grip and labels sit above the map and only the grip takes pointer input. */
+.swipe-before { position: absolute; inset: 0; pointer-events: none; }
+.swipe-before[hidden] { display: none; }
+.swipe { position: absolute; inset: 0; z-index: 2; pointer-events: none; --x: 50%; }
+.swipe-line {
+  position: absolute; top: 0; bottom: var(--attrib-h, 0px); left: var(--x); width: 2px; margin-left: -1px;
+  background: var(--text); box-shadow: 0 0 0 1px rgb(8 15 25 / 0.6);
+}
+.swipe-grip {
+  position: absolute; top: 50%; left: var(--x); width: 44px; height: 44px; margin: -22px 0 0 -22px;
+  display: grid; place-items: center; border-radius: 50%; pointer-events: auto; cursor: ew-resize; touch-action: none;
+  background: var(--surface); border: 2px solid var(--text); box-shadow: 0 2px 8px rgb(0 0 0 / 0.5);
+}
+.swipe-grip svg { width: 20px; height: 20px; fill: none; stroke: var(--text); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.swipe-grip:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
+.swipe-label {
+  position: absolute; top: calc(50% - 64px); padding: 4px 8px; border-radius: 6px; white-space: nowrap;
+  background: rgb(8 15 25 / 0.85); border: 1px solid var(--border); font-size: 12px; font-variant-numeric: tabular-nums;
+}
+.swipe-label.before { right: calc(100% - var(--x) + 10px); }
+.swipe-label.after { left: calc(var(--x) + 10px); }
+.swipe-label[hidden] { display: none; }
+.swipe-legend { margin-top: 12px; }
 
 /* Quality flags */
 .quality { margin: 20px 0; }

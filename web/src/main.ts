@@ -18,6 +18,7 @@ import {
   type Timeline, type Triage,
 } from "./contract";
 import { HISTORY_CLICKABLE, Playback } from "./playback";
+import { SWIPE_AFTER_LAYER, Swipe, type SymbolImages } from "./swipe";
 import { drawSymbol, symbolSvg, symbolsFor, type Symbol } from "./symbols";
 
 const STYLE_URL = "https://tiles.openfreemap.org/styles/dark";
@@ -28,7 +29,7 @@ const BASEMAP_TIMEOUT_MS = 8000;
 const OVERALL = "#e879f9"; // one colour for every changed record in the overall view
 const TYPE_LAYERS = ["changes-halo", "changes"];
 const OVERALL_LAYERS = ["overall-glow", "overall-core"];
-const CHANGE_CLICKABLE = ["changes", "overall-core", "overall-glow"];
+const CHANGE_CLICKABLE = ["changes", "overall-core", "overall-glow", SWIPE_AFTER_LAYER];
 const FLAG = "#a78bfa";
 // Quality rings per view. In the glow views the violet ring sits next to the magenta glow, two close hues, so the
 // rings become a thin, dim outline there and the glow carries the colour.
@@ -359,9 +360,11 @@ async function main(): Promise<void> {
   });
 
   map.on("load", () => {
+    const images = {} as SymbolImages;
     for (const t of CHANGE_TYPES) {
       const img = drawSymbol(symbols[t]);
-      map.addImage(`sym-${t}`, { width: img.width, height: img.height, data: new Uint8Array(img.data.buffer) }, { pixelRatio: 2 });
+      images[t] = { width: img.width, height: img.height, data: new Uint8Array(img.data.buffer) };
+      map.addImage(`sym-${t}`, images[t], { pixelRatio: 2 });
     }
 
     // Study-area outline (from summary.json): context for edge effects.
@@ -474,6 +477,12 @@ async function main(): Promise<void> {
       },
     });
 
+    // Before/after swipe: the main map shows the later release's positions; a second map on the left of the
+    // divider shows the earlier release's.
+    const swipe = new Swipe(map, style, changes, summary, images, {
+      overlay: $("swipe"), grip: $("swipe-grip"), labelBefore: $("swipe-label-before"), labelAfter: $("swipe-label-after"),
+    });
+
     let selected: string | null = null;
     const select = (f: ChangeFeature | null) => {
       if (selected) map.setFeatureState({ source: "changes", id: selected }, { selected: false });
@@ -554,6 +563,9 @@ async function main(): Promise<void> {
     };
     // One click handler: a change record wins over a quality ring underneath it.
     map.on("click", (e) => {
+      // Left of the swipe divider the earlier-release map is on top: only its records can be chosen there.
+      const left = swipe.beforeRecordAt(e.point);
+      if (left !== undefined) return select(left ? byId.get(left) ?? null : null);
       const change = map.queryRenderedFeatures(e.point, { layers: visibleLayers(CHANGE_CLICKABLE) })[0] as
         MapGeoJSONFeature | undefined;
       const id = change?.properties?.id as string | undefined;
@@ -625,6 +637,7 @@ async function main(): Promise<void> {
       renderRecords();
       const filter: FilterSpecification = ["in", ["get", "change_type"], ["literal", shown]];
       for (const l of [...TYPE_LAYERS, ...OVERALL_LAYERS, "overall-heat"]) map.setFilter(l, filter);
+      swipe.setFilter(shown);
       if (selected && !shown.includes(byId.get(selected)!.properties.change_type)) select(null);
     });
 
@@ -640,11 +653,14 @@ async function main(): Promise<void> {
       const view = document.querySelector<HTMLInputElement>('input[name="view"]:checked')?.value ?? "types";
       const overall = view === "overall";
       const history = view === "history";
+      const swipeOn = view === "swipe";
       setVis(TYPE_LAYERS, view === "types");
+      swipe.setVisible(swipeOn);
+      $("swipe-legend").hidden = !swipeOn;
       setVis(OVERALL_LAYERS, overall);
       setVis(["overall-heat"], overall && density.checked);
       if (map.getLayer("quality-ring")) {
-        const ring = view === "types" ? RING_STYLE.types : RING_STYLE.glow;
+        const ring = view === "types" || swipeOn ? RING_STYLE.types : RING_STYLE.glow;
         map.setPaintProperty("quality-ring", "circle-opacity", ring.fill);
         map.setPaintProperty("quality-ring", "circle-stroke-width", ring.width);
         map.setPaintProperty("quality-ring", "circle-stroke-opacity", ring.stroke);
