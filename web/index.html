@@ -40,6 +40,7 @@
               <label><input type="radio" name="view" value="types" checked /> <span>Change types</span></label>
               <label><input type="radio" name="view" value="overall" /> <span>Overall change</span></label>
               <label><input type="radio" name="view" value="history" /> <span>History</span></label>
+              <label><input type="radio" name="view" value="swipe" /> <span>Before / after</span></label>
             </div>
             <div class="overall-legend" id="overall-legend" hidden>
               <p class="legend-row"><span class="glow-swatch" aria-hidden="true"></span>
@@ -47,6 +48,12 @@
               <label class="filter"><input type="checkbox" id="density" /> <span class="name">Smoothed density</span></label>
               <p class="note small" id="density-note" hidden>Kernel-smoothed density of the changed records shown.
                 It shows where record changes concentrate, not where data is wrong.</p>
+            </div>
+            <div class="swipe-legend" id="swipe-legend" hidden>
+              <p class="note small">Drag the divider (or focus it and use the arrow keys). Left of it: each changed
+                record where it was in the earlier release; right of it: where it is in the later release. Removed
+                records appear only on the left, added records only on the right. Stacked-place flags describe the
+                later release, so they show on the right.</p>
             </div>
             <div class="history-legend" id="history-legend" hidden>
               <p class="legend-row"><span class="glow-swatch" aria-hidden="true"></span>
@@ -96,6 +103,15 @@
       <div class="map-wrap">
         <div id="map" role="region" aria-label="Map of changed place records"></div>
         <div class="notice" id="notice" hidden></div>
+        <div class="swipe" id="swipe" hidden>
+          <div class="swipe-line" aria-hidden="true"></div>
+          <span class="swipe-label before" id="swipe-label-before"></span>
+          <span class="swipe-label after" id="swipe-label-after"></span>
+          <div class="swipe-grip" id="swipe-grip" role="slider" tabindex="0" aria-label="Before and after divider"
+            aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" aria-orientation="horizontal">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l-5 6 5 6M15 6l5 6-5 6" /></svg>
+          </div>
+        </div>
         <section class="playback" id="playback" aria-label="Release history playback" hidden>
           <div class="pb-controls">
             <button type="button" id="pb-prev" aria-label="Previous release">‹</button>

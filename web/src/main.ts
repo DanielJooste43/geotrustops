@@ -18,6 +18,8 @@ import {
   type Timeline, type Triage,
 } from "./contract";
 import { HISTORY_CLICKABLE, Playback } from "./playback";
+import { SWIPE_AFTER_LAYER, Swipe, type SymbolImages } from "./swipe";
+import { SELECTION_LAYERS, SELECTION_SOURCES, type SelectionSource } from "./selection";
 import { drawSymbol, symbolSvg, symbolsFor, type Symbol } from "./symbols";
 
 const STYLE_URL = "https://tiles.openfreemap.org/styles/dark";
@@ -28,7 +30,7 @@ const BASEMAP_TIMEOUT_MS = 8000;
 const OVERALL = "#e879f9"; // one colour for every changed record in the overall view
 const TYPE_LAYERS = ["changes-halo", "changes"];
 const OVERALL_LAYERS = ["overall-glow", "overall-core"];
-const CHANGE_CLICKABLE = ["changes", "overall-core", "overall-glow"];
+const CHANGE_CLICKABLE = ["changes", "overall-core", "overall-glow", SWIPE_AFTER_LAYER];
 const FLAG = "#a78bfa";
 // Quality rings per view. In the glow views the violet ring sits next to the magenta glow, two close hues, so the
 // rings become a thin, dim outline there and the glow carries the colour.
@@ -359,9 +361,11 @@ async function main(): Promise<void> {
   });
 
   map.on("load", () => {
+    const images = {} as SymbolImages;
     for (const t of CHANGE_TYPES) {
       const img = drawSymbol(symbols[t]);
-      map.addImage(`sym-${t}`, { width: img.width, height: img.height, data: new Uint8Array(img.data.buffer) }, { pixelRatio: 2 });
+      images[t] = { width: img.width, height: img.height, data: new Uint8Array(img.data.buffer) };
+      map.addImage(`sym-${t}`, images[t], { pixelRatio: 2 });
     }
 
     // Study-area outline (from summary.json): context for edge effects.
@@ -454,36 +458,31 @@ async function main(): Promise<void> {
       },
     });
 
-    // Selection: previous and current positions joined by a line.
-    map.addSource("selection", { type: "geojson", data: { type: "FeatureCollection", features: [] } });
-    map.addLayer({ id: "sel-line", type: "line", source: "selection", filter: ["==", ["geometry-type"], "LineString"], paint: { "line-color": "#f1f5f9", "line-width": 1.5, "line-dasharray": [2, 2] } });
-    map.addSource("sel-trail", { type: "geojson", data: { type: "FeatureCollection", features: [] } });
-    map.addLayer({
-      id: "sel-trail-line", type: "line", source: "sel-trail", filter: ["in", ["geometry-type"], ["literal", ["LineString", "MultiLineString"]]],
-      paint: { "line-color": "#fbbf24", "line-width": 1.5, "line-dasharray": [1, 2], "line-opacity": 0.9 },
+    // Selection: previous and current positions joined by a line, and the record's trail by release.
+    for (const src of SELECTION_SOURCES) map.addSource(src, { type: "geojson", data: { type: "FeatureCollection", features: [] } });
+    for (const l of SELECTION_LAYERS) map.addLayer(l);
+
+    // Before/after swipe: the main map shows the later release's positions; a second map on the left of the
+    // divider shows the earlier release's.
+    const swipe = new Swipe(map, style, changes, summary, images, {
+      overlay: $("swipe"), grip: $("swipe-grip"), labelBefore: $("swipe-label-before"), labelAfter: $("swipe-label-after"),
     });
-    map.addLayer({
-      id: "sel-trail-points", type: "circle", source: "sel-trail", filter: ["==", ["geometry-type"], "Point"],
-      paint: { "circle-radius": 3, "circle-color": "#fbbf24", "circle-stroke-color": "#080f19", "circle-stroke-width": 1 },
-    });
-    map.addLayer({
-      id: "sel-points", type: "circle", source: "selection", filter: ["==", ["geometry-type"], "Point"],
-      paint: {
-        "circle-radius": 9, "circle-stroke-width": 2, "circle-stroke-color": "#f1f5f9",
-        "circle-color": ["case", ["==", ["get", "which"], "prev"], "rgba(0,0,0,0)", "rgba(241,245,249,0.25)"],
-      },
-    });
+
+    // Selection markers go to both maps: on the left of the swipe divider the earlier-release map covers the main one.
+    const setSelection = (src: SelectionSource, data: FeatureCollection) => {
+      map.getSource<GeoJSONSource>(src)?.setData(data);
+      swipe.mirrorSelection(src, data);
+    };
+    const NONE: FeatureCollection = { type: "FeatureCollection", features: [] };
 
     let selected: string | null = null;
     const select = (f: ChangeFeature | null) => {
       if (selected) map.setFeatureState({ source: "changes", id: selected }, { selected: false });
       selected = f ? f.properties.id : null;
       timelineOnlyOpen = false;
-      const sel = map.getSource<GeoJSONSource>("selection");
-      const trail = map.getSource<GeoJSONSource>("sel-trail");
-      trail?.setData({ type: "FeatureCollection", features: [] });
+      setSelection("sel-trail", NONE);
       if (!f) {
-        sel?.setData({ type: "FeatureCollection", features: [] });
+        setSelection("selection", NONE);
         $("inspector").hidden = true;
         return;
       }
@@ -495,7 +494,7 @@ async function main(): Promise<void> {
       if (prev && curr && f.properties.distance_m && f.properties.distance_m > 0) {
         feats.push({ type: "Feature", properties: {}, geometry: { type: "LineString", coordinates: [prev, curr] } });
       }
-      sel?.setData({ type: "FeatureCollection", features: feats });
+      setSelection("selection", { type: "FeatureCollection", features: feats });
       renderInspector(f.properties, symbols[f.properties.change_type], summary);
       $("inspector").hidden = false;
       const id = f.properties.id;
@@ -509,7 +508,7 @@ async function main(): Promise<void> {
     const drawRecordHistory = (tl: Timeline, id: string) => {
       const { points, runs } = renderHistorySection(tl, id);
       if (runs.length === 0) return;
-      map.getSource<GeoJSONSource>("sel-trail")?.setData({
+      setSelection("sel-trail", {
         type: "FeatureCollection",
         features: [
           { type: "Feature", properties: {}, geometry: { type: "MultiLineString", coordinates: runs } },
@@ -543,7 +542,7 @@ async function main(): Promise<void> {
       ids.filter((l) => map.getLayer(l) && map.getLayoutProperty(l, "visibility") !== "none");
     const selectCluster = (c: StackCluster, t: Triage) => {
       select(null);
-      map.getSource<GeoJSONSource>("selection")?.setData({
+      setSelection("selection", {
         type: "FeatureCollection",
         features: [{
           type: "Feature", properties: { which: "curr" }, geometry: { type: "Point", coordinates: [c.lon, c.lat] },
@@ -554,6 +553,9 @@ async function main(): Promise<void> {
     };
     // One click handler: a change record wins over a quality ring underneath it.
     map.on("click", (e) => {
+      // Left of the swipe divider the earlier-release map is on top: only its records can be chosen there.
+      const left = swipe.beforeRecordAt(e.point);
+      if (left !== undefined) return select(left ? byId.get(left) ?? null : null);
       const change = map.queryRenderedFeatures(e.point, { layers: visibleLayers(CHANGE_CLICKABLE) })[0] as
         MapGeoJSONFeature | undefined;
       const id = change?.properties?.id as string | undefined;
@@ -625,6 +627,7 @@ async function main(): Promise<void> {
       renderRecords();
       const filter: FilterSpecification = ["in", ["get", "change_type"], ["literal", shown]];
       for (const l of [...TYPE_LAYERS, ...OVERALL_LAYERS, "overall-heat"]) map.setFilter(l, filter);
+      swipe.setFilter(shown);
       if (selected && !shown.includes(byId.get(selected)!.properties.change_type)) select(null);
     });
 
@@ -640,11 +643,14 @@ async function main(): Promise<void> {
       const view = document.querySelector<HTMLInputElement>('input[name="view"]:checked')?.value ?? "types";
       const overall = view === "overall";
       const history = view === "history";
+      const swipeOn = view === "swipe";
       setVis(TYPE_LAYERS, view === "types");
+      swipe.setVisible(swipeOn);
+      $("swipe-legend").hidden = !swipeOn;
       setVis(OVERALL_LAYERS, overall);
       setVis(["overall-heat"], overall && density.checked);
       if (map.getLayer("quality-ring")) {
-        const ring = view === "types" ? RING_STYLE.types : RING_STYLE.glow;
+        const ring = view === "types" || swipeOn ? RING_STYLE.types : RING_STYLE.glow;
         map.setPaintProperty("quality-ring", "circle-opacity", ring.fill);
         map.setPaintProperty("quality-ring", "circle-stroke-width", ring.width);
         map.setPaintProperty("quality-ring", "circle-stroke-opacity", ring.stroke);
