@@ -713,6 +713,16 @@ function trackAttributionHeight(): void {
   update();
 }
 
+// Category values such as "diagnostics_imaging_or_lab_service" are single long words: offer line breaks after
+// each underscore (<wbr>, so copied text is unchanged) instead of breaking mid-word.
+new MutationObserver(() => {
+  for (const dd of document.querySelectorAll<HTMLElement>("#inspector-body dd")) {
+    const text = dd.textContent ?? "";
+    if (dd.childElementCount > 0 || !text.includes("_")) continue;
+    dd.replaceChildren(...text.split("_").flatMap((part, i) => (i === 0 ? [part] : ["_", el("wbr"), part])));
+  }
+}).observe($("inspector-body"), { childList: true, subtree: true });
+
 // Panels and mobile sheet
 for (const b of document.querySelectorAll<HTMLButtonElement>("[data-panel]")) {
   b.addEventListener("click", () => document.querySelector<HTMLDialogElement>(`#panel-${b.dataset.panel}`)?.showModal());
