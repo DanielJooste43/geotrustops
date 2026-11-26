@@ -1,8 +1,9 @@
 // Before/after swipe: the earlier release's positions on the left of a divider, the later release's on the right.
 // The right side is the main map; the left side is a second, non-interactive map clipped at the divider. Only the
 // main map is ever moved by the user, and the second map follows it, so the two cameras cannot drive each other.
-import { Map as MapLibreMap, type FilterSpecification, type StyleSpecification } from "maplibre-gl";
+import { Map as MapLibreMap, type FilterSpecification, type GeoJSONSource, type StyleSpecification } from "maplibre-gl";
 import type { FeatureCollection } from "geojson";
+import { SELECTION_LAYERS, SELECTION_SOURCES, type SelectionSource } from "./selection";
 import { CHANGE_TYPES, positions, type ChangeType, type Changes, type Summary } from "./contract";
 
 export type Side = "before" | "after";
@@ -99,6 +100,9 @@ export class Swipe {
   private at = 50; // divider position, percent of the map width
   private shown: ChangeType[] = [...CHANGE_TYPES];
   private visible = false;
+  private readonly empty: FeatureCollection = { type: "FeatureCollection", features: [] };
+  // Latest selection data, so markers chosen before the earlier-release map finished loading still appear.
+  private readonly selection: Record<SelectionSource, FeatureCollection> = { selection: this.empty, "sel-trail": this.empty };
 
   constructor(
     private readonly map: MapLibreMap,
@@ -117,7 +121,7 @@ export class Swipe {
       map.getLayer("sel-line") ? "sel-line" : undefined,
     );
     this.bindGrip();
-    map.on("resize", () => { this.before?.resize(); this.render(); });
+    map.on("resize", () => { if (this.visible) this.before?.resize(); this.render(); });
   }
 
   setVisible(on: boolean): void {
@@ -126,6 +130,9 @@ export class Swipe {
     this.map.setLayoutProperty(SWIPE_AFTER_LAYER, "visibility", on ? "visible" : "none");
     if (on && !this.before) this.createBefore();
     if (this.container) this.container.hidden = !on;
+    // A resize while the container was hidden cannot size the canvas: size it now that it is visible, then copy
+    // the camera, so both sides line up and left-side hit tests use the visible viewport.
+    if (on && this.before) this.before.resize();
     if (on && this.before && !this.unfollow) this.unfollow = followCamera(this.map, this.before);
     if (!on && this.unfollow) { this.unfollow(); this.unfollow = null; } // no work while the view is off
     this.render();
@@ -136,6 +143,12 @@ export class Swipe {
     const filter: FilterSpecification = ["in", ["get", "change_type"], ["literal", shown]];
     this.map.setFilter(SWIPE_AFTER_LAYER, filter);
     if (this.before?.getLayer(SWIPE_BEFORE_LAYER)) this.before.setFilter(SWIPE_BEFORE_LAYER, filter);
+  }
+
+  /** Copy the main map's selection markers to the earlier-release map, which covers the main map on the left. */
+  mirrorSelection(source: SelectionSource, data: FeatureCollection): void {
+    this.selection[source] = data;
+    this.before?.getSource<GeoJSONSource>(source)?.setData(data);
   }
 
   /** The record id under a screen point on the left of the divider, or null (right side: use the main map). */
@@ -183,6 +196,8 @@ export class Swipe {
         paint: { "line-color": "#a8b8ca", "line-width": 1, "line-dasharray": [3, 3], "line-opacity": 0.6 } });
       before.addSource(SWIPE_BEFORE_LAYER, { type: "geojson", data: sideFeatures(this.changes, "before") });
       before.addLayer({ id: SWIPE_BEFORE_LAYER, type: "symbol", source: SWIPE_BEFORE_LAYER, layout: SYMBOL_LAYOUT as never });
+      for (const s of SELECTION_SOURCES) before.addSource(s, { type: "geojson", data: this.selection[s] });
+      for (const l of SELECTION_LAYERS) before.addLayer(l);
       this.setFilter(this.shown);
     });
     this.before = before;
