@@ -30,6 +30,12 @@ const TYPE_LAYERS = ["changes-halo", "changes"];
 const OVERALL_LAYERS = ["overall-glow", "overall-core"];
 const CHANGE_CLICKABLE = ["changes", "overall-core", "overall-glow"];
 const FLAG = "#a78bfa";
+// Quality rings per view. In the glow views the violet ring sits next to the magenta glow, two close hues, so the
+// rings become a thin, dim outline there and the glow carries the colour.
+const RING_STYLE = {
+  types: { fill: 0.06, width: 1.25, stroke: 0.6 },
+  glow: { fill: 0, width: 1, stroke: 0.35 },
+} as const;
 setWorkerUrl(workerUrl);
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -380,14 +386,16 @@ async function main(): Promise<void> {
       map.addLayer({
         id: "quality-ring", type: "circle", source: "quality",
         paint: {
-          // Area grows with group size (radius ~ sqrt(size)), so large stacks stand out without hiding the map.
+          // Area grows with group size (radius ~ sqrt(size)), capped so the largest stacks do not cover whole
+          // clusters. Drawn lighter than the change symbols: the flags support the change map, they do not lead it.
           "circle-radius": ["interpolate", ["linear"], ["zoom"],
-            12, ["*", 2.4, ["sqrt", ["get", "size"]]], 16, ["*", 5, ["sqrt", ["get", "size"]]]],
+            12, ["min", ["*", 2.4, ["sqrt", ["get", "size"]]], 18],
+            16, ["min", ["*", 5, ["sqrt", ["get", "size"]]], 36]],
           "circle-color": FLAG,
-          "circle-opacity": 0.12,
+          "circle-opacity": RING_STYLE.types.fill,
           "circle-stroke-color": FLAG,
-          "circle-stroke-width": 1.5,
-          "circle-stroke-opacity": 0.85,
+          "circle-stroke-width": RING_STYLE.types.width,
+          "circle-stroke-opacity": RING_STYLE.types.stroke,
         },
       });
     }
@@ -635,6 +643,12 @@ async function main(): Promise<void> {
       setVis(TYPE_LAYERS, view === "types");
       setVis(OVERALL_LAYERS, overall);
       setVis(["overall-heat"], overall && density.checked);
+      if (map.getLayer("quality-ring")) {
+        const ring = view === "types" ? RING_STYLE.types : RING_STYLE.glow;
+        map.setPaintProperty("quality-ring", "circle-opacity", ring.fill);
+        map.setPaintProperty("quality-ring", "circle-stroke-width", ring.width);
+        map.setPaintProperty("quality-ring", "circle-stroke-opacity", ring.stroke);
+      }
       $("overall-legend").hidden = !overall;
       $("density-note").hidden = !(overall && density.checked);
       $("history-legend").hidden = !history;
