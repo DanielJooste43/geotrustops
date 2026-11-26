@@ -12,7 +12,7 @@ releases and keeps the licence of each source record.
 | `out_timeline/timeline.json` | record ids, positions and change kinds per release, from Overture's places changelogs (no names or other attributes) |
 | `runs/history.jsonl` | aggregate run statistics |
 | `tests/golden/` | place ids used as hand-classified test cases |
-| `docs/feasibility_probe.json` | sample counts and records from the initial feasibility probe |
+| `docs/history/feasibility_probe.json` | sample counts and records from the initial feasibility probe |
 
 Raw extracts (`data/raw/`) are not committed or republished; `geotrustops fetch` downloads them from Overture's public
 bucket, or from a private archive once Overture has removed a release. `data/archive.json` holds only their checksums.
