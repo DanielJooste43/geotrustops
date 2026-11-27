@@ -102,7 +102,7 @@ codebase against the contract.
 - Reproducing the outputs after Overture removes a release from S3 needs the private archive of the pinned extracts,
   which is available for verification on request and deleted 12 months after v1.0.
 
-## What I would do next
+## Next steps
 
 - Investigate the leads already recorded in the [investigation backlog](investigation_backlog.md): website removals
   in November, large confidence drops, and a region recode in the wrong province.
