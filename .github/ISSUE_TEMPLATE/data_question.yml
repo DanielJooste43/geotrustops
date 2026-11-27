@@ -1,0 +1,29 @@
+name: Data question or record removal
+description: Ask about a published record or a rule, or ask for a record that concerns you to be removed.
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Issues are public. Please do not include personal details here: the record id is enough.
+        For removal requests, see "Records about you" in [DATA_LICENSE.md](https://github.com/DanielJooste43/geotrustops/blob/main/DATA_LICENSE.md#records-about-you).
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Request
+      options:
+        - Question about a record or a rule
+        - Remove a record that concerns me
+    validations:
+      required: true
+  - type: input
+    id: record
+    attributes:
+      label: Record id
+      description: The Overture id shown in the map's record panel (for example 1de3174e-c930-…).
+  - type: textarea
+    id: details
+    attributes:
+      label: Details
+      description: What you would like to know, or which output file shows the record.
+    validations:
+      required: true

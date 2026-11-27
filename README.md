@@ -197,6 +197,9 @@ What each of these caught is in [`docs/engineering_review_log.md`](docs/engineer
 - [Decision records](docs/decisions/): positioning, rule review, rule layers, engine/interface separation, naming
 - [Engineering review log](docs/engineering_review_log.md): real defects and which check caught each
 - [Source manifest](docs/source_manifest.md) · [Calibration log](docs/calibration_log.md) · [Investigation backlog](docs/investigation_backlog.md)
+- [Contributing](CONTRIBUTING.md): setup, checks and how changes are reviewed
+- [Security](SECURITY.md): how to report a vulnerability privately
+- [Accessibility](ACCESSIBILITY.md): what the map supports, how it was checked and its known limits
 
 ## Stack
 
