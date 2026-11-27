@@ -23,20 +23,25 @@ Built with Python 3.12, DuckDB SQL, GeoParquet on S3, TypeScript and MapLibre GL
 ## Why
 
 Overture publishes a changelog with every release. For central Pretoria (Oct → Nov 2026) it marks **79% of places
-as `data_changed`**. Most of that is not a change anyone needs to review:
+as changed** (`data_changed`). Most of that is not a change anyone needs to review:
 
 | | Places (study area) |
 |---|---|
-| Changelog says `data_changed` | 4,721 |
-| **Material changes** found by GeoTrustOps (moved more than 25 m, or renamed / recategorised) | **227** (3.8% of the 5,967 places in the study area) |
+| Overture's changelog marks as changed | 4,721 |
+| **Material changes** found by GeoTrustOps (moved more than 25 m, or renamed / recategorised) | **227** (3.8% of the 5,967 place records in the study area across both releases) |
 | Minor moves (5–25 m), reported separately | 109 |
-| Address changes that were only a region-code migration (`GP` → ISO `ZA-GP`) | 4,450 |
-| Phone changes that were only a format migration (local → international `+27…`) | 314 |
+| Address changes that were only a reformatted province code (`GP` became `ZA-GP`) | 4,450 |
+| Phone changes that were only a reformatted number (local to international, `+27…`) | 314 |
 
 The changelog answers *"did any column change?"*; GeoTrustOps answers *"which changes matter, by how much, from
 what to what?"*, and works for any two snapshots, including sources that publish no changelog. Added and removed
 records (232 and 228) are reported separately: they agree one-to-one with the changelog, so the review effort lies in
 telling real moves and renames apart from format noise.
+
+**Terms used here.** `data_changed` is the label Overture's changelog gives a record when any of its columns
+changed. *Moved* means the position changed by more than 25 m and *shifted* by 5–25 m. To *reconcile* is to
+count the same population a second, independent way and require both counts to match; there are 10 such count
+checks. An *excluded* record is set aside with a reason (no id, a duplicate id, no valid point).
 
 ## What it does
 
@@ -45,17 +50,13 @@ flowchart LR
   S3[("Overture S3<br/>2 pinned releases")] --> X["extract study area<br/>+ 1 km buffer"]
   X --> N[normalise] --> V["validate<br/>(exclusion reasons)"]
   V --> M["match by stable id"] --> C[classify]
-  C --> R{"reconcile<br/>10 count identities"}
+  C --> R{"reconcile<br/>10 count checks"}
   R -- all hold --> K["changelog cross-check"] --> E[["export to out/"]]
   R -- any fails --> F["write nothing,<br/>keep previous outputs"]
   E --> W["web map"]
   Q[("Overture context layers<br/>buildings, roads, boundaries")] --> T["stacked-place triage"] --> W
   L[("Overture changelogs<br/>29 releases")] --> H["record history"] --> W
 ```
-
-**Terms used below.** *Moved* means the position changed by more than 25 m and *shifted* by 5–25 m. To
-*reconcile* is to count the same population a second, independent way and require both counts to match; there
-are 10 such identities. An *excluded* record is set aside with a reason (no id, a duplicate id, no valid point).
 
 **1. What changed** (`geotrustops build`)
 - **One change type per record**, first match wins: `excluded`, `added`, `removed`, `moved` (more than 25 m),
@@ -66,8 +67,8 @@ are 10 such identities. An *excluded* record is set aside with a reason (no id, 
   nothing and keeps the previous outputs. The same inputs give byte-identical outputs.
 
 **2. Which records show warning signs**
-- **Stacked places** ([`scripts/investigate/stack_causes.py`](scripts/investigate/stack_causes.py)): places within
-  2 m of each other in the current release, each group with a likely cause from simple checks against Overture's
+- **Stacked places** ([`scripts/investigate/stack_causes.py`](scripts/investigate/stack_causes.py)): places chained
+  within 2 m of each other in the current release (one group holds 143 places), each group with a likely cause from simple checks against Overture's
   buildings, roads and boundaries, and a manual-inspection flag. There is no severity score: the aim is to point a
   reviewer at the groups worth checking. It is a script rather than part of the `geotrustops` command because it
   began as an investigation with pre-registered rules, needs Overture's context layers, and writes its own ODbL
@@ -102,7 +103,8 @@ CI runs the same install and tests on Ubuntu.
 ```powershell
 python -m venv .venv
 .venv\Scripts\pip install -e ".[dev]"
-.venv\Scripts\geotrustops fetch      # pinned extracts from Overture S3 -> data/raw (not committed), ~2 min
+.venv\Scripts\geotrustops fetch      # pinned extracts from Overture S3 -> data/raw (not committed), ~2 min;
+                                     # S3 keeps a release ~60 days, then fetch needs the archive (see Reproducibility)
 .venv\Scripts\geotrustops build      # -> out/changes.geojson, out/summary.json, out/qa_report.md
 .venv\Scripts\geotrustops timeline --fetch   # changelog of every release -> out_timeline/timeline.json, ~10 min
 .venv\Scripts\python -m pytest       # real-data tests are skipped if data/raw is absent

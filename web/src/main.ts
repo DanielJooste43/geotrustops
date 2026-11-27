@@ -112,6 +112,12 @@ function renderHeader(summary: Summary): void {
     ` moved more than ${summary.thresholds_m.move} m and `, Object.assign(el("strong"), { textContent: fmt.format(c.attribute_changed) }),
     " renamed or recategorised.",
   );
+  // Most of the gap between the two numbers is format-only changes; say so with the summary's own counts.
+  const fo = summary.format_only_field_counts;
+  if (fo?.addresses !== undefined && fo.phones !== undefined) {
+    h.append(" Most of the rest were format only: ", Object.assign(el("strong"), { textContent: fmt.format(fo.addresses) }),
+      " reformatted addresses and ", Object.assign(el("strong"), { textContent: fmt.format(fo.phones) }), " phone numbers.");
+  }
 }
 
 function renderCounts(summary: Summary, symbols: Record<ChangeType, Symbol>): void {
@@ -672,7 +678,8 @@ async function main(): Promise<void> {
         const last = tl.releases[tl.releases.length - 1]!.release;
         status.textContent = `${tl.releases.length} releases, ${first} to ${last}. A spike can reflect a change in `
           + "Overture's sources or schema rather than on the ground; releases marked with a hollow square published no "
-          + "added, removed or edited records.";
+          + "added, removed or edited records. Position changes count every move of 1 m or more, so they exceed the "
+          + "comparison's moved and shifted records (over 5 m).";
         $("history-credit").textContent = `Data: ${tl.attribution} Licences: ${tl.licences.join(", ")}.`;
         applyView();
       }).catch((e: unknown) => {

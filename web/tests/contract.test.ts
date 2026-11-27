@@ -147,6 +147,10 @@ describe("parseSummary", () => {
     expect(() => parseSummary(summaryDoc({ reconciliation: { rows: r } }))).toThrow(/boolean holds/);
     expect(() => parseSummary(summaryDoc({ reconciliation: { rows: { ...r, holds: true, lhs: null } } }))).toThrow(/rows/);
   });
+  it("accepts format-only counts when present and rejects malformed ones", () => {
+    expect(parseSummary(summaryDoc({ format_only_field_counts: { addresses: 4450, phones: 314 } })).format_only_field_counts?.phones).toBe(314);
+    expect(() => parseSummary(summaryDoc({ format_only_field_counts: { addresses: "4450" } }))).toThrow(/format_only_field_counts/);
+  });
   it("rejects a malformed changelog check", () => {
     expect(() => parseSummary(summaryDoc({ changelog_check: { changelog_sha256: null } }))).toThrow(/changelog_check/);
     expect(() => parseSummary(summaryDoc({ changelog_check: { changelog_sha256: null, rules: { r: { checked: 1 } } } })))
