@@ -27,12 +27,10 @@ const STYLE_URL = "https://tiles.openfreemap.org/styles/dark";
 // credits it does not cover. Without the basemap (fallback), only the data credit applies.
 const DATA_ATTRIBUTION = '<a href="https://overturemaps.org/" target="_blank" rel="noopener">Overture Maps Foundation</a>';
 const BASEMAP_TIMEOUT_MS = 8000;
-const OVERALL = "#e879f9"; // one colour for every changed record in the overall view
 const TYPE_LAYERS = ["changes-halo", "changes"];
-const OVERALL_LAYERS = ["overall-glow", "overall-core"];
-const CHANGE_CLICKABLE = ["changes", "overall-core", "overall-glow", SWIPE_AFTER_LAYER];
+const CHANGE_CLICKABLE = ["changes", SWIPE_AFTER_LAYER];
 const FLAG = "#a78bfa";
-// Quality rings per view. In the glow views the violet ring sits next to the magenta glow, two close hues, so the
+// Quality rings per view. In the history view the violet ring sits next to the magenta glow, two close hues, so the
 // rings become a thin, dim outline there and the glow carries the colour.
 const RING_STYLE = {
   types: { fill: 0.06, width: 1.25, stroke: 0.6 },
@@ -454,39 +452,6 @@ async function main(): Promise<void> {
       },
     });
 
-    // Overall view: every changed record as the same glowing point. Overlapping halos brighten where records
-    // concentrate; nothing is aggregated or computed. The optional heatmap is a kernel-smoothed view of the same points.
-    map.addLayer({
-      id: "overall-heat", type: "heatmap", source: "changes", layout: { visibility: "none" },
-      paint: {
-        "heatmap-radius": ["interpolate", ["linear"], ["zoom"], 12, 14, 15, 28, 18, 60],
-        "heatmap-intensity": ["interpolate", ["linear"], ["zoom"], 12, 0.6, 16, 1.2],
-        "heatmap-opacity": 0.8,
-        "heatmap-color": [
-          "interpolate", ["linear"], ["heatmap-density"],
-          0, "rgba(217,70,239,0)", 0.15, "rgba(217,70,239,0.12)", 0.4, "rgba(217,70,239,0.32)",
-          0.7, "rgba(232,121,249,0.55)", 1, "rgba(245,208,254,0.75)",
-        ],
-      },
-    }, "changes-halo");
-    map.addLayer({
-      id: "overall-glow", type: "circle", source: "changes", layout: { visibility: "none" },
-      paint: {
-        "circle-radius": ["interpolate", ["linear"], ["zoom"], 12, 7, 15, 13, 18, 26],
-        "circle-color": OVERALL,
-        "circle-opacity": ["case", ["boolean", ["feature-state", "selected"], false], 0.7, 0.28],
-        "circle-blur": 1,
-      },
-    });
-    map.addLayer({
-      id: "overall-core", type: "circle", source: "changes", layout: { visibility: "none" },
-      paint: {
-        "circle-radius": ["interpolate", ["linear"], ["zoom"], 12, 1.6, 15, 2.6, 18, 4.5],
-        "circle-color": "#fdf4ff",
-        "circle-opacity": 0.95,
-      },
-    });
-
     // Selection: previous and current positions joined by a line, and the record's trail by release.
     for (const src of SELECTION_SOURCES) map.addSource(src, { type: "geojson", data: { type: "FeatureCollection", features: [] } });
     for (const l of SELECTION_LAYERS) map.addLayer(l);
@@ -662,14 +627,13 @@ async function main(): Promise<void> {
       shownTypes = shown;
       renderRecords();
       const filter: FilterSpecification = ["in", ["get", "change_type"], ["literal", shown]];
-      for (const l of [...TYPE_LAYERS, ...OVERALL_LAYERS, "overall-heat"]) map.setFilter(l, filter);
+      for (const l of TYPE_LAYERS) map.setFilter(l, filter);
       swipe.setFilter(shown);
       if (selected && !shown.includes(byId.get(selected)!.properties.change_type)) select(null);
     });
 
-    // View switch: change types (shape + colour per class), overall change (one glow per record), or history
-    // (release-by-release playback of the timeline, with movement trails).
-    const density = $<HTMLInputElement>("density");
+    // View switch: change types (shape + colour per class), before/after (the two releases either side of a divider),
+    // or history (release-by-release playback of the timeline, with movement trails).
     const setVis = (ids: string[], on: boolean) => {
       for (const l of ids) map.setLayoutProperty(l, "visibility", on ? "visible" : "none");
     };
@@ -677,22 +641,17 @@ async function main(): Promise<void> {
     const status = $("history-status");
     const applyView = () => {
       const view = document.querySelector<HTMLInputElement>('input[name="view"]:checked')?.value ?? "types";
-      const overall = view === "overall";
       const history = view === "history";
       const swipeOn = view === "swipe";
       setVis(TYPE_LAYERS, view === "types");
       swipe.setVisible(swipeOn);
       $("swipe-legend").hidden = !swipeOn;
-      setVis(OVERALL_LAYERS, overall);
-      setVis(["overall-heat"], overall && density.checked);
       if (map.getLayer("quality-ring")) {
         const ring = view === "types" || swipeOn ? RING_STYLE.types : RING_STYLE.glow;
         map.setPaintProperty("quality-ring", "circle-opacity", ring.fill);
         map.setPaintProperty("quality-ring", "circle-stroke-width", ring.width);
         map.setPaintProperty("quality-ring", "circle-stroke-opacity", ring.stroke);
       }
-      $("overall-legend").hidden = !overall;
-      $("density-note").hidden = !(overall && density.checked);
       $("history-legend").hidden = !history;
       $("filters").hidden = history; // the change-type filters describe the two-release comparison only
       playback?.setVisible(history);
@@ -724,7 +683,6 @@ async function main(): Promise<void> {
       });
     };
     for (const r of document.querySelectorAll<HTMLInputElement>('input[name="view"]')) r.addEventListener("change", applyView);
-    density.addEventListener("change", applyView);
     $<HTMLInputElement>("trails").addEventListener("change", applyView);
   };
 
