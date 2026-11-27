@@ -20,10 +20,12 @@ Matched records whose position moved more than each distance, counted from `dist
 
 | Moved more than | 5 m | 10 m | 15 m | 25 m | 50 m | 100 m |
 |---|---|---|---|---|---|---|
-| Matched records | 295 | 261 | 227 | 178 | 107 | 70 |
+| Matched records moved this far | 295 | 261 | 227 | 178 | 107 | 70 |
+| Review queue: moved this far, or renamed or recategorised | 335 | 302 | 271 | **227** | 168 | 138 |
 
-Moving the material threshold from 25 m to 15 m would add 49 records to the review queue; moving it to 50 m would
-remove 71.
+The review queue at 25 m is the 227 material changes. Renamed or recategorised records stay in the queue whatever
+the threshold, so moving it from 25 m to 15 m would add 44 records to the queue (49 more moves, 5 of them already
+renamed), and moving it to 50 m would remove 59 (71 fewer moves, 12 of them renamed or recategorised).
 
 ## Entries
 - **2026-11-23**: initial values (contract v0.3). Two pairs run: Sep.1→Oct and Oct→Nov, 0 exclusions, 0 changelog
