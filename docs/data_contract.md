@@ -204,6 +204,13 @@ exclusion share per reason, change counts, changelog mismatches. Threshold chang
   `basic_category`, `confidence`, `sources`);
   excluded rows > `max_excluded_share` (5%) of a release; any reconciliation identity false.
 - Outputs are staged and swapped in only after all checks pass. Rerun with same inputs/config → byte-identical outputs.
+- If the swap itself fails (for example a locked file), the previous outputs are moved back and the run exits `2`;
+  the previous outputs stay in place.
+- Exit `2` when an archive download or release listing fails, stalls past the network timeout (60 s without data),
+  or returns a listing in an unexpected shape.
+- **Exception, run history:** `runs/history.jsonl` is updated after the outputs are in place, by writing a temporary
+  file and replacing the old one, so an interrupted write never truncates it. If an existing line cannot be read,
+  the run exits `2` with the history unchanged; the new outputs, which passed every check, stay in place.
 
 ## 7. Interpretation limits (in every output and the UI) `[generic]`
 (The principle is generic; the wording names Overture because that is the implemented `[source: overture]` profile.)
@@ -298,6 +305,8 @@ against its manifest (release, extraction bbox, SHA-256) before use.
 - **Per release (`releases`):** `release`, `change_type_partitions` (change sets Overture published), `changes_published`
   (any of added/removed/data_changed), counts per kind, `position_changed_labelled_unchanged`,
   `first_seen_without_added` (records first seen without an `added` row, e.g. after a missing changelog).
+  A release whose changelog listing has no `change_type` partitions fails the build: an empty listing usually
+  means the release has left S3, so it is never recorded as `changes_published` false.
 - **Reconciliation:** `event_count` = number of `events` = sum of the per-release counts. For `releases.curr`,
   `added` and `removed` equal the change run's counts, and every `moved` or `shifted` record of the change run is a
   `position_changed` event with the same distance (±0.5 m).

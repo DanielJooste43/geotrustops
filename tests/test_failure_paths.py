@@ -99,8 +99,9 @@ def test_a_missing_required_column_fails_and_writes_nothing(tmp_path: Path, colu
     con = duckdb.connect()
     stripped = tmp_path / "curr_stripped.parquet"
     con.execute(
-        f"COPY (SELECT * EXCLUDE ({column}) FROM read_parquet('{run.curr.as_posix()}')) "
-        f"TO '{stripped.as_posix()}' (FORMAT parquet)"
+        f"COPY (SELECT * EXCLUDE ({column}) FROM read_parquet($source)) "  # noqa: S608 - column from REQUIRED
+        "TO $dest (FORMAT parquet)",
+        {"source": run.curr.as_posix(), "dest": stripped.as_posix()},
     )
     run.args[run.args.index(str(run.curr))] = str(stripped)
     assert run.build() == 2
