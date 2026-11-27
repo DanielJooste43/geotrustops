@@ -9,7 +9,7 @@ own changelog), and **which records show warning signs worth a manual look** (fo
 one point).
 
 **Live map: <https://danieljooste43.github.io/geotrustops/>** · central Pretoria, Overture releases 2026-10-21.0 →
-2026-11-18.0.
+2026-11-18.0 · **[Case study](docs/case_study.md)**: problem, method, results, verification and limits on one page.
 
 [![The web map: changed place records in central Pretoria by change type, with stacked-place quality flags](docs/images/map-change-types.jpg)](https://danieljooste43.github.io/geotrustops/)
 
@@ -192,6 +192,7 @@ What each of these caught is in [`docs/engineering_review_log.md`](docs/engineer
 
 ## Documentation
 
+- [Case study](docs/case_study.md): the problem, approach, results, verification and limitations on one page
 - [Methodology](docs/methodology.md): the logic stage by stage, with real examples
 - [Data contract](docs/data_contract.md): the exact rules, tagged as generic, Overture-specific or South Africa-specific
 - [Decision records](docs/decisions/): positioning, rule review, rule layers, engine/interface separation, naming

@@ -6,7 +6,7 @@ Releases: `2026-10-21.0` → `2026-11-18.0` · shifted > 5.0 m · moved > 25.0 m
 
 ## Provenance
 
-- Pipeline `0.5.0` · contract `v0.4`
+- Pipeline `1.0.0` · contract `v0.4`
 - AOI: {'west': 28.168, 'south': -25.758, 'east': 28.205, 'north': -25.732}
 - Extraction bbox (AOI + buffer): {'west': 28.157999999999998, 'south': -25.768, 'east': 28.215, 'north': -25.721999999999998}
 - Input sha256: prev `f69ec5ca48f04a6564952f76eb0ea78c1c6a85086da7f440e863862c076fe1c8` · curr `ea1a5c837dde146147db6540c60c617c68b6b2d0817a02953646f43e7055358e`
