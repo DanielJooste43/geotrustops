@@ -69,15 +69,19 @@ async function loadStyle(): Promise<{ style: StyleSpecification | string; basema
     sources: {},
     layers: [{ id: "background", type: "background", paint: { "background-color": "#080f19" } }],
   };
+  // The timeout covers the whole response, body included: a provider that sends headers and then stalls would
+  // otherwise hold the map on a blank page.
+  const ctrl = new AbortController();
+  const t = setTimeout(() => ctrl.abort(), BASEMAP_TIMEOUT_MS);
   try {
-    const ctrl = new AbortController();
-    const t = setTimeout(() => ctrl.abort(), BASEMAP_TIMEOUT_MS);
     const r = await fetch(STYLE_URL, { signal: ctrl.signal });
-    clearTimeout(t);
     if (!r.ok) throw new Error(`HTTP ${r.status}`);
     return { style: (await r.json()) as StyleSpecification, basemap: true };
-  } catch {
+  } catch (e) {
+    console.warn("basemap style not loaded, using the plain background:", e);
     return { style: fallback, basemap: false };
+  } finally {
+    clearTimeout(t);
   }
 }
 
@@ -318,12 +322,16 @@ async function main(): Promise<void> {
   // The release timeline is optional and large: loaded on first use, and refused if it describes another run.
   let timelinePromise: Promise<Timeline> | null = null;
   let timelineReady: Timeline | null = null; // set once loaded, for synchronous use in the click handler
+  // A failed load is not cached: the next use (another record, or the History view again) tries again.
   const getTimeline = (): Promise<Timeline> =>
     (timelinePromise ??= loadJson("./data/timeline.json").then((raw) => {
       const t = parseTimeline(raw);
       checkTimelineMatchesRun(t, changes);
       timelineReady = t;
       return t;
+    }).catch((e: unknown) => {
+      timelinePromise = null;
+      throw e;
     }));
 
   // The quality layer is optional: if its file is missing or invalid, the change map still works.
@@ -372,6 +380,15 @@ async function main(): Promise<void> {
   });
 
   map.on("load", () => {
+    try {
+      buildLayers();
+    } catch (e) {
+      console.error("map layers could not be built:", e);
+      showNotice(`The map could not be drawn completely: ${e instanceof Error ? e.message : String(e)}`);
+    }
+  });
+
+  const buildLayers = (): void => {
     const images = {} as SymbolImages;
     for (const t of CHANGE_TYPES) {
       const img = drawSymbol(symbols[t]);
@@ -512,7 +529,10 @@ async function main(): Promise<void> {
       getTimeline().then((tl) => {
         if (selected !== id) return; // another record was chosen meanwhile
         drawRecordHistory(tl, id);
-      }).catch(() => { /* history is optional; the History view's status line explains a failure */ });
+      }).catch((e: unknown) => {
+        // History is optional: the record's details stay; the History view's status line explains the failure.
+        console.warn("record history not loaded:", e);
+      });
     };
 
     // A record's positions by release: listed in the open inspector and drawn as its trail.
@@ -694,19 +714,24 @@ async function main(): Promise<void> {
       }).catch((e: unknown) => {
         status.textContent = e instanceof ContractError
           ? `The release history does not match this map's data: ${e.message}`
-          : "The release history could not be loaded.";
+          : "The release history could not be loaded. Choose History again to retry.";
         console.warn("timeline not loaded:", e);
       });
     };
     for (const r of document.querySelectorAll<HTMLInputElement>('input[name="view"]')) r.addEventListener("change", applyView);
     density.addEventListener("change", applyView);
     $<HTMLInputElement>("trails").addEventListener("change", applyView);
-  });
+  };
 
+  // Every map error is logged. Basemap tile errors keep the data visible and are explained as such; any other
+  // error gets a general notice, so a failure is never silent.
   map.on("error", (e) => {
-    // Tile errors after a successful style load: keep the data visible, explain once.
-    if (basemap && String(e.error?.message ?? "").match(/tile|fetch|network/i)) {
+    const message = String(e.error?.message ?? e.error ?? "unknown error");
+    console.error("map error:", e.error ?? e);
+    if (basemap && /tile|fetch|network/i.test(message)) {
       showNotice("Some basemap tiles could not be loaded. The change records are unaffected.");
+    } else {
+      showNotice(`Part of the map could not be drawn: ${message}`);
     }
   });
 
@@ -753,4 +778,7 @@ $("sheet-handle").addEventListener("click", () => {
   $("sheet-handle").setAttribute("aria-expanded", String(open));
 });
 
-void main();
+main().catch((e: unknown) => {
+  console.error("the map could not start:", e);
+  showNotice(`The map could not start: ${e instanceof Error ? e.message : String(e)}`);
+});

@@ -2,7 +2,8 @@
 // Purpose: the one place where the map learns the output contract, so a contract change fails loudly here
 // (a thrown ContractError) instead of the map silently misreading a field.
 // Inputs: parsed JSON of out/changes.geojson and out/summary.json. Outputs: validated, typed objects.
-// Rule (ADR 0004): nothing here computes a classification or a count; numbers shown come from summary.json.
+// Rule (ADR 0004): nothing here computes a classification or a displayed count; numbers shown come from summary.json.
+// Counting features is allowed only as a check against summary.json (checkSameRun).
 
 export const SUPPORTED_CONTRACT = "0.4";
 
@@ -119,23 +120,39 @@ const BOOL_OR_NULL = [
   "crossed_aoi_boundary",
 ] as const;
 
+const isNum = (v: unknown): v is number => typeof v === "number" && Number.isFinite(v);
+const isCount = (v: unknown): v is number => Number.isInteger(v) && (v as number) >= 0;
+const isText = (v: unknown): v is string => typeof v === "string" && v.length > 0;
+const isLonLat = (lon: unknown, lat: unknown): boolean =>
+  isNum(lon) && isNum(lat) && lon >= -180 && lon <= 180 && lat >= -90 && lat <= 90;
+
 function checkFeature(f: unknown, i: number): ChangeFeature {
   const at = `features[${i}]`;
   need(isObject(f) && f.type === "Feature", `${at}: not a Feature`);
   const g = f.geometry;
   need(isObject(g) && g.type === "Point" && Array.isArray(g.coordinates), `${at}: geometry must be a Point`);
   const [lon, lat] = g.coordinates as unknown[];
-  need(typeof lon === "number" && typeof lat === "number", `${at}: coordinates must be numbers`);
-  need(lon >= -180 && lon <= 180 && lat >= -90 && lat <= 90, `${at}: coordinates out of range`);
+  need(isNum(lon) && isNum(lat), `${at}: coordinates must be finite numbers`);
+  need(isLonLat(lon, lat), `${at}: coordinates out of range`);
   const p = f.properties;
   need(isObject(p), `${at}: properties missing`);
   need(typeof p.id === "string" && p.id.length > 0, `${at}: id must be a non-empty string`);
   need(f.id === p.id, `${at}: feature id and properties.id differ`);
   need(CHANGE_TYPES.includes(p.change_type as ChangeType), `${at}: unknown change_type ${String(p.change_type)}`);
   need(p.move_band === null || MOVE_BANDS.includes(p.move_band as MoveBand), `${at}: unknown move_band`);
-  for (const k of NUMBER_OR_NULL) need(p[k] === null || typeof p[k] === "number", `${at}: ${k} must be number|null`);
+  for (const k of NUMBER_OR_NULL) need(p[k] === null || isNum(p[k]), `${at}: ${k} must be a finite number or null`);
   for (const k of STRING_OR_NULL) need(p[k] === null || typeof p[k] === "string", `${at}: ${k} must be string|null`);
   for (const k of BOOL_OR_NULL) need(p[k] === null || typeof p[k] === "boolean", `${at}: ${k} must be boolean|null`);
+  // Which positions exist follows from the change type (§5): added records have no previous position, removed
+  // records no current one, every other class both. The point sits at prev for removed, else at curr.
+  const hasPrev = p.prev_lon !== null || p.prev_lat !== null;
+  const hasCurr = p.curr_lon !== null || p.curr_lat !== null;
+  need(!hasPrev || isLonLat(p.prev_lon, p.prev_lat), `${at}: previous position incomplete or out of range`);
+  need(!hasCurr || isLonLat(p.curr_lon, p.curr_lat), `${at}: current position incomplete or out of range`);
+  need(hasPrev === (p.change_type !== "added") && hasCurr === (p.change_type !== "removed"),
+    `${at}: positions present do not fit change_type ${String(p.change_type)}`);
+  const [sideLon, sideLat] = p.change_type === "removed" ? [p.prev_lon, p.prev_lat] : [p.curr_lon, p.curr_lat];
+  need(lon === sideLon && lat === sideLat, `${at}: point is not at the position its change type is drawn at`);
   return f as unknown as ChangeFeature;
 }
 
@@ -148,6 +165,9 @@ export function parseChanges(raw: unknown): Changes {
     `changes: contract ${String(meta.contract_version)}, map supports ${SUPPORTED_CONTRACT}`);
   need(isObject(meta.releases) && typeof meta.releases.prev === "string" && typeof meta.releases.curr === "string",
     "changes: releases missing");
+  need(isObject(meta.inputs_sha256) && isText(meta.inputs_sha256.prev) && isText(meta.inputs_sha256.curr),
+    "changes: inputs_sha256 missing");
+  need(meta.changelog_sha256 === null || isText(meta.changelog_sha256), "changes: changelog_sha256 must be text or null");
   need(Array.isArray(raw.features), "changes: features missing");
   const features = raw.features.map(checkFeature);
   const ids = new Set(features.map((f) => f.properties.id));
@@ -155,17 +175,44 @@ export function parseChanges(raw: unknown): Changes {
   return raw as unknown as Changes;
 }
 
-/** Validates summary.json fields the map displays; throws ContractError on the first violation. */
+/** Validates every summary.json field the map reads or displays; throws ContractError on the first violation. */
 export function parseSummary(raw: unknown): Summary {
   need(isObject(raw), "summary: not an object");
   need(raw.contract_version === SUPPORTED_CONTRACT,
     `summary: contract ${String(raw.contract_version)}, map supports ${SUPPORTED_CONTRACT}`);
+  need(isText(raw.pipeline_version), "summary: pipeline_version missing");
+  need(isText(raw.interpretation), "summary: interpretation missing");
+  const { releases, inputs_sha256: sha, aoi, thresholds_m: th } = raw;
+  need(isObject(releases) && isText(releases.prev) && isText(releases.curr), "summary: releases missing");
+  need(isObject(sha) && isText(sha.prev) && isText(sha.curr), "summary: inputs_sha256 missing");
+  need(isObject(aoi) && isLonLat(aoi.west, aoi.south) && isLonLat(aoi.east, aoi.north)
+    && (aoi.west as number) < (aoi.east as number) && (aoi.south as number) < (aoi.north as number),
+    "summary: aoi must be a WGS84 box with west < east and south < north");
+  need(isObject(th) && isNum(th.minor_move) && isNum(th.move) && isNum(th.major_move)
+    && th.minor_move > 0 && th.minor_move < th.move && th.move < th.major_move,
+    "summary: thresholds_m must be positive and ordered minor_move < move < major_move");
   need(isObject(raw.change_counts), "summary: change_counts missing");
   for (const t of [...CHANGE_TYPES, "excluded", "unchanged"]) {
-    need(typeof raw.change_counts[t] === "number", `summary: change_counts.${t} missing`);
+    need(isCount(raw.change_counts[t]), `summary: change_counts.${t} must be a count`);
   }
-  need(isObject(raw.reconciliation), "summary: reconciliation missing");
-  need(isObject(raw.releases) && isObject(raw.aoi) && isObject(raw.inputs_sha256), "summary: provenance missing");
+  // "Counts reconcile" is shown when every identity holds, so an empty or malformed section must not pass as true.
+  const rec = raw.reconciliation;
+  need(isObject(rec) && Object.keys(rec).length > 0, "summary: reconciliation has no identities");
+  for (const [k, r] of Object.entries(rec)) {
+    need(isObject(r) && isText(r.identity) && isNum(r.lhs) && isNum(r.rhs) && typeof r.holds === "boolean",
+      `summary: reconciliation.${k} needs identity, lhs, rhs and a boolean holds`);
+  }
+  const cc = raw.changelog_check;
+  if (cc !== null) {
+    need(isObject(cc) && (cc.changelog_sha256 === null || isText(cc.changelog_sha256)) && isObject(cc.rules),
+      "summary: changelog_check must be null or carry changelog_sha256 and rules");
+    for (const [k, v] of Object.entries(cc.rules)) {
+      need(isObject(v) && isCount(v.checked) && isCount(v.mismatches), `summary: changelog_check.rules.${k} needs counts`);
+    }
+    const types = cc.changelog_types_for_considered_ids;
+    need(types === undefined || (isObject(types) && Object.values(types).every(isCount)),
+      "summary: changelog_check.changelog_types_for_considered_ids must hold counts");
+  }
   return raw as unknown as Summary;
 }
 
@@ -176,6 +223,13 @@ export function checkSameRun(changes: Changes, summary: Summary): void {
     "changes and summary describe different releases");
   need(m.inputs_sha256.prev === summary.inputs_sha256.prev && m.inputs_sha256.curr === summary.inputs_sha256.curr,
     "changes and summary come from different inputs");
+  need(m.changelog_sha256 === (summary.changelog_check?.changelog_sha256 ?? null),
+    "changes and summary were checked against different changelogs");
+  // A check, not a displayed number: the map shows summary.json's counts, and the features must agree with them.
+  for (const t of CHANGE_TYPES) {
+    const drawn = changes.features.filter((f) => f.properties.change_type === t).length;
+    need(drawn === summary.change_counts[t], `changes has ${drawn} ${t} records, summary counts ${summary.change_counts[t]}`);
+  }
 }
 
 /** True when every reconciliation identity in summary.json holds. */
