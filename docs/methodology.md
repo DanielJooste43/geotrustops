@@ -220,7 +220,8 @@ Three technical rules hide inside this diagram:
 **(a) Distance in metres, not degrees.** Longitude/latitude are angles. One degree of longitude is
 ~100 km here but shrinks towards the poles, so "difference in degrees" is meaningless as a distance. We use
 the **haversine formula**, which gives the great-circle distance on a sphere of radius 6,371 km:
-accurate to well under a metre at this scale.
+within about 0.5% of the ellipsoidal distance, so about 0.1 m near the 25 m threshold and about 2 m for the
+largest moves (about 400 m).
 
 **(b) NULL-safe comparison.** In SQL, `NULL = 'shop'` is not *false*; it is *unknown*, so a normal
 `<>` comparison silently misses a category going from empty to filled. We use `IS DISTINCT FROM`,
