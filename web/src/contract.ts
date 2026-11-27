@@ -86,6 +86,8 @@ export interface Summary {
   flag_counts: Record<string, number>;
   reconciliation: Record<string, ReconciliationIdentity>;
   interpretation: string;
+  /** Fields whose raw value changed but whose normalised value did not, per field (e.g. addresses, phones). */
+  format_only_field_counts?: Record<string, number>;
   changelog_check: {
     changelog_sha256: string | null;
     rules: Record<string, { checked: number; mismatches: number }>;
@@ -207,6 +209,9 @@ export function parseSummary(raw: unknown): Summary {
     need(isObject(r) && isText(r.identity) && isNum(r.lhs) && isNum(r.rhs) && typeof r.holds === "boolean",
       `summary: reconciliation.${k} needs identity, lhs, rhs and a boolean holds`);
   }
+  const fo = raw.format_only_field_counts;
+  need(fo === undefined || (isObject(fo) && Object.values(fo).every(isCount)),
+    "summary: format_only_field_counts must hold counts");
   const cc = raw.changelog_check;
   if (cc !== null) {
     need(isObject(cc) && (cc.changelog_sha256 === null || isText(cc.changelog_sha256)) && isObject(cc.rules),

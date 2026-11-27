@@ -2,7 +2,7 @@
 
 **In one paragraph.** Overture's changelog marks 79% of the places in central Pretoria as changed between the
 October and November 2026 releases. GeoTrustOps classified every record and found 227 material changes (3.8% of the
-5,967 places in the area):
+5,967 place records in the area across both releases):
 178 places moved more than 25 m and 49 were renamed or recategorised. Most of the rest was two format migrations
 (4,450 region codes, 314 phone numbers). Every count reconciles, the classification agrees with Overture's own
 changelog on every record it can be checked against, and the outputs rebuild byte for byte from pinned inputs.
@@ -38,7 +38,8 @@ release) needs two answers before trusting it:
 one change type, first match wins: excluded, added, removed, moved (> 25 m), attribute changed (renamed or
 recategorised), shifted (5–25 m), unchanged. What else changed is a flag: the kind of rename, operating status,
 contact fields, and format-only migrations. The thresholds are illustrative configuration for an urban street grid,
-not a statement about Overture's accuracy ([ADR 0002](decisions/0002-rule-review.md)).
+not a statement about Overture's accuracy ([ADR 0002](decisions/0002-rule-review.md)); the
+[calibration log](calibration_log.md) shows how the counts change at other thresholds.
 
 **Format migrations separated from content.** Addresses and phone numbers are normalised before comparison. A region
 code that went from `GP` to `ZA-GP` is reported as a format-only change, not an address change.
@@ -57,7 +58,7 @@ or do not come from the same run, the map refuses to draw them and says why.
 
 | | Places |
 |---|---|
-| In the study area | 5,967 |
+| Place records in the study area (both releases) | 5,967 |
 | Changelog says `data_changed` | 4,721 |
 | **Moved more than 25 m** | **178** |
 | **Renamed or recategorised** | **49** |
@@ -66,11 +67,11 @@ or do not come from the same run, the map refuses to draw them and says why.
 | Address change that was only the region-code migration | 4,450 |
 | Phone change that was only the format migration | 314 |
 
-The second pair (Sep → Oct) shows 111 moved, 72 renamed or recategorised, 74 shifted, 289 added and 0 removed, with
+The second pair (Sep → Oct) shows 111 moved, 72 renamed or recategorised, 74 shifted, 289 added and 0 removed (Overture's changelog also lists no removals; why is an open lead in the backlog), with
 almost no format migrations (0 region codes, 6 phones): the November spike comes from the two format changes.
 
 **Warning signs** (current release):
-- **503 groups of stacked places** (1,951 places within 2 m of each other), each with a likely cause from simple
+- **503 groups of stacked places** (1,951 places, chained within 2 m of each other), each with a likely cause from simple
   checks against buildings, roads and boundaries. Most share one address point (315 groups) or sit in one compact
   building (43); 29 have no simple explanation. There is no severity score: the flag means "worth a manual look".
 - **Unstable records:** Pretoria Zoo's record alternates between two positions 62.7 m apart in most releases since

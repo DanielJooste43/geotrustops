@@ -248,6 +248,7 @@ Gauteng"), so the tool does not call any rename an improvement; that needs a ref
 
 **Why 5 m and 25 m, and not per category?** 5 m approximates consumer-GPS error, so smaller moves aren't
 reportable. 25 m is an *illustrative* "material" threshold; it is **not** an Overture accuracy specification.
+The [calibration log](calibration_log.md) shows the counts at 5, 10, 15, 25, 50 and 100 m.
 Per-category thresholds were considered and rejected (ADR 0002 §1): no POI accuracy standard exists, Overture
 does not say what the point represents (entrance? centroid?), and each category has too few moves to calibrate.
 All thresholds are in config and recorded in `docs/calibration_log.md`.
