@@ -1,7 +1,7 @@
-# ADR 0001 — Positioning: Overture-first material-change review, with a source-adapter boundary
+# ADR 0001: Positioning: Overture-first material-change review, with a source-adapter boundary
 
 
-**Status:** accepted · **Date:** 2026-11-23
+**Status:** accepted; **Date:** 2026-11-23
 
 ## Question
 Build GeoTrustOps as an Overture-specific tool, or as a general change-detection tool for any recurring source?

@@ -8,13 +8,17 @@ between two releases** (every record classified, the counts reconciled, the resu
 own changelog), and **which records show warning signs worth a manual look** (for example, many places stacked on
 one point).
 
-**Live map: <https://danieljooste43.github.io/geotrustops/>** · central Pretoria, Overture releases 2026-10-21.0 →
-2026-11-18.0 · **[Case study](docs/case_study.md)**: problem, method, results, verification and limits on one page.
+**Live map: <https://danieljooste43.github.io/geotrustops/>** (central Pretoria, Overture releases 2026-10-21.0 →
+2026-11-18.0). The **[case study](docs/case_study.md)** covers the problem, method, results, verification and limits
+on one page.
 
 [![The web map: changed place records in central Pretoria by change type, with stacked-place quality flags](docs/images/map-change-types.jpg)](https://danieljooste43.github.io/geotrustops/)
 
 > **Status: validated demo.** The pipeline, its verification and the web map are complete for one study area and two
 > release pairs. It is a reproducible case study, not a hosted service: it does not fetch new releases on its own.
+
+Built with Python 3.12, DuckDB SQL, GeoParquet on S3, TypeScript and MapLibre GL JS; tested in GitHub Actions
+(full list under [Stack](#stack)).
 
 ## Why
 
@@ -24,7 +28,7 @@ as `data_changed`**. Most of that is not a change anyone needs to review:
 | | Places (study area) |
 |---|---|
 | Changelog says `data_changed` | 4,721 |
-| **Material changes** found by GeoTrustOps (moved more than 25 m, or renamed / recategorised) | **227 (3.8%)** |
+| **Material changes** found by GeoTrustOps (moved more than 25 m, or renamed / recategorised) | **227** (3.8% of the 5,967 places in the study area) |
 | Minor moves (5–25 m), reported separately | 109 |
 | Address changes that were only a region-code migration (`GP` → ISO `ZA-GP`) | 4,450 |
 | Phone changes that were only a format migration (local → international `+27…`) | 314 |
@@ -49,19 +53,25 @@ flowchart LR
   L[("Overture changelogs<br/>29 releases")] --> H["record history"] --> W
 ```
 
+**Terms used below.** *Moved* means the position changed by more than 25 m and *shifted* by 5–25 m. To
+*reconcile* is to count the same population a second, independent way and require both counts to match; there
+are 10 such identities. An *excluded* record is set aside with a reason (no id, a duplicate id, no valid point).
+
 **1. What changed** (`geotrustops build`)
 - **One change type per record**, first match wins: `excluded`, `added`, `removed`, `moved` (more than 25 m),
   `attribute_changed` (renamed or recategorised), `shifted` (5–25 m), `unchanged`.
 - **Flags** for what else changed: kind of rename (case/spacing, punctuation, expanded/trimmed, different), category,
   operating status, contact fields, format-only migrations, crossing the study-area boundary.
 - **Fails safe:** a run that excludes more than 5% of a release, or where any reconciliation identity fails, writes
-  nothing and keeps the previous outputs. Same inputs → byte-identical outputs.
+  nothing and keeps the previous outputs. The same inputs give byte-identical outputs.
 
 **2. Which records show warning signs**
 - **Stacked places** ([`scripts/investigate/stack_causes.py`](scripts/investigate/stack_causes.py)): places within
   2 m of each other in the current release, each group with a likely cause from simple checks against Overture's
   buildings, roads and boundaries, and a manual-inspection flag. There is no severity score: the aim is to point a
-  reviewer at the groups worth checking.
+  reviewer at the groups worth checking. It is a script rather than part of the `geotrustops` command because it
+  began as an investigation with pre-registered rules, needs Overture's context layers, and writes its own ODbL
+  file (`out_triage/`).
 - **Record stability** (`geotrustops timeline`): each record's position in every release since July 2024, from
   Overture's changelogs. A record that keeps changing position is a warning sign of its own: Pretoria Zoo's record,
   for example, alternates between two positions 62.7 m apart in most releases since September 2025.
@@ -196,15 +206,17 @@ What each of these caught is in [`docs/engineering_review_log.md`](docs/engineer
 - [Data contract](docs/data_contract.md): the exact rules, tagged as generic, Overture-specific or South Africa-specific
 - [Decision records](docs/decisions/): positioning, rule review, rule layers, engine/interface separation, naming
 - [Engineering review log](docs/engineering_review_log.md): real defects and which check caught each
-- [Source manifest](docs/source_manifest.md) · [Calibration log](docs/calibration_log.md) · [Investigation backlog](docs/investigation_backlog.md)
+- [Source manifest](docs/source_manifest.md): the pinned releases, their schema and checksums
+- [Calibration log](docs/calibration_log.md): each threshold and the evidence behind it
+- [Investigation backlog](docs/investigation_backlog.md): open leads in the data, with pre-registered checks
 - [Contributing](CONTRIBUTING.md): setup, checks and how changes are reviewed
 - [Security](SECURITY.md): how to report a vulnerability privately
 - [Accessibility](ACCESSIBILITY.md): what the map supports, how it was checked and its known limits
 
 ## Stack
 
-Python 3.12 · DuckDB 1.4.2 (SQL, `spatial`, `httpfs`) · GeoParquet on S3 · pytest · ruff · mypy (strict) ·
-TypeScript · MapLibre GL JS · GitHub Actions and Pages
+Python 3.12, DuckDB 1.4.2 (SQL, `spatial`, `httpfs`), GeoParquet on S3, pytest, ruff, mypy (strict), TypeScript,
+MapLibre GL JS, GitHub Actions and Pages.
 
 ## Third-party tools and services
 

@@ -1,4 +1,4 @@
-# GeoTrustOps data contract — v0.4 (2026-11-23)
+# GeoTrustOps data contract: v0.4 (2026-11-23)
 
 **History.** v0.1 first draft. v0.2: buffered extraction + study-membership rule after the changelog
 cross-check exposed 7 boundary crossers; changelog oracle added. **v0.3** (ADR 0002): `shifted` change
@@ -66,7 +66,7 @@ two §1 normalisations. The generic engine (§2–§4 logic) is unchanged by any
 
 ---
 
-## 1. Stage A — normalized record (grain: one row per source row, per release)
+## 1. Stage A: normalized record (grain: one row per source row, per release)
 
 **Adapter boundary (ADR 0001, corrected by ADR 0003):** Stage A holds the source mapping and the locale
 normalisations; the source profile also defines §3 lifecycle meanings and the §9 oracle (see §0).
@@ -101,10 +101,10 @@ known South African province code or name, case-insensitively (`GP`/`Gauteng` �
 local → E.164 only):** empty values dropped; keep digits and `+`; a number starting `0` on a record whose first
 address has `country = 'ZA'` becomes `+27` + the rest. Without a ZA address, no country prefix is assumed.
 
-## 2. Stage B — row-level exclusion (grain: one row per source row) `[generic]`
+## 2. Stage B: row-level exclusion (grain: one row per source row) `[generic]`
 
-First failing rule wins: 1 `missing_id` (NULL/`''`) · 2 `duplicate_id` (id occurs >1 in that release: **all**
-copies excluded) · 3 `missing_geometry` (NULL/unparsable) · 4 `non_point_geometry` · 5 `invalid_coordinates`
+First failing rule wins: 1 `missing_id` (NULL/`''`); 2 `duplicate_id` (id occurs >1 in that release: **all**
+copies excluded); 3 `missing_geometry` (NULL/unparsable); 4 `non_point_geometry`; 5 `invalid_coordinates`
 (lon ∉ [-180,180], lat ∉ [-90,90] or NaN). Rows with no reason are **valid**; each valid row gets
 `in_aoi` = `west ≤ lon ≤ east AND south ≤ lat ≤ north` (inclusive). For *any* row, AOI membership is
 **unknown** (not "outside") when its coordinates are not a valid WGS84 position: missing, NaN or out of range,
@@ -113,7 +113,7 @@ whatever its exclusion reason.
 **Study population:** an id is *in study* if it has a valid `in_aoi` row in **at least one** release, or has an
 excluded row located in (or not locatable relative to) the AOI. Others are `buffer_only_ids` (counted, ignored).
 
-## 3. Stage C — id-level classification (grain: one row per distinct non-empty id) `[generic]`
+## 3. Stage C: id-level classification (grain: one row per distinct non-empty id) `[generic]`
 
 (Comparisons of *normalized* inputs are generic. Three inputs to them come from profiles:
 the choice of `confidence = 0` as a lifecycle signal and the meaning of `operating_status` values are
@@ -138,7 +138,7 @@ Exactly one `change_type`, **first match wins**:
 `matched` = valid in both releases. Thresholds are illustrative and configurable: 25 m is not an Overture
 accuracy spec; 5 m approximates consumer-GPS error (ADR 0002 §1). A move does **not** mean the data improved.
 
-**`move_band`** (every matched id): `stable` d ≤ 5 · `minor` 5 < d ≤ 25 · `material` 25 < d ≤ 100 · `major` d > 100
+**`move_band`** (every matched id): `stable` d ≤ 5; `minor` 5 < d ≤ 25; `material` 25 < d ≤ 100; `major` d > 100
 (bounds from config `minor_move_m`, `move_threshold_m`, `major_move_m`).
 
 **Flags** (matched ids only; NULL otherwise):
@@ -146,7 +146,7 @@ accuracy spec; 5 m approximates consumer-GPS error (ADR 0002 §1). A move does *
 | Flag | Rule |
 |---|---|
 | `name_changed`, `category_changed`, `basic_category_changed` | the field IS DISTINCT FROM |
-| `name_change_kind` | NULL if not `name_changed`; else first match: `added` (NULL→value) · `removed` (value→NULL) · `case_or_spacing` (equal after lower-case + trim + collapse spaces) · `punctuation` (equal after lower-case and removing non-alphanumerics) · `expanded_or_trimmed` (one lower-cased name contains the other) · `different` |
+| `name_change_kind` | NULL if not `name_changed`; else first match: `added` (NULL→value); `removed` (value→NULL); `case_or_spacing` (equal after lower-case + trim + collapse spaces); `punctuation` (equal after lower-case and removing non-alphanumerics); `expanded_or_trimmed` (one lower-cased name contains the other); `different` |
 | `name_matches_brand` | `name_changed` AND lower(curr `name`) = lower(curr `brand_name`) |
 | `status_changed` | `operating_status` IS DISTINCT FROM |
 | `confidence_to_zero` | curr `confidence` = 0 AND prev `confidence` IS DISTINCT FROM 0 |
@@ -200,11 +200,12 @@ exclusion share per reason, change counts, changelog mismatches. Threshold chang
 `[source: overture]`: a source without an oracle leaves them null.
 
 ## 6. Run behaviour and failure rules `[generic]`
-- `geotrustops build` (config → raw → out). Exit `2` and **nothing written** on: missing input file; 0 rows;
+- `geotrustops build` reads the config and the raw extracts and writes the outputs. Exit `2` and **nothing written** on: missing input file; 0 rows;
   required column missing (the list is `[source: overture]`: `id`, `geometry`, `names`, `taxonomy`,
   `basic_category`, `confidence`, `sources`);
   excluded rows > `max_excluded_share` (5%) of a release; any reconciliation identity false.
-- Outputs are staged and swapped in only after all checks pass. Rerun with same inputs/config → byte-identical outputs.
+- Outputs are staged and swapped in only after all checks pass. A rerun with the same inputs and config gives
+  byte-identical outputs.
 - If the swap itself fails (for example a locked file), the previous outputs are moved back and the run exits `2`;
   the previous outputs stay in place. If moving them back fails too, the error names `<out>.previous`, where they
   are; later runs refuse to start until they are restored, so the only copy is never deleted.

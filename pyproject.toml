@@ -13,7 +13,7 @@ readme = "README.md"
 requires-python = ">=3.12"
 license = { text = "MIT" }
 authors = [{ name = "Daniel Jooste" }]
-# Pinned exactly: the reference project's tests broke across DuckDB versions.
+# Pinned exactly: an earlier prototype's tests broke across DuckDB versions (docs/engineering_review_log.md, item 1).
 dependencies = ["duckdb==1.4.2"]
 
 [project.urls]

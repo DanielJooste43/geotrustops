@@ -1,6 +1,6 @@
-# ADR 0005 — Rename the project to GeoTrustOps
+# ADR 0005: Rename the project to GeoTrustOps
 
-**Status:** accepted · 2026-11-23
+**Status:** accepted; 2026-11-23
 
 ## Context
 The original working name, "MapPulse", is already used by other products. The project needed a distinct name

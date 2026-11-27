@@ -1,11 +1,11 @@
-# ADR 0002 — Rule review: thresholds, renames, fields, boundary, failure rate, date range
+# ADR 0002: Rule review: thresholds, renames, fields, boundary, failure rate, date range
 
 
 **Status:** accepted and implemented in contract v0.3 / pipeline 0.3.0 (2026-11-23).
 Follow-on under the same principle (format ≠ content), on new evidence: phone E.164 normalisation, and
-`address_format_only` generalised to `format_only_changed` (see contract §1, §3). · **Date:** 2026-11-23
+`address_format_only` generalised to `format_only_changed` (see contract §1, §3).; **Date:** 2026-11-23
 Evidence: real pinned extracts (AOI ids), Overture changelogs 2026-06 → 2026-11, Overture schema docs.
-Each section: proposed change → evidence → verdict (agree / partly / disagree) → proposal.
+Each section gives the proposed change, the evidence, a verdict (agree / partly / disagree) and a proposal.
 
 ---
 
@@ -19,7 +19,7 @@ Each section: proposed change → evidence → verdict (agree / partly / disagre
   (entrance, centroid, geocode) or any positional accuracy (schema + Places guide, read 2026-11-23).
 - No POI positional-accuracy standard was found. ISO 19157 defines positional accuracy as *fitness for
   use* against a reference, not a universal metre value.
-- Real distances, 5,507 matched ids: ≤1 m 5,188 · 1–5 m 23 · 5–10 m 34 · 10–25 m 84 · 25–100 m 108 · >100 m 70.
+- Real distances, 5,507 matched ids: ≤1 m 5,188; 1–5 m 23; 5–10 m 34; 10–25 m 84; 25–100 m 108; >100 m 70.
 - By top-level category, share of matched places moving >5 m ranges 2.8%–13.7%, but the moving
   groups are small (14–56 places), too few to set per-category thresholds.
 
@@ -35,7 +35,7 @@ Each section: proposed change → evidence → verdict (agree / partly / disagre
   not that it got better.
 
 **Proposal (v0.3):** keep one *material* threshold (25 m) for `moved`; add a reported **move band** on every
-matched id: `stable ≤5 m` · `minor 5–25 m` · `material 25–100 m` · `major >100 m`; add change type
+matched id: `stable ≤5 m`, `minor 5–25 m`, `material 25–100 m`, `major >100 m`; add change type
 **`shifted`** (5–25 m, no attribute change) so minor moves are visible and filterable. Thresholds stay in config.
 
 ## 2. Cosmetic renames
@@ -52,8 +52,8 @@ are improvements.
 improvements.** The data show renames that look worse as often as better; judging quality needs a reference.
 
 **Proposal:** replace `name_cosmetic_only` with **`name_change_kind`**, defined by edit type, not quality:
-`case_or_spacing` · `punctuation` (equal after removing non-alphanumerics) · `expanded_or_trimmed` (one contains
-the other) · `different` · `added` / `removed` (NULL ↔ value). All still count as `attribute_changed`.
+`case_or_spacing`; `punctuation` (equal after removing non-alphanumerics); `expanded_or_trimmed` (one contains
+the other); `different`; `added` / `removed` (NULL ↔ value). All still count as `attribute_changed`.
 Optional flag `name_matches_brand` (new name equals `brand.names.primary`) to support the brand-alignment reading.
 
 ## 3. Which fields are compared; mandatory vs optional; confidence, basic_category
