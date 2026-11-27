@@ -1,0 +1,28 @@
+name: Bug report
+description: Something in the pipeline, the outputs or the web map does not work as documented.
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you did, what you expected, and what happened instead.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: How to reproduce
+      description: Commands, configuration or the map view and record involved. Paste error messages as text.
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: The version in `pyproject.toml` (or `pipeline_version` in `out/summary.json`), or the pipeline version in the map's provenance panel.
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: Operating system and Python version, or browser and device for the web map.
