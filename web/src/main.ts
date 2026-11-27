@@ -268,7 +268,8 @@ function renderClusterInspector(c: StackCluster, triage: Triage): void {
   body.append(el("h3", undefined, `Place IDs (${c.size})`));
   const list = el("ul", "ids mono");
   for (const id of c.ids.slice(0, 8)) list.append(el("li", undefined, id));
-  if (c.size > 8) list.append(el("li", undefined, `and ${c.size - 8} more (in the downloadable database)`));
+  // The remaining ids are not counted here: the browser shows numbers from the files only (ADR 0004).
+  if (c.size > 8) list.append(el("li", undefined, "… the full list is in the downloadable database"));
   body.append(list);
   body.append(el("p", "note small", triage.interpretation));
   const notice = el("p", "note small");
@@ -494,7 +495,7 @@ async function main(): Promise<void> {
     // divider shows the earlier release's.
     const swipe = new Swipe(map, style, changes, summary, images, {
       overlay: $("swipe"), grip: $("swipe-grip"), labelBefore: $("swipe-label-before"), labelAfter: $("swipe-label-after"),
-    });
+    }, showNotice);
 
     // Selection markers go to both maps: on the left of the swipe divider the earlier-release map covers the main one.
     const setSelection = (src: SelectionSource, data: FeatureCollection) => {
@@ -530,8 +531,12 @@ async function main(): Promise<void> {
         if (selected !== id) return; // another record was chosen meanwhile
         drawRecordHistory(tl, id);
       }).catch((e: unknown) => {
-        // History is optional: the record's details stay; the History view's status line explains the failure.
+        // History is optional: the record's details stay, and the panel says the history is missing rather than
+        // looking like a record without one. Selecting the record again retries the load.
         console.warn("record history not loaded:", e);
+        if (selected !== id) return;
+        const why = e instanceof ContractError ? "it does not match this map's data" : "it could not be loaded";
+        $("inspector-body").append(el("p", "note small", `Position by release is unavailable: ${why}. Select the record again to retry.`));
       });
     };
 

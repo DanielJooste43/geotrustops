@@ -151,6 +151,11 @@ function checkFeature(f: unknown, i: number): ChangeFeature {
   need(!hasCurr || isLonLat(p.curr_lon, p.curr_lat), `${at}: current position incomplete or out of range`);
   need(hasPrev === (p.change_type !== "added") && hasCurr === (p.change_type !== "removed"),
     `${at}: positions present do not fit change_type ${String(p.change_type)}`);
+  // distance_m and move_band exist for every matched id and only for them (§3): null for added and removed.
+  const matched = p.change_type !== "added" && p.change_type !== "removed";
+  need((p.distance_m !== null) === matched && (p.move_band !== null) === matched,
+    `${at}: distance_m and move_band must be set exactly for matched records`);
+  need(p.distance_m === null || (p.distance_m as number) >= 0, `${at}: distance_m must not be negative`);
   const [sideLon, sideLat] = p.change_type === "removed" ? [p.prev_lon, p.prev_lat] : [p.curr_lon, p.curr_lat];
   need(lon === sideLon && lat === sideLat, `${at}: point is not at the position its change type is drawn at`);
   return f as unknown as ChangeFeature;
@@ -276,8 +281,12 @@ export interface Triage {
 export function parseTriage(raw: unknown): Triage {
   need(isObject(raw), "triage: not an object");
   need(raw.schema_version === 1, `triage: schema ${String(raw.schema_version)}, map supports 1`);
-  need(raw.licence === "ODbL-1.0" && typeof raw.licence_uri === "string", "triage: ODbL licence notice missing");
-  need(typeof raw.attribution === "string" && typeof raw.release === "string", "triage: attribution/release missing");
+  // The licence link is used as a link target: only an https address is accepted.
+  need(raw.licence === "ODbL-1.0" && typeof raw.licence_uri === "string" && raw.licence_uri.startsWith("https://"),
+    "triage: ODbL licence notice missing");
+  need(isText(raw.attribution) && isText(raw.release), "triage: attribution/release missing");
+  need(isText(raw.interpretation), "triage: interpretation missing");
+  need(isNum(raw.cluster_rule_m) && raw.cluster_rule_m > 0, "triage: cluster_rule_m must be a positive number");
   need(isObject(raw.inputs_sha256) && typeof raw.inputs_sha256.places === "string", "triage: inputs_sha256 missing");
   need(Array.isArray(raw.clusters), "triage: clusters missing");
   need(raw.cluster_count === raw.clusters.length, "triage: cluster_count does not match the clusters listed");
@@ -285,7 +294,8 @@ export function parseTriage(raw: unknown): Triage {
   raw.clusters.forEach((c: unknown, i: number) => {
     const at = `clusters[${i}]`;
     need(isObject(c), `${at}: not an object`);
-    need(typeof c.lon === "number" && typeof c.lat === "number", `${at}: centre missing`);
+    need(isLonLat(c.lon, c.lat), `${at}: centre missing or out of range`);
+    need(typeof c.also_duplicates === "boolean", `${at}: also_duplicates must be boolean`);
     need(typeof c.likely_cause === "string" && c.likely_cause.length > 0, `${at}: likely_cause missing`);
     need(c.manual_inspection === true, `${at}: every cluster must be flagged for manual inspection`);
     need(Array.isArray(c.ids) && c.ids.every((x) => typeof x === "string"), `${at}: ids must be strings`);
@@ -367,10 +377,10 @@ export function parseTimeline(raw: unknown): Timeline {
   releases.forEach((r, i) => {
     need(isObject(r) && typeof r.release === "string" && typeof r.changes_published === "boolean",
       `timeline releases[${i}]: release or changes_published missing`);
-    for (const k of TIMELINE_KINDS) {
-      need(typeof r[k] === "number", `timeline releases[${i}]: ${k} count missing`);
-      total += r[k] as number;
+    for (const k of [...TIMELINE_KINDS, "first_seen_without_added"]) {
+      need(isCount(r[k]), `timeline releases[${i}]: ${k} must be a count`);
     }
+    for (const k of TIMELINE_KINDS) total += r[k] as number;
     need(i === 0 || (releases[i - 1] as { release: string }).release < r.release, "timeline: releases not oldest first");
   });
   need(total === raw.events.length, "timeline: per-release counts do not add up to the events listed");
@@ -385,11 +395,19 @@ export function parseTimeline(raw: unknown): Timeline {
     need(typeof lon === "number" && typeof lat === "number", `${at}: position missing`);
     const moved = TIMELINE_KINDS[kind as number] === "position_changed";
     if (moved) {
-      need(Number.isInteger(fromRel) && (fromRel as number) < (rel as number) && typeof fromLon === "number"
+      need(Number.isInteger(fromRel) && (fromRel as number) >= 0 && (fromRel as number) < (rel as number) && typeof fromLon === "number"
         && typeof fromLat === "number" && typeof dist === "number", `${at}: a position change needs its from position`);
     } else {
       need(fromRel === null && fromLon === null && fromLat === null && dist === null, `${at}: only position changes have a from position`);
     }
+  });
+  // Each displayed per-release count must equal the events listed for that release and kind, not only in total.
+  const perRelease = releases.map(() => TIMELINE_KINDS.map(() => 0));
+  for (const e of raw.events as number[][]) perRelease[e[0]!]![e[1]!]! += 1;
+  releases.forEach((r, i) => {
+    TIMELINE_KINDS.forEach((k, j) => {
+      need((r as Json)[k] === perRelease[i]![j], `timeline releases[${i}]: ${k} count does not match its events`);
+    });
   });
   return raw as unknown as Timeline;
 }

@@ -53,7 +53,8 @@ ATTRIBUTION = (
     "(Copyright 2024 Foursquare Labs, Inc. All rights reserved.), AllThePlaces and other Overture sources."
 )
 # Changelogs before 2026-03-18.0 lack columns_changed. Extracts share their path with the build's changelog
-# extract, so a release whose changelog has the column keeps the build's exact column set (contract §10).
+# extract, so a release whose changelog has the column keeps the build's exact column set (§10 columns plus
+# `bbox`, which the timeline reads for positions, §12).
 LEGACY_SELECT = "id, change_type, bbox"
 EARTH_RADIUS_M = 6_371_008.8
 
@@ -314,7 +315,8 @@ def build_timeline(cfg: Config, inputs: list[TimelineInput], min_step_m: float) 
 
 
 def write_timeline(doc: dict[str, Any], out_dir: Path) -> Path:
-    """Write deterministically: sorted top-level keys, one id and one event per line, LF newlines."""
+    """Write deterministically: top-level keys sorted, except `ids` and `events`, which come last; one id and one
+    event per line; LF newlines."""
     out_dir.mkdir(parents=True, exist_ok=True)
     path = out_dir / "timeline.json"
     head = {k: v for k, v in doc.items() if k not in ("events", "ids")}

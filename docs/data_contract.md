@@ -163,7 +163,8 @@ choice, not a claim that nothing else changed.
 Stage C classification they check (identities counted from the classified table would pass even when an id
 is dropped; proven by fault-injection tests). Grain of every set: one distinct id.
 
-1. `R_side = V_side + X_side` per release (rows = valid + excluded).
+1. `R_side = V_side + X_side` per release (rows = valid + excluded). `R_side` is counted from the source file
+   itself, so a row lost before Stage B fails this identity.
 2. distinct non-empty source ids (B) = **distinct** classified ids (C), and classified rows = distinct classified
    ids (one row per id; catches a substituted id that keeps the row count).
 3. study population (B: ids with a valid in-AOI row, ∪ excluded ids located in or unlocatable relative to the AOI)
@@ -205,7 +206,10 @@ exclusion share per reason, change counts, changelog mismatches. Threshold chang
   excluded rows > `max_excluded_share` (5%) of a release; any reconciliation identity false.
 - Outputs are staged and swapped in only after all checks pass. Rerun with same inputs/config → byte-identical outputs.
 - If the swap itself fails (for example a locked file), the previous outputs are moved back and the run exits `2`;
-  the previous outputs stay in place.
+  the previous outputs stay in place. If moving them back fails too, the error names `<out>.previous`, where they
+  are; later runs refuse to start until they are restored, so the only copy is never deleted.
+- Any other failure to read an input or write an output (an unreadable or wrongly typed file, a corrupt manifest,
+  a full disk) also exits `2` with a one-line message.
 - Exit `2` when an archive download or release listing fails, stalls past the network timeout (60 s without data),
   or returns a listing in an unexpected shape.
 - **Exception, run history:** `runs/history.jsonl` is updated after the outputs are in place, by writing a temporary
@@ -313,7 +317,8 @@ against its manifest (release, extraction bbox, SHA-256) before use.
 - **Top level:** `schema_version`, `aoi`, `min_step_m`, `method`, `interpretation`, `kinds`, `event_fields`,
   `releases`, `ids` (sorted), `events`, `event_count`, `inputs_sha256` (per release), `licences`, `attribution`.
   **No names or other place attributes.**
-- **Determinism:** events sorted by `release_index`, kind, id; sorted top-level keys; one id and one event per line;
+- **Determinism:** events sorted by `release_index`, kind, id; top-level keys sorted, except `ids` and `events`, which
+  come last; one id and one event per line;
   UTF-8, `
 `, no timestamps. The same inputs give byte-identical output.
 - **Licence:** Overture states no licence for the changelog; its content is Places data, and the source of an old

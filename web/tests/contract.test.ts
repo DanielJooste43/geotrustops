@@ -80,11 +80,18 @@ describe("parseChanges rejects malformed input", () => {
     expect(() => parseChanges(collection([feature(added)]))).toThrow(/do not fit/); // added with a previous position
     const ok = props({ change_type: "added", distance_m: null, move_band: null, prev_lon: null, prev_lat: null });
     expect(parseChanges(collection([feature(ok)])).features).toHaveLength(1);
-    const removed = props({ change_type: "removed", curr_lon: null, curr_lat: null });
+    const removed = props({ change_type: "removed", curr_lon: null, curr_lat: null, distance_m: null, move_band: null });
     expect(parseChanges(collection([feature(removed, [removed.prev_lon, removed.prev_lat])])).features).toHaveLength(1);
     expect(() => parseChanges(collection([feature(props({ curr_lon: null, curr_lat: null }), [28.18, -25.74])])))
       .toThrow(/do not fit/); // a move with no current position
     expect(() => parseChanges(collection([feature(props({ curr_lat: null }), [28.1803, -25.7402])]))).toThrow(/incomplete/);
+  });
+  it("ties distance_m and move_band to matched records", () => {
+    expect(() => parseChanges(collection([feature(props({ distance_m: null }))]))).toThrow(/matched records/);
+    expect(() => parseChanges(collection([feature(props({ move_band: null }))]))).toThrow(/matched records/);
+    const added = props({ change_type: "added", prev_lon: null, prev_lat: null, move_band: null });
+    expect(() => parseChanges(collection([feature(added)]))).toThrow(/matched records/); // added with a distance
+    expect(() => parseChanges(collection([feature(props({ distance_m: -1 }))]))).toThrow(/negative/);
   });
   it("rejects a point drawn away from its change type's position", () => {
     expect(() => parseChanges(collection([feature(props(), [28.18, -25.74])]))).toThrow(/drawn at/); // moved at prev
@@ -226,6 +233,14 @@ describe("parseTriage", () => {
     expect(() => checkTriageMatchesRun(parseTriage(doc({ release: "older" })), run)).toThrow(/release/);
     expect(() => checkTriageMatchesRun(parseTriage(doc({ inputs_sha256: { places: "x" } })), run)).toThrow(/extract/);
   });
+  it("accepts only an https licence link and checks the fields it shows", () => {
+    expect(() => parseTriage(doc({ licence_uri: "javascript:alert(1)" }))).toThrow(/ODbL/);
+    expect(() => parseTriage(doc({ licence_uri: "http://opendatacommons.org/licenses/odbl/1-0/" }))).toThrow(/ODbL/);
+    expect(() => parseTriage(doc({ cluster_rule_m: undefined }))).toThrow(/cluster_rule_m/);
+    expect(() => parseTriage(doc({ interpretation: "" }))).toThrow(/interpretation/);
+    expect(() => parseTriage(doc({ clusters: [{ ...cluster, also_duplicates: "no" }] }))).toThrow(/also_duplicates/);
+    expect(() => parseTriage(doc({ clusters: [{ ...cluster, lat: -95 }] }))).toThrow(/centre/);
+  });
   it("rejects totals that do not match the clusters", () => {
     expect(() => parseTriage(doc({ clustered_places: 5 }))).toThrow(/clustered_places/);
   });
@@ -281,6 +296,20 @@ describe("parseTimeline", () => {
     expect(() => parseTimeline(tl({ releases: [rel("2026-01-01.0", { added: 2 }), rel("2026-02-01.0", { position_changed: 1 })] })))
       .toThrow(/add up/);
     expect(() => parseTimeline(tl({ event_count: 3 }))).toThrow(/event_count/);
+  });
+  it("checks each release's counts against its own events, not only the total", () => {
+    // Totals still add up (1 + 1 = 2), but release 1 claims the add and release 2 the move the other way round.
+    const swapped = tl({ releases: [rel("2026-01-01.0", { position_changed: 1 }), rel("2026-02-01.0", { added: 1 })] });
+    expect(() => parseTimeline(swapped)).toThrow(/does not match its events/);
+    // +1 and -1 must not cancel out.
+    const signed = tl({ releases: [rel("2026-01-01.0", { added: 2 }), rel("2026-02-01.0", { position_changed: 1, removed: -1 })] });
+    expect(() => parseTimeline(signed)).toThrow(/must be a count/);
+    expect(() => parseTimeline(tl({ releases: [rel("2026-01-01.0", { added: 1, first_seen_without_added: undefined }),
+      rel("2026-02-01.0", { position_changed: 1 })] }))).toThrow(/first_seen_without_added/);
+  });
+  it("rejects a move that starts before the first release", () => {
+    expect(() => parseTimeline(tl({ events: [[0, 0, 0, 0.5, 0.5, null, null, null, null], [1, 2, 0, 0.6, 0.5, -1, 0.5, 0.5, 10.1]] })))
+      .toThrow(/from position/);
   });
   it("rejects releases out of order and indexes out of range", () => {
     expect(() => parseTimeline(tl({ releases: [rel("2026-02-01.0", { added: 1 }), rel("2026-01-01.0", { position_changed: 1 })] })))
