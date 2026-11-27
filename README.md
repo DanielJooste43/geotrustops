@@ -29,7 +29,7 @@ as changed** (`data_changed`). Most of that is not a change anyone needs to revi
 |---|---|
 | Overture's changelog marks as changed | 4,721 |
 | **Material changes** found by GeoTrustOps (moved more than 25 m, or renamed / recategorised) | **227** (3.8% of the 5,967 place records in the study area across both releases) |
-| Minor moves (5–25 m), reported separately | 109 |
+| Shifted 5–25 m without a rename or recategorisation, reported separately | 109 |
 | Address changes that were only a reformatted province code (`GP` became `ZA-GP`) | 4,450 |
 | Phone changes that were only a reformatted number (local to international, `+27…`) | 314 |
 
@@ -47,7 +47,7 @@ checks. An *excluded* record is set aside with a reason (no id, a duplicate id, 
 
 ```mermaid
 flowchart LR
-  S3[("Overture S3<br/>2 pinned releases")] --> X["extract study area<br/>+ 1 km buffer"]
+  S3[("Overture S3<br/>2 pinned releases")] --> X["extract study area<br/>+ ~1 km buffer"]
   X --> N[normalise] --> V["validate<br/>(exclusion reasons)"]
   V --> M["match by stable id"] --> C[classify]
   C --> R{"reconcile<br/>10 count checks"}
@@ -114,7 +114,8 @@ A second release pair: `geotrustops build --config config/pair_sep_oct.json`.
 Inspect any record against the raw data: `python scripts/lookup_id.py <overture-id>`.
 
 **Coordinates and units:** WGS 84 longitude/latitude (EPSG:4326) throughout; distances in metres by the haversine
-formula on a 6,371 km sphere, accurate to well under a metre at these distances ([data contract §3](docs/data_contract.md)).
+formula on a 6,371 km sphere: within about 0.5% of the ellipsoidal distance, so about 0.1 m near the 25 m threshold
+and about 2 m for the largest moves of about 400 m ([data contract §3](docs/data_contract.md)).
 
 ## Reproducibility
 
@@ -193,7 +194,8 @@ What each of these caught is in [`docs/engineering_review_log.md`](docs/engineer
 | `src/geotrustops/` | the pipeline: `extract`, `pipeline` (SQL in DuckDB; each table states its row grain), `export`, `timeline`, `cli` |
 | `tests/` | unit, pipeline, contract, golden-record and real-data tests |
 | `config/` | study area, release pairs and timeline settings (no secrets) |
-| `out/`, `out_pairs/`, `out_timeline/`, `out_triage/` | committed outputs, rebuilt byte for byte by the commands above |
+| `out/`, `out_pairs/` | committed change outputs; rebuilt byte for byte from the archived extracts and compared by the real-data workflow |
+| `out_timeline/`, `out_triage/` | committed history and quality-flag outputs; deterministic from their inputs, which are not archived (the 29 changelogs and the context layers), so they can be rebuilt only while Overture serves those inputs |
 | `web/` | the web map (TypeScript, MapLibre GL JS); reads the committed outputs only |
 | `scripts/investigate/` | the stacked-place triage and the investigations behind it |
 | `scripts/history/` | the first feasibility probes, kept as a record of how the project started (not part of the pipeline) |
