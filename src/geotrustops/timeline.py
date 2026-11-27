@@ -101,6 +101,12 @@ def _partitions(con: duckdb.DuckDBPyConnection, uri: str) -> list[str]:
         {"uri": uri},
     ).fetchall()
     found = [str(r[0]) for r in rows if r[0]]
+    if not found:
+        # An empty listing usually means the release is no longer on S3 (kept at most 60 days), not that Overture
+        # published nothing; recording it would label the release "no change sets published".
+        raise TimelineError(
+            f"{uri}: no change_type partitions found; refusing to record an empty listing"
+        )
     unknown = sorted(set(found) - set(CHANGE_SETS))
     if unknown:
         raise ExtractError(f"{uri}: unexpected change_type partitions {unknown}")

@@ -14,7 +14,7 @@ from pathlib import Path
 
 from geotrustops import __version__
 from geotrustops.config import Config, ConfigError, load_config
-from geotrustops.export import write_outputs
+from geotrustops.export import ExportError, write_outputs
 from geotrustops.extract import ExtractError, changelog_path, fetch, release_path, verify_manifest
 from geotrustops.pipeline import PipelineError, Result, run
 from geotrustops.timeline import (
@@ -118,12 +118,20 @@ def _record_history(result: Result, cfg: Config, path: Path) -> None:
     }
     lines = {}
     if path.exists():
-        for line in path.read_text(encoding="utf-8").splitlines():
+        for n, line in enumerate(path.read_text(encoding="utf-8").splitlines(), start=1):
             if line.strip():
-                lines[json.loads(line)["key"]] = line
+                try:
+                    lines[json.loads(line)["key"]] = line
+                except (json.JSONDecodeError, KeyError, TypeError) as exc:
+                    raise ExportError(
+                        f"{path}:{n}: unreadable run-history line ({exc}); outputs were written, history not updated"
+                    ) from exc
     lines[key] = json.dumps(entry, ensure_ascii=False)
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text("".join(lines[k] + "\n" for k in sorted(lines)), encoding="utf-8", newline="\n")
+    # Write a temporary file and replace it: an interrupted write never truncates the existing history.
+    tmp = path.with_name(path.name + ".tmp")
+    tmp.write_text("".join(lines[k] + "\n" for k in sorted(lines)), encoding="utf-8", newline="\n")
+    tmp.replace(path)
 
 
 def _timeline(args: argparse.Namespace, cfg: Config) -> int:
@@ -165,7 +173,7 @@ def main(argv: list[str] | None = None) -> int:
         write_outputs(result, out)
         if not args.no_history:
             _record_history(result, cfg, args.history)
-    except (ConfigError, ExtractError, PipelineError, TimelineError) as exc:
+    except (ConfigError, ExportError, ExtractError, PipelineError, TimelineError) as exc:
         print(f"geotrustops: FAILED: {exc}", file=sys.stderr)
         return 2
     s = result.summary

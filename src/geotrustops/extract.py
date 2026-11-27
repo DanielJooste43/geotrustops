@@ -45,6 +45,10 @@ Source = Literal["auto", "s3", "archive"]
 AssetFetcher = Callable[[str, Path], None]
 
 
+# Seconds without data before an archive request is abandoned (per socket operation, not per download).
+NETWORK_TIMEOUT_S = 60
+
+
 class ExtractError(RuntimeError):
     """A download produced no rows, failed, or a manifest does not match its file."""
 
@@ -166,17 +170,29 @@ def github_asset_fetcher(repo: str, tag: str, token: str) -> AssetFetcher:
             if not assets:
                 api = f"https://api.github.com/repos/{repo}/releases/tags/{tag}"
                 listing = _request(api, token, "application/vnd.github+json")
-                with urllib.request.urlopen(listing) as r:  # noqa: S310 - HTTPS checked in _request
+                with urllib.request.urlopen(listing, timeout=NETWORK_TIMEOUT_S) as r:  # noqa: S310 - HTTPS checked
                     assets.update({a["name"]: a["url"] for a in json.load(r)["assets"]})
             if name not in assets:
                 raise ExtractError(f"archive release {tag} has no asset {name}")
             download = _request(assets[name], token, "application/octet-stream")
-            with urllib.request.urlopen(download) as r, dest.open("wb") as f:  # noqa: S310
+            with (
+                urllib.request.urlopen(download, timeout=NETWORK_TIMEOUT_S) as r,  # noqa: S310 - HTTPS checked
+                dest.open("wb") as f,
+            ):
                 shutil.copyfileobj(r, f)
         except urllib.error.HTTPError as exc:  # the message never contains the token
             raise ExtractError(f"archive download of {name} failed: HTTP {exc.code}") from exc
-        except (urllib.error.URLError, OSError) as exc:
+        except (
+            urllib.error.URLError,
+            OSError,
+        ) as exc:  # includes a timeout (TimeoutError is an OSError)
             raise ExtractError(f"archive download of {name} failed: {exc}") from exc
+        except (
+            KeyError,
+            TypeError,
+            ValueError,
+        ) as exc:  # release listing not in the expected shape
+            raise ExtractError(f"archive release {tag}: unexpected listing ({exc})") from exc
 
     return _get
 
