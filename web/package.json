@@ -1,7 +1,7 @@
 {
   "name": "geotrustops-web",
   "private": true,
-  "version": "0.5.0",
+  "version": "1.0.0",
   "description": "Web map for GeoTrustOps: reads the pipeline's exported files only (ADR 0004).",
   "license": "MIT",
   "type": "module",

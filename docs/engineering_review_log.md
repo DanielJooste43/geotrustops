@@ -21,6 +21,11 @@ each other, not from any single suite being green.
 | 11 | Inspection tool compared the wrong release pair | **manual check** of output against intent | no |
 | 12 | `count_if` returned NULL; a config file with a UTF-8 BOM was rejected | unit tests | yes |
 | 13 | "79% of places changed" was mostly format migrations | **investigating the oracle's own numbers** | n/a (a finding, not a defect) |
+| 14 | A failed output swap could leave no outputs at all | **read-only audit** of failure paths | **no** |
+| 15 | The map would show "Counts reconcile" for an empty reconciliation section | **read-only audit** of the map's input checks | **no** |
+| 16 | A basemap that answered and then stalled left a blank page with no message | **read-only audit**, then a browser test with a stalled response | **no** |
+| 17 | The row identity could agree with itself: rows in were counted from the pipeline's own table | **whole-codebase review** against the contract | **no**: the identity held by construction |
+| 18 | A flag defined as true or false was null in published outputs (27 + 42 records) | **whole-codebase review**, confirmed on the real outputs | **no**: fixtures always had a brand |
 
 ## Details
 
@@ -98,15 +103,51 @@ code (`GP` → `ZA-GP`) and 314 only their phone format (local → E.164); Sep �
 real address and phone change rates are similar in both pairs; the one genuine November spike is website removals.
 **Change:** normalisation plus `format_only_changed`, so migrations are reported separately from content changes.
 
+### 14. A failed output swap could leave no outputs (audit)
+Outputs are written to a staging folder and swapped in. If the second rename failed (for example a locked file), the
+previous outputs had already been moved aside and were never put back.
+**Fix:** the previous outputs are moved back before the error is raised; if that fails too, the error names where
+they are and later runs refuse to start until they are restored (contract §6).
+**Tests:** `test_a_failed_swap_keeps_the_previous_outputs`, `test_a_failed_restore_names_the_previous_outputs_and_later_runs_keep_them`.
+
+### 15. "Counts reconcile" with nothing to reconcile (audit)
+The map showed the reconciliation tick when every identity in `summary.json` held, and "every" is true of an empty
+list. It also trusted other summary fields it displayed without checking them.
+**Fix:** the map's adapter validates every summary field it reads and requires at least one identity with a boolean
+result; both files must describe the same run, down to the changelog checksum and per-type counts.
+**Tests:** `web/tests/contract.test.ts` (`parseSummary`, `checkSameRun`): 13 of the new cases failed on the old adapter.
+
+### 16. A blank page instead of a fallback (audit + browser test)
+The basemap timeout stopped once the response headers arrived. A provider that then stalled the body held the page
+blank, with no notice, indefinitely; other map errors were dropped.
+**Fix:** the timeout covers the whole response; every map error is logged and shown.
+**Test:** a browser run with a stalled style response: fallback and notice after 8.2 s (before: still blank at 20 s).
+
+### 17. An identity that agreed with itself (whole-codebase review)
+Identity 1 (`rows = valid + excluded`) counted *rows* from the same Stage B table as its right-hand side. A row lost
+while normalising would have shrunk both sides, and the run would have passed. This is item 5 again, one stage earlier.
+**Fix:** rows are counted from the source file itself (contract §4).
+**Test:** `test_a_row_lost_before_stage_b_fails_the_row_identity` drops one row during normalisation: it passed
+silently before the fix.
+
+### 18. A null where the contract says true or false (whole-codebase review)
+`name_matches_brand` compared the new name with the brand; with no brand, the comparison was NULL, so 27 matched
+records (Oct → Nov) and 42 (Sep → Oct) were published with `null`. Contract §3 allows NULL flags only for unmatched
+records. **Fix:** no brand or no name counts as no match (`false`); both release pairs rebuilt, and only those values
+changed. **Test:** `test_name_matches_brand_is_false_not_null_when_the_brand_is_missing`.
+
 ## Practices this supports
 1. Re-run inherited and remembered claims in the current environment (1, 10).
 2. Validate against an independent external source (2).
 3. Write some tests from the specification alone, without reading the implementation (3, 4).
-4. Compute reconciliation baselines independently and prove them by injecting faults (5, 9).
+4. Compute reconciliation baselines independently and prove them by injecting faults (5, 9, 17).
 5. Bind values; never paste them into SQL (6).
 6. Research how the source produces a field before writing a rule about it (7).
 7. Check every "failed as expected" against the actual error message (a fixture that could not write NaN once
    produced a misleading failure; the real assertion was confirmed before the fix in item 8).
 8. Separate format migrations from content changes (13).
+9. Before a release, review the whole codebase against its contract, not only each change as it lands (17, 18).
+10. Test failure paths as deliberately as results: a failed run must leave the previous outputs, and a failed
+    page must say so (14, 15, 16).
 
 Design decisions and rejected alternatives are recorded in [`decisions/`](decisions/).
