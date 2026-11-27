@@ -49,7 +49,7 @@ max-line-length = 120      # embedded SQL and comments may run to 120; the forma
 # Tests use assert by design; their SQL is built from fixture-controlled paths.
 "tests/*" = ["S101", "S608"]
 # One-off feasibility probes query local extracts with SQL assembled from internal constants.
-"scripts/probe_*.py" = ["S608"]
+"scripts/history/probe_*.py" = ["S608"]
 
 [tool.mypy]
 strict = true

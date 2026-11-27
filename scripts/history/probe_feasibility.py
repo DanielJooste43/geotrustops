@@ -2,10 +2,10 @@
 
 Purpose: decide go/no-go from real numbers, before any pipeline or UI work.
 Inputs:  data/raw/places_<rel>.parquet from probe_extract.py
-Output:  printed metrics, and docs/feasibility_probe.json (machine-readable copy)
+Output:  printed metrics, and docs/history/feasibility_probe.json (machine-readable copy)
 
 Row grain of every per-release query: one Overture place record (id).
-Candidate change semantics follow the brief (illustrative 25 m move threshold,
+Candidate change semantics follow the initial plan (illustrative 25 m move threshold,
 NULL-safe attribute comparison). This is a feasibility probe, not the final
 pipeline: `src/geotrustops` rebuilds it with tests.
 """
@@ -17,7 +17,7 @@ from pathlib import Path
 
 import duckdb
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 PREV, CURR = "2026-10-21.0", "2026-11-18.0"
 MOVE_M = 25.0
 
@@ -170,6 +170,6 @@ out["comparison"] = {
 
 print(json.dumps(out, indent=2, default=str))
 (ROOT / "docs").mkdir(exist_ok=True)
-(ROOT / "docs" / "feasibility_probe.json").write_text(
+(ROOT / "docs" / "history" / "feasibility_probe.json").write_text(
     json.dumps(out, indent=2, default=str), "utf-8"
 )

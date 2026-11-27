@@ -8,7 +8,7 @@ each other, not from any single suite being green.
 
 | # | Defect | Found by | Would the implementation's own tests have caught it? |
 |---|---|---|---|
-| 1 | Reference project's "13 tests pass" was not reproducible (6 failed) | re-running inherited claims | n/a |
+| 1 | The earlier prototype's "13 tests pass" was not reproducible (6 failed) | re-running the prototype's claims | n/a |
 | 2 | Places crossing the study-area edge reported as 4 openings + 3 closures | **external oracle** (Overture changelog) | **no**: code and tests agreed with each other |
 | 3 | Crash on one non-point geometry among identically located points | **independent contract test** | **no**: the unit fixture happened not to trigger it |
 | 4 | Contradiction in the specification (`confidence` optional vs required) | **independent contract test** authoring | no |
@@ -24,8 +24,8 @@ each other, not from any single suite being green.
 
 ## Details
 
-### 1. Inherited test claims
-The reference implementation documented 13 passing tests. Re-running gave **6 failures on both DuckDB 1.1.3 and
+### 1. The prototype's test claims
+The earlier, unpublished prototype this project started from documented 13 passing tests. Re-running gave **6 failures on both DuckDB 1.1.3 and
 1.4.2**: positional `?` parameters (`COPY … TO ?` does not parse on 1.1.3; parameters bound in the wrong order on
 1.4.2), with an unpinned `duckdb>=1.1` dependency.
 **Fix:** named parameters throughout; DuckDB pinned to 1.4.2.

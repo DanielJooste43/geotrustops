@@ -5,7 +5,7 @@ Inputs:  public s3://overturemaps-us-west-2/release/<rel>/theme=places/type=plac
 Outputs: data/raw/places_<rel>.parquet  (all source columns, as delivered)
          data/raw/places_<rel>.manifest.json  (uri, bbox, rows, sha256, time)
 
-Adapted from open-map-quality-lake/src/omql/ingest/overture.py (bbox overlap
+Adapted from the extraction step of an earlier, unpublished prototype by the same author (bbox overlap
 filter with Parquet predicate pushdown, temp-file + rename, zero rows = error).
 
 Filter rule: a place is kept when its *point* lies inside the bbox (inclusive).
@@ -24,9 +24,9 @@ import duckdb
 
 BASE = "s3://overturemaps-us-west-2/release"
 RELEASES = ["2026-10-21.0", "2026-11-18.0"]
-# WGS84 lon/lat: west, south, east, north (central Pretoria, from the project brief)
+# WGS84 lon/lat: west, south, east, north (central Pretoria, the project's study area)
 WEST, SOUTH, EAST, NORTH = 28.168, -25.758, 28.205, -25.732
-OUT = Path(__file__).resolve().parents[1] / "data" / "raw"
+OUT = Path(__file__).resolve().parents[2] / "data" / "raw"
 
 
 def sha256(path: Path) -> str:
