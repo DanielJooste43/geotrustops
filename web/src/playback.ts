@@ -187,7 +187,7 @@ export class Playback {
     this.dom.label.append(
       strong,
       r.changes_published // zeros from an unpublished change set are not counts, so none are shown
-        ? ` · ${fmt.format(r.added)} added · ${fmt.format(r.removed)} removed · ${fmt.format(r.position_changed)} moved`
+        ? ` · ${fmt.format(r.added)} added · ${fmt.format(r.removed)} removed · ${fmt.format(r.position_changed)} position changes`
         : " · no changes published",
     );
     const notes: string[] = [];

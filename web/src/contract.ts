@@ -88,6 +88,8 @@ export interface Summary {
   changelog_check: {
     changelog_sha256: string | null;
     rules: Record<string, { checked: number; mismatches: number }>;
+    /** Overture's own changelog type for each considered id (e.g. data_changed); optional in older summaries. */
+    changelog_types_for_considered_ids?: Record<string, number>;
   } | null;
 }
 

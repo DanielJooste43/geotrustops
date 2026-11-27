@@ -272,13 +272,13 @@ address or supplier-release reconciliation.
 Overture publishes a **GERS changelog** with every release: for each place ID, one of `added`,
 `removed`, `data_changed`, `unchanged`, plus the list of columns that changed. So why build GeoTrustOps?
 
-**What the changelog says for our study area** (2026-11-18.0 vs previous, observed 2026-11-23):
+**What the changelog says for our study area** (2026-11-18.0 vs 2026-10-21.0; GeoTrustOps column from the current outputs):
 
 | Changelog type | Places | What GeoTrustOps says about the same places |
 |---|---|---|
-| `data_changed` | 4,720 (**~80%** of the area) | only 220 are material: 171 moved > 25 m, 49 renamed or recategorised |
+| `data_changed` | 4,721 (**~79%** of the area) | only 227 are material: 178 moved > 25 m, 49 renamed or recategorised |
 | ↳ columns: `addresses` only | 3,493 | not compared by GeoTrustOps (see open question below) |
-| ↳ includes `geometry` | 340+ | only 171 moved more than 25 m; the rest moved less |
+| ↳ includes `geometry` | 340+ | only 178 moved more than 25 m; the rest moved less |
 | `added` / `removed` | 232 / 228 | agree 1:1 (after the boundary fix) |
 | `unchanged` | 786 | agree: all unchanged |
 
@@ -333,9 +333,9 @@ is how data teams catch silent record loss.
 | `out/summary.json` | Release IDs, bbox, threshold, input counts, exclusions by reason, counts per change type and flag, reconciliation results, input file hashes | The map's metric cards; automated checks |
 | `out/qa_report.md` | The same numbers in readable form, the 10 largest moves, every excluded row | A human reviewer, the case study |
 
-**How to read them.** The outputs are a **review queue**, not a verdict. A sensible reading: "171 places
-moved more than 25 m between releases, mostly 25–100 m, with 17 over 300 m. The largest moves are
-where a reviewer should start." Not: "171 businesses relocated."
+**How to read them.** The outputs are a **review queue**, not a verdict. A sensible reading: "178 places
+moved more than 25 m between releases, mostly 25–100 m, with 21 over 300 m. The largest moves are
+where a reviewer should start." Not: "178 businesses relocated."
 
 **Design choices.**
 - *Deterministic:* same inputs → byte-identical files (sorted rows, rounded coordinates, no timestamps).
@@ -366,8 +366,8 @@ Every change is reviewed before merge, and reconciliation identities are tested 
 
 **Tools.** pytest · fault injection (monkeypatched SQL) · Git feature branches and pull requests · GitHub Actions.
 
-**What it demonstrates.** Verification beyond "the tests pass". The reference project this one started from
-documented "13 tests pass"; re-running them gave 6 failures on two DuckDB versions *(observed)*. Here, each
+**What it demonstrates.** Verification beyond "the tests pass". The earlier, unpublished prototype this project
+started from documented "13 tests pass"; re-running them gave 6 failures on two DuckDB versions *(observed)*. Here, each
 class of check catches a different class of error; `docs/engineering_review_log.md` lists the real defects each
 one found. The golden-record step is the same idea as a QA sampling plan: a manually verified sample the
 automated process must agree with.

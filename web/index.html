@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>GeoTrustOps — Geospatial Change Intelligence</title>
+    <title>GeoTrustOps — Change review and quality triage for map-data releases</title>
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Crect width=%2232%22 height=%2232%22 rx=%226%22 fill=%22%23080f19%22/%3E%3Cpath d=%22M3 16h7l3-8 5 16 4-12 2 4h5%22 fill=%22none%22 stroke=%22%232dd4bf%22 stroke-width=%222.5%22 stroke-linejoin=%22round%22/%3E%3C/svg%3E" />
     <meta name="description" content="What changed between two pinned Overture Maps places releases in central Pretoria, reconciled and checked." />
   </head>
@@ -15,10 +15,13 @@
         <svg class="mark" viewBox="0 0 32 20" aria-hidden="true"><path d="M1 10h7l3-8 5 16 4-12 2 4h9" /></svg>
         <div>
           <h1>GeoTrustOps</h1>
-          <p class="sub">Geospatial Change Intelligence</p>
+          <p class="sub">Change review and quality triage for map-data releases</p>
         </div>
       </div>
-      <p class="releases" id="releases" aria-live="polite">Loading releases…</p>
+      <div class="context">
+        <p class="releases" id="releases" aria-live="polite">Loading releases…</p>
+        <p class="headline" id="headline"></p>
+      </div>
       <nav class="top-actions" aria-label="Panels">
         <button type="button" data-panel="records">Records</button>
         <button type="button" data-panel="provenance">Provenance</button>
@@ -38,9 +41,9 @@
             <legend>View</legend>
             <div class="segmented" role="radiogroup" aria-label="Map view">
               <label><input type="radio" name="view" value="types" checked /> <span>Change types</span></label>
-              <label><input type="radio" name="view" value="overall" /> <span>Overall change</span></label>
-              <label><input type="radio" name="view" value="history" /> <span>History</span></label>
               <label><input type="radio" name="view" value="swipe" /> <span>Before / after</span></label>
+              <label><input type="radio" name="view" value="history" /> <span>History</span></label>
+              <label><input type="radio" name="view" value="overall" /> <span>Overall change</span></label>
             </div>
             <div class="overall-legend" id="overall-legend" hidden>
               <p class="legend-row"><span class="glow-swatch" aria-hidden="true"></span>
@@ -57,8 +60,10 @@
             </div>
             <div class="history-legend" id="history-legend" hidden>
               <p class="legend-row"><span class="glow-swatch" aria-hidden="true"></span>
-                Records added, removed or moved in the chosen release; the two releases before it fade out. Records
-                that moved are drawn with an amber core. Select a glow to see that record's positions by release.</p>
+                How stable are the records? Each release since July 2024, from Overture's changelogs: records added,
+                removed or with a changed position (any change of 1 m or more, not the 25 m "moved" class above). The
+                two releases before the chosen one fade out; position changes have an amber core. A record that keeps
+                changing position is worth a manual look. Select a glow to see its positions by release.</p>
               <label class="filter"><input type="checkbox" id="trails" checked />
                 <span class="trail-swatch" aria-hidden="true"></span> <span class="name">Movement trails</span></label>
               <p class="note small" id="history-status" aria-live="polite"></p>
@@ -96,6 +101,8 @@
             <p class="note small" id="interpretation"></p>
             <p class="note small">Counts are for the full study area, from the pipeline's summary. Filters change
               what the map shows, not the counts.</p>
+            <p class="note small">The dashed box is the study area. The few records drawn just outside it crossed the
+              boundary between the two releases: their other position is inside the box.</p>
           </details>
         </div>
       </aside>

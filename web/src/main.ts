@@ -96,9 +96,20 @@ function renderHeader(summary: Summary): void {
     Object.assign(el("strong"), { textContent: summary.releases.prev }),
     " → ",
     Object.assign(el("strong"), { textContent: summary.releases.curr }),
-    " · central Pretoria study area",
+    Object.assign(el("span", "wide-only"), { textContent: " · central Pretoria study area" }),
   );
   $("interpretation").textContent = summary.interpretation.replace(/!=/g, "≠");
+  // The headline finding, stated where a visitor lands: every number is read from summary.json, none is computed.
+  const flagged = summary.changelog_check?.changelog_types_for_considered_ids?.data_changed;
+  const h = $("headline");
+  if (flagged === undefined) { h.hidden = true; return; }
+  const c = summary.change_counts;
+  h.replaceChildren(
+    "Overture's changelog marks ", Object.assign(el("strong"), { textContent: fmt.format(flagged) }),
+    " places here as changed; this comparison finds ", Object.assign(el("strong"), { textContent: fmt.format(c.moved) }),
+    ` moved more than ${summary.thresholds_m.move} m and `, Object.assign(el("strong"), { textContent: fmt.format(c.attribute_changed) }),
+    " renamed or recategorised.",
+  );
 }
 
 function renderCounts(summary: Summary, symbols: Record<ChangeType, Symbol>): void {
@@ -248,7 +259,7 @@ function renderClusterInspector(c: StackCluster, triage: Triage): void {
   kv.append(el("dt", undefined, "Likely cause"), el("dd", undefined, c.likely_cause));
   if (c.also_duplicates) kv.append(el("dt", undefined, "Also"), el("dd", undefined, "contains duplicate records"));
   kv.append(el("dt", undefined, "Release"), el("dd", undefined, triage.release));
-  kv.append(el("dt", undefined, "Position"), el("dd", "mono", `${c.lon.toFixed(6)}, ${c.lat.toFixed(6)}`));
+  kv.append(el("dt", undefined, "Position"), el("dd", "mono", `lon ${c.lon.toFixed(6)}, lat ${c.lat.toFixed(6)}`));
   body.append(kv);
   body.append(el("h3", undefined, `Place IDs (${c.size})`));
   const list = el("ul", "ids mono");
@@ -276,7 +287,7 @@ function renderHistorySection(tl: Timeline, id: string): { points: [number, numb
     const li = el("li");
     const what = s.distance_m !== null ? `${label[s.kind]} ${s.distance_m} m` : label[s.kind];
     li.append(el("span", "mono", s.release), el("span", undefined, what),
-      el("span"), el("span", "meta mono", `${s.lon.toFixed(6)}, ${s.lat.toFixed(6)}`));
+      el("span"), el("span", "meta mono", `lon ${s.lon.toFixed(6)}, lat ${s.lat.toFixed(6)}`));
     list.append(li);
   }
   body.append(list);
@@ -322,7 +333,7 @@ async function main(): Promise<void> {
     checkTriageMatchesRun(parsed, summary); // never show flags from another release under this run's label
     triage = parsed;
     $("quality-count").textContent =
-      `${fmt.format(triage.cluster_count)} groups · ${fmt.format(triage.clustered_places)} places`;
+      `${fmt.format(triage.cluster_count)} groups · ${fmt.format(triage.clustered_places)} places · larger ring, more places`;
   } catch (e) {
     $<HTMLInputElement>("quality").disabled = true;
     $("quality-count").textContent = e instanceof ContractError ? "not available for this release" : "unavailable";

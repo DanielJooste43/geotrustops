@@ -11,8 +11,8 @@ One in-memory DuckDB database, a chain of tables:
     ids         grain: one distinct non-empty id            Stage C (match, classify, flags)
     changelog   grain: one changelog row                    §9 oracle (optional)
 
-Adapted from map-release-change-monitor/src/changemon/diff.py (FULL OUTER JOIN, IS DISTINCT FROM,
-haversine). Values are passed as *named* parameters ($name): the original positional `?` binding
+Adapted from the diff step of an earlier, unpublished prototype by the same author (FULL OUTER JOIN,
+IS DISTINCT FROM, haversine). Values are passed as *named* parameters ($name): the original positional `?` binding
 failed on DuckDB 1.1.3 and 1.4.2 (binding-order and parse errors).
 """
 
