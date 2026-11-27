@@ -111,6 +111,8 @@ export class Swipe {
     private readonly summary: Summary,
     private readonly images: SymbolImages,
     private readonly els: SwipeElements,
+    /** Shows a failure of the earlier-release map to the reader (it must never just look empty). */
+    private readonly report: (message: string) => void = () => {},
   ) {
     els.labelBefore.textContent = summary.releases.prev;
     els.labelAfter.textContent = summary.releases.curr;
@@ -151,7 +153,8 @@ export class Swipe {
     this.before?.getSource<GeoJSONSource>(source)?.setData(data);
   }
 
-  /** The record id under a screen point on the left of the divider, or null (right side: use the main map). */
+  /** The record id under a point left of the divider; null if no record is there; undefined on the right side or
+   * when the view is off (the main map decides). */
   beforeRecordAt(point: { x: number; y: number }): string | null | undefined {
     if (!this.visible || !this.before) return undefined;
     if (point.x >= this.dividerPx()) return undefined;
@@ -183,24 +186,39 @@ export class Swipe {
     before.setMissingStyleImageResolver((id) => {
       if (!before.hasImage(id)) before.addImage(id, { width: 1, height: 1, data: new Uint8Array(4) });
     });
+    // Errors on the earlier-release map are logged and shown: an empty left side would read as "nothing here".
+    before.on("error", (e) => {
+      const message = String(e.error?.message ?? e.error ?? "unknown error");
+      console.error("earlier-release map error:", e.error ?? e);
+      this.report(`The earlier-release side could not be drawn completely: ${message}`);
+    });
     before.on("load", () => {
-      for (const t of CHANGE_TYPES) before.addImage(`sym-${t}`, this.images[t], { pixelRatio: 2 });
-      // The same study-area outline as the main map, so both sides share the frame of reference.
-      const { west, south, east, north } = this.summary.aoi;
-      before.addSource("aoi", {
-        type: "geojson",
-        data: { type: "Feature", properties: {}, geometry: { type: "Polygon",
-          coordinates: [[[west, south], [east, south], [east, north], [west, north], [west, south]]] } },
-      });
-      before.addLayer({ id: "aoi-line", type: "line", source: "aoi",
-        paint: { "line-color": "#a8b8ca", "line-width": 1, "line-dasharray": [3, 3], "line-opacity": 0.6 } });
-      before.addSource(SWIPE_BEFORE_LAYER, { type: "geojson", data: sideFeatures(this.changes, "before") });
-      before.addLayer({ id: SWIPE_BEFORE_LAYER, type: "symbol", source: SWIPE_BEFORE_LAYER, layout: SYMBOL_LAYOUT as never });
-      for (const s of SELECTION_SOURCES) before.addSource(s, { type: "geojson", data: this.selection[s] });
-      for (const l of SELECTION_LAYERS) before.addLayer(l);
-      this.setFilter(this.shown);
+      try {
+        this.buildBefore(before);
+      } catch (e) {
+        console.error("earlier-release map layers could not be built:", e);
+        this.report(`The earlier-release side could not be drawn: ${e instanceof Error ? e.message : String(e)}`);
+      }
     });
     this.before = before;
+  }
+
+  private buildBefore(before: MapLibreMap): void {
+    for (const t of CHANGE_TYPES) before.addImage(`sym-${t}`, this.images[t], { pixelRatio: 2 });
+    // The same study-area outline as the main map, so both sides share the frame of reference.
+    const { west, south, east, north } = this.summary.aoi;
+    before.addSource("aoi", {
+      type: "geojson",
+      data: { type: "Feature", properties: {}, geometry: { type: "Polygon",
+        coordinates: [[[west, south], [east, south], [east, north], [west, north], [west, south]]] } },
+    });
+    before.addLayer({ id: "aoi-line", type: "line", source: "aoi",
+      paint: { "line-color": "#a8b8ca", "line-width": 1, "line-dasharray": [3, 3], "line-opacity": 0.6 } });
+    before.addSource(SWIPE_BEFORE_LAYER, { type: "geojson", data: sideFeatures(this.changes, "before") });
+    before.addLayer({ id: SWIPE_BEFORE_LAYER, type: "symbol", source: SWIPE_BEFORE_LAYER, layout: SYMBOL_LAYOUT as never });
+    for (const s of SELECTION_SOURCES) before.addSource(s, { type: "geojson", data: this.selection[s] });
+    for (const l of SELECTION_LAYERS) before.addLayer(l);
+    this.setFilter(this.shown);
   }
 
   private render(): void {

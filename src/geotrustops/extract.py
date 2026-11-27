@@ -38,7 +38,8 @@ from geotrustops.config import BBox, Config
 
 ARCHIVE_REPO_ENV = "GEOTRUSTOPS_ARCHIVE_REPO"  # "<account>/<repo>" of the private archive
 ARCHIVE_TOKEN_ENV = "GEOTRUSTOPS_ARCHIVE_TOKEN"  # noqa: S105 - variable name, not a secret
-# Columns kept in a changelog extract (contract §10); the build's cross-check reads columns_changed.
+# Columns kept in a changelog extract: the §10 columns the build's cross-check reads, plus `bbox` for the
+# timeline's positions (§12).
 CHANGELOG_SELECT = "id, change_type, columns_changed, bbox"
 Source = Literal["auto", "s3", "archive"]
 # Downloads one archive asset (by name) to the given path.
@@ -73,12 +74,15 @@ def _manifest_path(data_file: Path) -> Path:
     return data_file.parent / "manifest.json"
 
 
-def _bbox_where(b: BBox) -> str:
-    # Floats come from the validated config, not user SQL; repr() keeps full precision.
-    return (
-        f"bbox.xmin <= {b.east!r} AND bbox.xmax >= {b.west!r} "
-        f"AND bbox.ymin <= {b.north!r} AND bbox.ymax >= {b.south!r}"
-    )
+# The extraction box is bound as named parameters (values come from the config file). DuckDB still pushes the
+# filter into the Parquet scan, as with literals (checked with EXPLAIN on 1.4.2).
+_BBOX_WHERE = (
+    "bbox.xmin <= $east AND bbox.xmax >= $west AND bbox.ymin <= $north AND bbox.ymax >= $south"
+)
+
+
+def _bbox_params(b: BBox) -> dict[str, float]:
+    return {"west": b.west, "south": b.south, "east": b.east, "north": b.north}
 
 
 def download(
@@ -94,12 +98,12 @@ def download(
     started = dt.datetime.now(dt.UTC)
     # Both the source URI and the COPY target are *named* bound parameters, so paths containing
     # quotes cannot break or inject into the SQL (DuckDB 1.4.2 binds COPY targets; positional `?`
-    # on 1.1.3 did not parse). `select` and the bbox floats are internal constants, never user text.
+    # on 1.1.3 did not parse). Only `select`, an internal column-list constant, is interpolated.
     try:
         con.execute(
-            f"COPY (SELECT {select} FROM read_parquet($uri, hive_partitioning = true) "  # noqa: S608
-            f"WHERE {_bbox_where(bbox)} ORDER BY id) TO $dest (FORMAT parquet, COMPRESSION zstd)",
-            {"uri": uri, "dest": tmp.as_posix()},
+            f"COPY (SELECT {select} FROM read_parquet($uri, hive_partitioning = true) "  # noqa: S608 - column list
+            f"WHERE {_BBOX_WHERE} ORDER BY id) TO $dest (FORMAT parquet, COMPRESSION zstd)",
+            {"uri": uri, "dest": tmp.as_posix(), **_bbox_params(bbox)},
         )
         row = con.execute("SELECT count(*) FROM read_parquet($p)", {"p": tmp.as_posix()}).fetchone()
     except duckdb.Error as exc:

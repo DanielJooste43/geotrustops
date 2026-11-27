@@ -6,8 +6,8 @@ Guidance for anyone changing this repository, and for the automated code review 
 
 - **The data contract is the source of truth.** `docs/data_contract.md` defines every classification rule, field
   and output. If code and contract disagree, the code is wrong, or the contract is changed first in the same PR.
-- **Work arrives through pull requests** linked to an issue (`Closes #N`). `main` is protected; the `lint`, `types`
-  and `pytest` checks must pass.
+- **Work arrives through pull requests** linked to an issue (`Closes #N`). `main` is protected; the `lint`, `types`,
+  `pytest` and `web` checks must pass.
 - **Each module starts with its purpose, inputs, outputs and assumptions;** SQL states the row grain of each table.
 - **Raw extracts stay local** (`data/raw/` is ignored and rebuilt with `geotrustops fetch`). Never commit keys,
   credentials or absolute local paths.

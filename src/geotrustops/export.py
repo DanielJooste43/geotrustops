@@ -253,7 +253,14 @@ def _swap_into_place(staging: Path, out_dir: Path, previous: Path) -> None:
 
     current -> .previous, staging -> current, then .previous is dropped. If the second rename fails, the previous
     outputs are moved back before the error is raised (AGENTS.md: a failed run must not replace previous outputs).
+    If moving them back fails too, the error names where they are, and later runs refuse to start until they are
+    restored: `.previous` is then the only copy and must never be deleted.
     """
+    if previous.exists() and not out_dir.exists():
+        raise ExportError(
+            f"{out_dir} is missing and the previous outputs are in {previous} (an earlier run could not restore "
+            f"them); move {previous.name} back to {out_dir.name} before running again"
+        )
     try:
         if previous.exists():
             shutil.rmtree(
@@ -264,9 +271,15 @@ def _swap_into_place(staging: Path, out_dir: Path, previous: Path) -> None:
             out_dir.rename(previous)
         try:
             staging.rename(out_dir)
-        except OSError:
+        except OSError as exc:
             if had_outputs:
-                previous.rename(out_dir)
+                try:
+                    previous.rename(out_dir)
+                except OSError as restore_exc:
+                    raise ExportError(
+                        f"could not put the new outputs in place at {out_dir} ({exc}) nor move the previous "
+                        f"outputs back ({restore_exc}); they are in {previous}"
+                    ) from restore_exc
             raise
     except OSError as exc:
         raise ExportError(

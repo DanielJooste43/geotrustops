@@ -74,7 +74,7 @@ OPTIONAL_COLUMNS = {
     "brand",
 }
 
-# ISO 3166-2 codes for South African provinces, keyed by the upper-cased spellings seen in the
+# ISO 3166-2 code -> the upper-cased spellings of each South African province seen in the
 # source (codes and names). Contract §1 "Address normalisation". Constant data, not user input.
 _ZA_REGIONS = {
     "ZA-GP": ["GP", "GAUTENG"],
@@ -299,7 +299,8 @@ SELECT *,
         WHEN contains(lower(curr_name), lower(prev_name))
           OR contains(lower(prev_name), lower(curr_name)) THEN 'expanded_or_trimmed'
         ELSE 'different' END END AS name_change_kind,
-    CASE WHEN matched THEN name_diff AND lower(curr_name) = lower(curr_brand_name) END
+    -- true/false for every matched id (§3): a missing name or brand compares as NULL, which is "no match".
+    CASE WHEN matched THEN coalesce(name_diff AND lower(curr_name) = lower(curr_brand_name), false) END
         AS name_matches_brand,
     CASE WHEN matched THEN prev_category IS DISTINCT FROM curr_category END AS category_changed,
     CASE WHEN matched THEN prev_basic_category IS DISTINCT FROM curr_basic_category END
@@ -475,7 +476,7 @@ def run(prev: Path, curr: Path, changelog: Path | None, cfg: Config) -> Result:
 def _counts(con: duckdb.DuckDBPyConnection, column: str, keys: list[str]) -> dict[str, int]:
     found = dict(
         con.execute(
-            f"SELECT {column}, count(*) FROM ids WHERE considered AND {column} IS NOT NULL GROUP BY 1"  # noqa: S608
+            f"SELECT {column}, count(*) FROM ids WHERE considered AND {column} IS NOT NULL GROUP BY 1"  # noqa: S608 - internal column name
         ).fetchall()
     )
     return {k: int(found.get(k, 0)) for k in keys}
@@ -486,8 +487,11 @@ def _summarize(
 ) -> dict[str, Any]:
     input_rows, valid_rows, excluded_by_reason = {}, {}, {}
     for side in ("prev", "curr"):
+        # R is counted from the source file itself, not from Stage B, so a row lost before Stage B (or a
+        # normalisation that filters rows) fails identity 1 instead of shrinking both of its sides (contract §4).
+        source = prev if side == "prev" else curr
         input_rows[side] = int(
-            _scalar(con, "SELECT count(*) FROM rows WHERE side = $s", {"s": side})
+            _scalar(con, "SELECT count(*) FROM read_parquet($p)", {"p": source.as_posix()})
         )
         valid_rows[side] = int(
             _scalar(
@@ -516,7 +520,7 @@ def _summarize(
         return int(
             _scalar(
                 con,
-                f"SELECT count(*) FROM ids WHERE considered "  # noqa: S608
+                f"SELECT count(*) FROM ids WHERE considered "  # noqa: S608 - internal column name
                 f"AND list_contains(string_split({column}, ';'), $f)",
                 {"f": f},
             )
@@ -525,7 +529,7 @@ def _summarize(
     enrich_counts = {f: list_count("enrichment_changed", f) for f in ENRICH_FIELDS}
     format_counts = {f: list_count("format_only_changed", f) for f in FORMAT_FIELDS}
     # Stage C counts (what the classification produced). Rows AND distinct ids are both counted:
-    # a substituted id (g0 replaced by a second g1) keeps the row count but not the distinct count.
+    # a substituted id (one id replaced by a copy of another) keeps the row count but not the distinct count.
     union_ids = int(_scalar(con, "SELECT count(*) FROM ids"))
     distinct_classified = int(_scalar(con, "SELECT count(DISTINCT id) FROM ids"))
     considered = int(_scalar(con, "SELECT count(*) FROM ids WHERE considered"))
@@ -657,7 +661,7 @@ def _changes(con: duckdb.DuckDBPyConnection) -> list[dict[str, Any]]:
             basic_category_changed, status_changed, confidence_to_zero, enrichment_changed,
             format_only_changed, crossed_aoi_boundary, source_datasets, source_licences
         FROM ids WHERE considered AND change_type IN ({types}) ORDER BY id""",  # noqa: S608 - only the fixed EXPORTED_TYPES constant is interpolated
-    )  # noqa: S608
+    )
 
 
 # Independent Stage B baselines for contract §4 (grain of every CTE: one distinct id).
@@ -725,7 +729,7 @@ def _changelog_check(
                    array_to_string(cl.columns_changed, ';') AS columns_changed
             {base} AND NOT coalesce({expect}, false) ORDER BY o.id""",
         )  # noqa: S608 - fixed rule text
-        checked = int(_scalar(con, f"SELECT count(*) {base}"))  # noqa: S608
+        checked = int(_scalar(con, f"SELECT count(*) {base}"))  # noqa: S608 - fixed rule text
         rules[name] = {"checked": checked, "mismatches": len(found)}
         mismatches += [{"rule": name, **m} for m in found]
     changelog_types = dict(

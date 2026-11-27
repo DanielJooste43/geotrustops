@@ -3,7 +3,7 @@
 // the browser only selects which events to draw for the chosen release (ADR 0004).
 // Honesty rules: timing is per release, so a moved record steps from its last-seen position to its new one; the
 // short ease between them is drawn as motion between two release positions, never as an observed path, and is
-// skipped when reduced motion is requested. Releases without published changes are marked, not shown as zero.
+// skipped when reduced motion is requested or trails are off. Releases without published changes are marked, not shown as zero.
 import type { GeoJSONSource, Map as MapLibreMap } from "maplibre-gl";
 import type { Feature, FeatureCollection } from "geojson";
 import { TIMELINE_KINDS, type Timeline, type TimelineEvent } from "./contract";

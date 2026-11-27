@@ -1,7 +1,8 @@
 """Command line: `geotrustops fetch`, `geotrustops build` (contract §10) and `geotrustops timeline` (§12).
 
-Exit codes: 0 success; 2 a gate failed (bad config, missing/altered input, QA or
-reconciliation failure) and no output was written.
+Exit codes: 0 success; 2 the run failed (bad config, missing, altered or unreadable input, QA or reconciliation
+failure, an output that could not be put in place) and no output was replaced. One exception (contract §6): if the
+run history cannot be read, the new outputs stay in place and the history is unchanged.
 """
 
 from __future__ import annotations
@@ -11,6 +12,8 @@ import hashlib
 import json
 import sys
 from pathlib import Path
+
+import duckdb
 
 from geotrustops import __version__
 from geotrustops.config import Config, ConfigError, load_config
@@ -175,6 +178,11 @@ def main(argv: list[str] | None = None) -> int:
             _record_history(result, cfg, args.history)
     except (ConfigError, ExportError, ExtractError, PipelineError, TimelineError) as exc:
         print(f"geotrustops: FAILED: {exc}", file=sys.stderr)
+        return 2
+    except (duckdb.Error, OSError, json.JSONDecodeError) as exc:
+        # Not a named gate, but still a failed run: an unreadable or wrongly typed input file, a corrupt manifest,
+        # a full disk. Same exit code and one line instead of a traceback.
+        print(f"geotrustops: FAILED: {type(exc).__name__}: {exc}", file=sys.stderr)
         return 2
     s = result.summary
     print(f"ok: {s['considered_ids']} ids in study -> {out}")
