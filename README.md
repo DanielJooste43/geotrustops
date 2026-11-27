@@ -68,8 +68,7 @@ flowchart LR
 
 **The web map** shows both: change records by type, a before/after divider between the two releases, the record
 history played back release by release, and the stacked-place flags. Every record opens a panel with its previous
-and current values and positions. An extra "overall change" view draws every changed record as one glow, to show
-where changes concentrate.
+and current values and positions.
 
 ## Limitations
 
@@ -136,9 +135,9 @@ they include business contact fields (phones, emails, websites, social links) th
 
 `web/` is a one-screen map of the exported files: change records by type (shape and colour), a before/after divider
 between the two releases, a history view that plays the record history back release by release, quality flags for
-stacked places, an overall-change view (one glow per changed record, with an optional smoothed density layer), a
-record panel with previous and current values, positions and the record's position by release, a keyboard-accessible
-records list, and a provenance panel with release ids, input checksums, reconciliation and the changelog cross-check.
+stacked places, a record panel with previous and current values, positions and the record's position by release, a
+keyboard-accessible records list, and a provenance panel with release ids, input checksums, reconciliation and the
+changelog cross-check.
 
 ![Before/after view: earlier-release positions left of the divider, later-release positions right of it](docs/images/map-before-after.jpg)
 
