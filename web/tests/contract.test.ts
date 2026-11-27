@@ -53,6 +53,121 @@ describe("parseChanges", () => {
   });
 });
 
+describe("parseChanges rejects malformed input", () => {
+  it("rejects a root that is not a feature collection", () => {
+    for (const raw of [null, [], "x", { type: "FeatureCollection", geotrustops: meta }]) {
+      expect(() => parseChanges(raw), JSON.stringify(raw)).toThrow(ContractError);
+    }
+  });
+  it("rejects missing provenance members", () => {
+    const { inputs_sha256: _drop, ...noInputs } = meta;
+    expect(() => parseChanges(collection([], noInputs))).toThrow(/inputs_sha256/);
+    expect(() => parseChanges(collection([], { ...meta, changelog_sha256: 5 }))).toThrow(/changelog_sha256/);
+  });
+  it("rejects NaN coordinates and NaN numbers", () => {
+    expect(() => parseChanges(collection([feature(props(), [Number.NaN, -25.74])]))).toThrow(/finite/);
+    expect(() => parseChanges(collection([feature(props({ distance_m: Number.NaN }))]))).toThrow(/distance_m/);
+    expect(() => parseChanges(collection([feature(props({ prev_lat: Number.POSITIVE_INFINITY }))]))).toThrow(/prev_lat/);
+  });
+  it("rejects a previous or current position outside WGS84", () => {
+    expect(() => parseChanges(collection([feature(props({ prev_lat: -95 }))]))).toThrow(/previous position/);
+  });
+  it("rejects string booleans", () => {
+    expect(() => parseChanges(collection([feature(props({ name_changed: "true" as never }))]))).toThrow(/name_changed/);
+  });
+  it("ties the positions present to the change type", () => {
+    const added = props({ change_type: "added", distance_m: null, move_band: null });
+    expect(() => parseChanges(collection([feature(added)]))).toThrow(/do not fit/); // added with a previous position
+    const ok = props({ change_type: "added", distance_m: null, move_band: null, prev_lon: null, prev_lat: null });
+    expect(parseChanges(collection([feature(ok)])).features).toHaveLength(1);
+    const removed = props({ change_type: "removed", curr_lon: null, curr_lat: null });
+    expect(parseChanges(collection([feature(removed, [removed.prev_lon, removed.prev_lat])])).features).toHaveLength(1);
+    expect(() => parseChanges(collection([feature(props({ curr_lon: null, curr_lat: null }), [28.18, -25.74])])))
+      .toThrow(/do not fit/); // a move with no current position
+    expect(() => parseChanges(collection([feature(props({ curr_lat: null }), [28.1803, -25.7402])]))).toThrow(/incomplete/);
+  });
+  it("rejects a point drawn away from its change type's position", () => {
+    expect(() => parseChanges(collection([feature(props(), [28.18, -25.74])]))).toThrow(/drawn at/); // moved at prev
+  });
+});
+
+describe("parseSummary", () => {
+  const summaryDoc = (over: Record<string, unknown> = {}) => ({
+    pipeline_version: "0.5.0", contract_version: "0.4", releases: { prev: "p", curr: "c" },
+    aoi: { west: 28.1, south: -25.8, east: 28.2, north: -25.7 },
+    thresholds_m: { minor_move: 5, move: 25, major_move: 100 }, inputs_sha256: { prev: "h1", curr: "h2" },
+    change_counts: { added: 0, removed: 0, moved: 1, attribute_changed: 0, shifted: 0, excluded: 0, unchanged: 3 },
+    reconciliation: { rows: { identity: "R = V + X", lhs: 4, rhs: 4, holds: true } },
+    interpretation: "i",
+    changelog_check: { changelog_sha256: null, rules: { r: { checked: 1, mismatches: 0 } } },
+    ...over,
+  });
+
+  it("accepts a valid summary, with or without a changelog check", () => {
+    expect(parseSummary(summaryDoc()).releases.curr).toBe("c");
+    expect(parseSummary(summaryDoc({ changelog_check: null })).changelog_check).toBeNull();
+  });
+  it("rejects a malformed root", () => {
+    for (const raw of [null, [], 1]) expect(() => parseSummary(raw)).toThrow(ContractError);
+  });
+  it("rejects missing members the map reads", () => {
+    for (const k of ["pipeline_version", "interpretation", "releases", "inputs_sha256", "aoi", "thresholds_m"]) {
+      const doc: Record<string, unknown> = summaryDoc();
+      delete doc[k];
+      expect(() => parseSummary(doc), k).toThrow(ContractError);
+    }
+  });
+  it("rejects an inverted or out-of-range study area", () => {
+    expect(() => parseSummary(summaryDoc({ aoi: { west: 28.2, south: -25.8, east: 28.1, north: -25.7 } }))).toThrow(/aoi/);
+    expect(() => parseSummary(summaryDoc({ aoi: { west: 28.1, south: -95, east: 28.2, north: -25.7 } }))).toThrow(/aoi/);
+    expect(() => parseSummary(summaryDoc({ aoi: { west: "28.1", south: -25.8, east: 28.2, north: -25.7 } }))).toThrow(/aoi/);
+  });
+  it("rejects unordered, non-positive or non-finite thresholds", () => {
+    for (const th of [{ minor_move: 25, move: 5, major_move: 100 }, { minor_move: 0, move: 25, major_move: 100 },
+      { minor_move: 5, move: Number.NaN, major_move: 100 }]) {
+      expect(() => parseSummary(summaryDoc({ thresholds_m: th })), JSON.stringify(th)).toThrow(/thresholds_m/);
+    }
+  });
+  it("rejects counts that are not non-negative integers", () => {
+    const counts = summaryDoc().change_counts;
+    for (const bad of [-1, 1.5, "1", Number.NaN]) {
+      expect(() => parseSummary(summaryDoc({ change_counts: { ...counts, moved: bad } })), String(bad)).toThrow(/moved/);
+    }
+  });
+  it("never lets an empty or malformed reconciliation pass as 'counts reconcile'", () => {
+    expect(() => parseSummary(summaryDoc({ reconciliation: {} }))).toThrow(/no identities/);
+    const r = { identity: "R = V + X", lhs: 4, rhs: 4, holds: "true" };
+    expect(() => parseSummary(summaryDoc({ reconciliation: { rows: r } }))).toThrow(/boolean holds/);
+    expect(() => parseSummary(summaryDoc({ reconciliation: { rows: { ...r, holds: true, lhs: null } } }))).toThrow(/rows/);
+  });
+  it("rejects a malformed changelog check", () => {
+    expect(() => parseSummary(summaryDoc({ changelog_check: { changelog_sha256: null } }))).toThrow(/changelog_check/);
+    expect(() => parseSummary(summaryDoc({ changelog_check: { changelog_sha256: null, rules: { r: { checked: 1 } } } })))
+      .toThrow(/rules\.r/);
+    expect(() => parseSummary(summaryDoc({ changelog_check: { changelog_sha256: null, rules: {},
+      changelog_types_for_considered_ids: { data_changed: "4721" } } }))).toThrow(/considered_ids/);
+  });
+
+  describe("checkSameRun", () => {
+    const changes = () => parseChanges(collection([feature(props())]));
+    it("accepts files from the same run", () => {
+      expect(() => checkSameRun(changes(), parseSummary(summaryDoc()))).not.toThrow();
+    });
+    it("rejects different releases or inputs", () => {
+      expect(() => checkSameRun(changes(), parseSummary(summaryDoc({ releases: { prev: "p", curr: "x" } })))).toThrow(/releases/);
+      expect(() => checkSameRun(changes(), parseSummary(summaryDoc({ inputs_sha256: { prev: "h1", curr: "x" } })))).toThrow(/inputs/);
+    });
+    it("rejects a different changelog", () => {
+      const other = summaryDoc({ changelog_check: { changelog_sha256: "other", rules: {} } });
+      expect(() => checkSameRun(changes(), parseSummary(other))).toThrow(/changelogs/);
+    });
+    it("rejects feature counts per change type that differ from summary.json", () => {
+      const counts = { ...summaryDoc().change_counts, moved: 2 };
+      expect(() => checkSameRun(changes(), parseSummary(summaryDoc({ change_counts: counts })))).toThrow(/1 moved records/);
+    });
+  });
+});
+
 describe("positions", () => {
   it("removed records have no current position; added records no previous one", () => {
     expect(positions(props({ curr_lon: null, curr_lat: null })).curr).toBeNull();
