@@ -1,10 +1,10 @@
-# ADR 0004 — The validation engine is independent of the map interface
+# ADR 0004: The validation engine is independent of the map interface
 
-**Status:** accepted (2026-11-23) · applies to the web interface
+**Status:** accepted (2026-11-23); applies to the web interface
 
 ## Context
 The project must stand as data engineering in its own right: running checks and producing QA
-reports with no web map involved. The pipeline already works this way (CLI → `changes.geojson`, `summary.json`,
+reports with no web map involved. The pipeline already works this way (the CLI writes `changes.geojson`, `summary.json`,
 `qa_report.md`). This ADR makes the separation an enforced rule before a web interface is added.
 
 ## Decision

@@ -1,4 +1,4 @@
-# Calibration log — thresholds and the evidence behind them
+# Calibration log: thresholds and the evidence behind them
 
 Machine record: `runs/history.jsonl` (one line per distinct inputs + config + version; written by
 `geotrustops build`). This file records **decisions**. It is not machine learning: thresholds are set

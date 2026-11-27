@@ -1,14 +1,16 @@
 # Case study: what changed in a map-data release, and which records need a look
 
 **In one paragraph.** Overture's changelog marks 79% of the places in central Pretoria as changed between the
-October and November 2026 releases. GeoTrustOps classified every record and found 227 material changes (3.8%):
+October and November 2026 releases. GeoTrustOps classified every record and found 227 material changes (3.8% of the
+5,967 places in the area):
 178 places moved more than 25 m and 49 were renamed or recategorised. Most of the rest was two format migrations
 (4,450 region codes, 314 phone numbers). Every count reconciles, the classification agrees with Overture's own
 changelog on every record it can be checked against, and the outputs rebuild byte for byte from pinned inputs.
 Separately, 503 groups of places stacked on one point (1,951 places) are flagged for a manual look.
 
-[Live map](https://danieljooste43.github.io/geotrustops/) · [README](../README.md) ·
-[Methodology](methodology.md) · [Data contract](data_contract.md) · [Engineering review log](engineering_review_log.md)
+See also the [live map](https://danieljooste43.github.io/geotrustops/), the [README](../README.md), the
+[methodology](methodology.md), the [data contract](data_contract.md) and the
+[engineering review log](engineering_review_log.md).
 
 ## The problem
 
@@ -65,7 +67,7 @@ or do not come from the same run, the map refuses to draw them and says why.
 | Phone change that was only the format migration | 314 |
 
 The second pair (Sep → Oct) shows 111 moved, 72 renamed or recategorised, 74 shifted, 289 added and 0 removed, with
-almost no format migrations (0 region codes, 6 phones). The November spike is a format change, not a burst of edits.
+almost no format migrations (0 region codes, 6 phones): the November spike comes from the two format changes.
 
 **Warning signs** (current release):
 - **503 groups of stacked places** (1,951 places within 2 m of each other), each with a likely cause from simple

@@ -1,4 +1,4 @@
-# Source manifest — GeoTrustOps
+# Source manifest: GeoTrustOps
 
 All values below were **observed on 2026-11-23** by running the scripts named; none are assumed.
 
@@ -59,9 +59,9 @@ places, each with a manifest (source URI, row count, SHA-256) under `data/raw/co
 ## Study area
 WGS84 lon/lat bbox: west `28.168`, south `-25.758`, east `28.205`, north `-25.732` (central Pretoria). Not expanded.
 Filter: Overture `bbox` struct overlaps the AOI (identical rule for both releases).
-Observed: 2 records per release have point coordinates marginally outside the AOI (Overture's bbox struct is rounded outward) → handled by the study-membership rule: a place is in the study only if it lies inside the exact AOI in at least one release (contract §2).
+Observed: 2 records per release have point coordinates marginally outside the AOI (Overture's bbox struct is rounded outward), handled by the study-membership rule: a place is in the study only if it lies inside the exact AOI in at least one release (contract §2).
 
-## Schema (identical in both releases — 18 columns, 0 added/removed/retyped)
+## Schema (identical in both releases: 18 columns, 0 added/removed/retyped)
 `id, geometry (WKB BLOB), confidence, websites[], emails[], socials[], phones[], brand, addresses[], names, sources[], operating_status, basic_category, taxonomy, version, bbox, theme, type`
 
 ### Field mapping to the comparison record
@@ -73,8 +73,8 @@ Observed: 2 records per release have point coordinates marginally outside the AO
 | `name` | `names.primary` | 0 empty in both |
 | `category` | `taxonomy.primary` | 283 / 270 NULL. No legacy `categories` column exists |
 | `basic_category` | `basic_category` | 282 / 270 NULL |
-| `operating_status` | `operating_status` | almost all NULL (8 / 7 'open') → informational only |
-| *(not compared)* | `version` | changed on 4,716 of 5,502 matched ids → not a meaningful change signal |
+| `operating_status` | `operating_status` | almost all NULL (8 / 7 'open'), so informational only |
+| *(not compared)* | `version` | changed on 4,716 of 5,502 matched ids, so not a meaningful change signal |
 
 ## Licence and attribution
 - Overture Places guide: theme published under **CDLA-Permissive-2.0 and Apache-2.0, depending on source**; contains no OpenStreetMap data. https://docs.overturemaps.org/guides/places/

@@ -1,4 +1,4 @@
-# Methodology — use case, logic, outputs and tools
+# Methodology: use case, logic, outputs and tools
 
 Numbers marked *observed* come from real runs on 2026-11-23; everything else describes the design in
 `docs/data_contract.md`. If the two ever disagree, the contract is authoritative.
@@ -66,7 +66,7 @@ Each stage is described below with: **what happens**, **the logic**, **a real ex
 
 ## 3. Stage by stage
 
-### Stage 1 — Source and pin the data
+### Stage 1: Source and pin the data
 
 **What happens.** We list the releases Overture has published, choose two, and download only the
 places that fall inside our study-area box (bbox: west 28.168, south -25.758, east 28.205, north -25.732).
@@ -84,7 +84,7 @@ places that fall inside our study-area box (bbox: west 28.168, south -25.758, ea
 
 **Real result.** 5,733 places (Oct) and 5,738 places (Nov) *(observed)*.
 
-**Tools.** Amazon S3 (public bucket, anonymous access) · GeoParquet · DuckDB `httpfs` extension · Python.
+**Tools.** Amazon S3 (public bucket, anonymous access), GeoParquet, the DuckDB `httpfs` extension, Python.
 
 **What it demonstrates.** Working with cloud object storage and columnar formats; data sourcing
 discipline (versioning, provenance, licence); efficient extraction by predicate pushdown rather than
@@ -97,7 +97,7 @@ version you received and being able to prove it.
 
 ---
 
-### Stage 2 — Normalize: from nested source records to one flat record
+### Stage 2: Normalize: from nested source records to one flat record
 
 **What happens.** Overture records are nested: `names` is a structure containing `primary`, plus
 translations and rules; `taxonomy` holds `primary`, `hierarchy` and `alternates`; `geometry` is binary
@@ -131,7 +131,7 @@ normalisation is reported in `format_only_changed`. `version` is not compared (b
 removed or retyped *(observed)*. There is **no** old-style `categories` column. The project brief
 assumed one might exist, which is why schemas are inspected rather than assumed.
 
-**Tools.** DuckDB SQL (struct access `names."primary"`, list functions over `sources`) · DuckDB `spatial`
+**Tools.** DuckDB SQL (struct access `names."primary"`, list functions over `sources`), DuckDB `spatial`
 extension (`ST_GeomFromWKB`, `ST_X`, `ST_Y`).
 
 **What it demonstrates.** Schema mapping from a real, nested, evolving source into a controlled model:
@@ -144,7 +144,7 @@ compare, and documenting why.
 
 ---
 
-### Stage 3 — Validate: set records aside, with a reason
+### Stage 3: Validate: set records aside, with a reason
 
 **What happens.** Before comparing, every row in each release is checked. A row that fails a check
 is **excluded with a reason code**: never silently dropped.
@@ -153,8 +153,8 @@ is **excluded with a reason code**: never silently dropped.
 
 | Order | Reason | Rule |
 |---|---|---|
-| 1 | `missing_id` | no ID → cannot be matched |
-| 2 | `duplicate_id` | same ID twice in one release → ambiguous; all copies excluded |
+| 1 | `missing_id` | no ID, so it cannot be matched |
+| 2 | `duplicate_id` | same ID twice in one release: ambiguous, so all copies are excluded |
 | 3 | `missing_geometry` | no position |
 | 4 | `non_point_geometry` | not a point (places should be points) |
 | 5 | `invalid_coordinates` | longitude/latitude outside the possible range |
@@ -173,10 +173,10 @@ Separately, a few points (e.g. *Affinity Mobile*, `17647df2…`) lie just outsid
 releases. Overture's stored `bbox` is rounded slightly outward, so the download filter lets them in; the
 exact-point rule keeps them out of the study.
 
-A run **fails completely** if more than 5% of a release is excluded: that pattern signals a broken
-download, not a data feature.
+A run **fails completely** if more than 5% of a release is excluded: at that rate the likely cause is a broken
+download.
 
-**Tools.** DuckDB SQL (`CASE` rules, window `count(*) OVER (PARTITION BY id)` for duplicates) · Python
+**Tools.** DuckDB SQL (`CASE` rules, window `count(*) OVER (PARTITION BY id)` for duplicates), Python
 for the gate logic and clear error messages.
 
 **What it demonstrates.** Data quality gates and exclusion auditing, the core of QA work: every record
@@ -188,7 +188,7 @@ is accounted for, and the reason for any exclusion can be reported to whoever su
 
 ---
 
-### Stage 4 — Match and classify: the heart of the logic
+### Stage 4: Match and classify: the heart of the logic
 
 **What happens.** We line up the two releases by ID using a **FULL OUTER JOIN**: a join that keeps
 IDs found in only one release as well as IDs found in both. Each ID then gets **exactly one** change type.
@@ -212,7 +212,7 @@ flowchart TD
     Q6 -- no --> UN[unchanged]
 ```
 
-Every matched place also gets a **move band**: `stable` ≤ 5 m · `minor` 5–25 m · `material` 25–100 m ·
+Every matched place also gets a **move band**: `stable` ≤ 5 m; `minor` 5–25 m; `material` 25–100 m ·
 `major` > 100 m, so the map can show *how far*, whatever the change type.
 
 Three technical rules hide inside this diagram:
@@ -267,7 +267,7 @@ address or supplier-release reconciliation.
 
 ---
 
-### Stage 4b — "Doesn't Overture already publish a changelog?" Yes, and we use it as a check
+### Stage 4b: "Doesn't Overture already publish a changelog?" Yes, and we use it as a check
 
 Overture publishes a **GERS changelog** with every release: for each place ID, one of `added`,
 `removed`, `data_changed`, `unchanged`, plus the list of columns that changed. So why build GeoTrustOps?
@@ -304,7 +304,7 @@ of 625 website changes in the extraction, 552 were complete removals, 458 of the
 
 ---
 
-### Stage 5 — Reconcile: prove the numbers add up
+### Stage 5: Reconcile: prove the numbers add up
 
 **What happens.** Before anything is written, the pipeline checks that its counts are internally
 consistent. If any check fails, the run stops and **writes nothing**.
@@ -318,14 +318,14 @@ consistent. If any check fails, the run stops and **writes nothing**.
 **Real check** (feasibility probe, before exclusions): 5,502 matched + 236 added = 5,738 ✔ ;
 5,502 matched + 231 removed = 5,733 ✔ *(observed)*.
 
-**Tools.** SQL aggregates + Python assertions · pytest.
+**Tools.** SQL aggregates, Python assertions and pytest.
 
 **What it demonstrates.** The difference between "the script ran" and "the result is right". Reconciliation
 is how data teams catch silent record loss.
 
 ---
 
-### Stage 6 — Export: what the outputs describe
+### Stage 6: Export: what the outputs describe
 
 | File | What it describes | Who uses it |
 |---|---|---|
@@ -338,20 +338,20 @@ moved more than 25 m between releases, mostly 25–100 m, with 21 over 300 m. Th
 where a reviewer should start." Not: "178 businesses relocated."
 
 **Design choices.**
-- *Deterministic:* same inputs → byte-identical files (sorted rows, rounded coordinates, no timestamps).
+- *Deterministic:* the same inputs give byte-identical files (sorted rows, rounded coordinates, no timestamps).
   A test proves it by comparing file hashes across two runs.
 - *Atomic:* outputs are written to a temporary folder and only swapped in once every check passes,
   so a failed run never overwrites a good result.
 - *Small:* only changed places are exported (~700 of ~5,900), keeping the map fast.
 
-**Tools.** DuckDB → Python → GeoJSON (RFC 7946, the web-map standard) · JSON · Markdown.
+**Tools.** DuckDB and Python, writing GeoJSON (RFC 7946, the web-map standard), JSON and Markdown.
 
 **What it demonstrates.** Designing outputs for their consumers (machine vs human), reproducibility,
 and safe failure behaviour: production habits, applied at a small scale.
 
 ---
 
-### Stage 7 — Verify: why the results can be trusted
+### Stage 7: Verify: why the results can be trusted
 
 **What happens.** Four checks that do not depend on each other:
 
@@ -364,7 +364,7 @@ and safe failure behaviour: production habits, applied at a small scale.
 
 Every change is reviewed before merge, and reconciliation identities are tested by deliberately injecting faults.
 
-**Tools.** pytest · fault injection (monkeypatched SQL) · Git feature branches and pull requests · GitHub Actions.
+**Tools.** pytest, fault injection (monkeypatched SQL), Git feature branches and pull requests, GitHub Actions.
 
 **What it demonstrates.** Verification beyond "the tests pass". The earlier, unpublished prototype this project
 started from documented "13 tests pass"; re-running them gave 6 failures on two DuckDB versions *(observed)*. Here, each
@@ -374,17 +374,19 @@ automated process must agree with.
 
 ---
 
-### Stage 8 — Present (planned) and publish (planned)
+### Stage 8: Present and publish
 
-**What will happen.** A one-page interactive map: colour-coded change types, filters, metric cards from
-`summary.json`, click a point to see before/after values, lines for moves, and a visible limitations
-note. Then a README, case study, CI and GitHub Pages hosting.
+**What happens.** A one-page map on GitHub Pages reads the exported files: change records by type (shape and
+colour), a before/after divider between the two releases, the record history played back release by release, the
+stacked-place flags, and a panel per record with its previous and current values. Every number comes from
+`summary.json`; the map checks the files against the data contract and refuses to draw files that do not match.
+The README and the [case study](case_study.md) present the results and their limits.
 
-**Tools (planned, not yet built).** React + TypeScript + Vite · a map library (to be chosen, with
-correct attribution) · GitHub Actions · GitHub Pages.
+**Tools.** TypeScript, Vite, MapLibre GL JS, an OpenFreeMap basemap with OpenStreetMap attribution, GitHub
+Actions and GitHub Pages.
 
-**What it will demonstrate.** Turning a data product into something a non-technical reviewer can use
-in two minutes, and shipping it with documentation and automated checks.
+**What it demonstrates.** Turning a data product into something a non-technical reviewer can use in two minutes,
+and shipping it with documentation and automated checks.
 
 ---
 
@@ -392,8 +394,8 @@ in two minutes, and shipping it with documentation and automated checks.
 
 | Type | Feasibility probe | v0.2 | **v0.3 Oct→Nov** | **v0.3 Sep.1→Oct** | Note |
 |---|---|---|---|---|---|
-| added | 236 | 232 | **232** | **289** | probe→v0.2: 4 were boundary crossers |
-| removed | 231 | 228 | **228** | **0** | probe→v0.2: 3 were boundary crossers |
+| added | 236 | 232 | **232** | **289** | probe to v0.2: 4 were boundary crossers |
+| removed | 231 | 228 | **228** | **0** | probe to v0.2: 3 were boundary crossers |
 | moved (> 25 m) | 171 | 178 | **178** | **111** | +7 crossers matched in v0.2 |
 | attribute_changed | 49 | 49 | **49** | **72** | |
 | shifted (5–25 m) | (n/a) | (n/a) | **109** | **74** | new in v0.3, previously hidden in unchanged |
@@ -418,8 +420,8 @@ than 2 moved records). This is recorded because negative results are evidence to
 | Haversine | Stage 4 | geodesy basics | why degrees ≠ metres; why 25 m is illustrative |
 | Python | all stages | packaging, orchestration, error handling | how a failed check stops the run |
 | pytest + golden records | Stage 7 | testing, QA sampling | independent checks vs self-checks |
-| Git / GitHub | Stage 7–8 | version control, review workflow | branch → review → merge |
-| React/TS/Vite + map library | Stage 8 | web mapping | (planned) |
+| Git / GitHub | Stage 7–8 | version control, review workflow | branch, review, merge |
+| TypeScript, Vite, MapLibre GL JS | Stage 8 | web mapping | interface reads the contract, computes nothing |
 
 ---
 

@@ -13,7 +13,7 @@
 
 ---
 
-## I-1 Stacked coordinates — **verified as a triage method (2026-11-24)**
+## I-1 Stacked coordinates (**verified as a triage method (2026-11-24)**)
 - **Observed (2026-11-23, Nov release, AOI):** 960 of 5,736 places (≈17%) share an exact coordinate with at
   least one other place, on 196 distinct points. Largest stacks: 91, 66, 51, 46, 44 places, each with all
   **different** names (e.g. a music studio, tutors, motor dealer, coffee shop on one point).
@@ -184,23 +184,23 @@
     address points after a licence review. Publish nothing until `verified`.
 
 
-## I-2 Wrong-province region recode — open, small
+## I-2 Wrong-province region recode (open, small)
 - **Observed:** 1 place (`Bushbuck Group`) changed region `GP` → `ZA-MP` (Gauteng → Mpumalanga) inside central Pretoria.
 - **Hypothesis:** an error in the November region migration, not a real relocation.
 - **Confirm if:** its coordinates are unchanged and inside Gauteng. **Result:** _(pending)_
 
-## I-3 Website removals in November — open
+## I-3 Website removals in November (open)
 - **Observed:** 552 of 625 website changes were complete removals; 458 of those places had only `http://` links.
 - **Hypothesis:** Overture dropped insecure or unverifiable websites in the November release.
 - **Confirm if:** removal rate for `http://`-only places is far higher than for `https://`; check Overture release notes.
 - **Result:** _(pending)_
 
-## I-4 October had 0 removals — open, small
+## I-4 October had 0 removals (open, small)
 - **Observed:** the Oct changelog (vs Sep.1) shows 289 added and **0 removed** in the AOI; GeoTrustOps agrees.
 - **Hypothesis:** a pipeline/process difference in that release (e.g. removals deferred), not zero closures.
 - **Confirm if:** 0 removals also holds for a larger area or nationally. **Result:** _(pending)_
 
-## I-6 What drives large confidence drops? — open
+## I-6 What drives large confidence drops? (open)
 - **Observed:** confidence changes on 38–66% of matched places per release, mostly small (mean |Δ| 0.014–0.018),
   but some drops are large (e.g. 0.517 → 0.068, 0.718 → 0.117) with no `operating_status` change. 96–97% of
   changes coincide with the provider's source-level confidence changing.
@@ -209,12 +209,12 @@
 - **Why it matters:** if users filter on confidence (Overture's example uses `> 0.95`), a provider re-score can
   silently remove places from a map. **Result:** _(pending)_
 
-## I-5 Lower-confidence places churn more — open
+## I-5 Lower-confidence places churn more (open)
 - **Observed (Oct→Nov):** median confidence 0.48 (added) and 0.43 (removed) vs 0.56 (matched).
 - **Hypothesis:** low-confidence records are less stable between releases. Correlation only.
 - **Confirm if:** the pattern holds in Sep.1→Oct as well. **Result:** _(pending)_
 
-## I-7 Organisations categorised as libraries — open, small (logged 2026-11-24)
+## I-7 Organisations categorised as libraries (open, small (logged 2026-11-24))
 - **Observed:** 75 places from one AllThePlaces directory are categorised `library` but are government
   departments, institutes and companies with postal-box addresses (found during I-1).
 - **Hypothesis:** a library-directory source whose members are organisations, not libraries; a category defect,

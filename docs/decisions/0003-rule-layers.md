@@ -1,7 +1,7 @@
-# ADR 0003 — Rule layers: generic engine, source profiles, locale profiles
+# ADR 0003: Rule layers: generic engine, source profiles, locale profiles
 
 
-**Status:** accepted (2026-11-23) · documentation now, code extraction deferred
+**Status:** accepted (2026-11-23); documentation now, code extraction deferred
 
 ## Context
 The changelog-oracle decision (confidence is never compared by Overture's changelog) is true of **Overture**, not
